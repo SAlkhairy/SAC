@@ -10,19 +10,17 @@
 
 <form action="" method="post">
   {% csrf_token %}
-    <div class="form-group">
+
+  <div class="container">
 
 
-         <div class="form-group">
-    <label for="exampleInputEmail1">الإيميل الجامعي</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-  </div>
+
 
 
 
 
   <fieldset>
-    <legend>{% trans "Signup" %}</legend>
+    <legend>{% trans "التسجيل" %}</legend>
     {{ form.non_field_errors }}
     {% for field in form %}
     {{ field.errors }}
@@ -33,14 +31,22 @@
     </p>
     {% else %}
     <p>
-    {{ field.label_tag }}
-    {{ field }}
+
+      <label class="col-2 col-form-label">
+        {{ field.label_tag }}</label>
+
+       <div class="col-10">
+    {{ field }}</div>
+
+
+
     </p>
     {% endif %}
     {% endfor %}
   </fieldset>
-  <button type="button" class="btn btn-success">
-  <input type="submit" value="{% trans "Signup"%}" /></button>
+
+  <input class="btn btn-success" type="submit" value="{% trans "سجّل"%}">
+
 
     </div>
 </form>
