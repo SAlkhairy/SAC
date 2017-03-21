@@ -1,3 +1,5 @@
+# -*- coding: utf-8  -*-
+
 from __future__ import unicode_literals
 
 from django.db import models
@@ -6,10 +8,7 @@ from django.contrib.auth.models import User
 
 from userena.models import UserenaBaseProfile
 
-from django.core.urlresolvers import reverse
 
-
-# -*- coding: utf-8  -*-
 
 # Create your models here.
 
@@ -63,8 +62,9 @@ class Profile(UserenaBaseProfile):
     college = models.ForeignKey(College)
     city = models.CharField(max_length=1, choices=city_choices, verbose_name=u"المدينة")
     gender = models.CharField(max_length=1, choices=gender_choices, verbose_name=u"الجنس")
-    mobile_number = models.CharField(max_length=10)
-    student_id = models.IntegerField()
-    submission_date = models.DateTimeField(u"تاريخ التسجيل", auto_now_add=True)
-    modification_date = models.DateTimeField(auto_now=True, null=True)
+    mobile_number = models.CharField(max_length=12)
+    email = models.EmailField(blank=False)
+    student_id = models.IntegerField(unique=True)
+    submission_date = models.DateTimeField(verbose_name=u"تاريخ التسجيل", auto_now_add=True)
+    modification_date = models.DateTimeField(auto_now=True, null=True,)
 

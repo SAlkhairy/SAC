@@ -19,8 +19,8 @@ from accounts import urls as accounts_urls
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('userena.urls')),
-    url(r'^', include(accounts_urls)),
+    url(r'^admin/', include(admin.site.urls)),
+    #url(r'^accounts/', include('userena.urls')),
+    url(r'^accounts/', include(accounts_urls)),
 
 ]
