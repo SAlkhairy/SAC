@@ -31,10 +31,10 @@ class CustomSignupForm(SignupForm):
         self.fields['password2'].label = u'تأكيد كلمة السر'
 
 
+
     def save(self):
         """
-        Override the save method to save the first and last name to the user
-        field.
+        Override the save method to save the new fields
 
         """
         # First save the parent form and get the user.
@@ -47,6 +47,7 @@ class CustomSignupForm(SignupForm):
 
         user_profile.ar_name = self.cleaned_data['ar_name']
         user_profile.en_name = self.cleaned_data['en_name']
+
         user_profile.save()
 
         # Userena expects to get the new user from this form, so return the new

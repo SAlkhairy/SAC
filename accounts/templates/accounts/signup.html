@@ -1,55 +1,67 @@
-<!-- Userena's template-->
-
-
 {% extends 'accounts/base.html' %}
-{% load i18n %}
+{% load staticfiles %}
 
 {% block title %}التسجيل{% endblock %}
 
-{% block content %}
+{% block body %}
 
-<form action="" method="post">
-  {% csrf_token %}
+<div class="container" align="right" DIR="rtl">
+  <div class="row">
+    <div class="col-lg-12">
+      <center>
+        <img src="/static/used img/SAC Logo No name.png" alt="SAC" align="middle" vspace="20" height="150">
+      </center>
+      <h2 align="center">بوابة ترابط | نموذج التسجيل</h2>
+      <form action="" method="">
+        <div class="form-group">
 
-  <div class="container">
+          <label for="ar_name">الاسم بالعربي</label>
+          <input type="text" class="form-control" id="ar_name">
 
+          <label for="en_name">الاسم بالإنجليزي</label>
+          <input type="text" class="form-control" id="en_name">
 
+          <label for="gender">طالب أم طالبة؟</label>
+          <select class="form-control" id="gender">
+            <option>طالب</option>
+            <option>طالبة</option>
+          </select>
 
+          <label for="mobile_number">رقم الجوال</label>
+          <input type="text" class="form-control" id="mobile_number">
 
+          <label for="college">الكلية</label>
+          <select class="form-control" id="college">
+            <option>كلية الطب</option>
+            <option>كلية العلوم الطبية التطبيقية</option>
+            <option>كلية الصيدلة</option>
+            <option>كلية طب الأسنان</option>
+            <option>كلية العلوم و المهن الصحية</option>
+            <option>كلية التمريض</option>
+            <option>كلية الصحة العامة والمعلوماتية الصحية</option>
+          </select>
 
+          <label for="student_id">الرقم الجامعي</label>
+          <input type="text" class="form-control" id="student_id">
 
+          <label for="email">البريد الإلكتروني الجامعي</label>
+          <input type="email" class="form-control" id="email">
 
-  <fieldset>
-    <legend>{% trans "التسجيل" %}</legend>
-    {{ form.non_field_errors }}
-    {% for field in form %}
-    {{ field.errors }}
-    {# Displaying checkboxes differently #}
-    {% if field.name == 'tos' %}
-    <p class="checkbox">
-    <label for="id_{{ field.name }}">{{ field }} {{ field.label }}</label>
-    </p>
-    {% else %}
-    <p>
+          <label for="password1">إنشاء كلمة سر</label>
+          <input type="password" class="form-control" id="password1">
 
-      <label class="col-2 col-form-label">
-        {{ field.label_tag }}</label>
+          <label for="password2">تأكيد كلمة السر</label>
+          <input type="password" class="form-control" id="password2">
 
-       <div class="col-10">
-    {{ field }}</div>
+        </div>
+      </form>
 
-
-
-    </p>
-    {% endif %}
-    {% endfor %}
-  </fieldset>
-
-  <input class="btn btn-success" type="submit" value="{% trans "سجّل"%}">
-
+          <p align="center"><input class="btn btn-success" type="submit" value="سجّل"></p>
 
     </div>
-</form>
+  </div>
+</div>
 
 {% endblock %}
+
 

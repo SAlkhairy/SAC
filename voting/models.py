@@ -31,14 +31,14 @@ class Position(models.Model):
 class Nomination(models.Model):
     plan = models.FileField(u"الخطة") #right?
     cv = models.FileField(u"السيرة الذاتية") #right?
-    user = models.OneToOneField(Profile, u"المرشِّح")
+    user = models.ForeignKey(Profile, u"المرشِّح")
     position = models.ForeignKey(Position, u"المنصب")
     submission_date = models.DateTimeField(u"تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(u"تاريخ التعديل", auto_now=True, null=True)
 
 
 class VoteNomination(models.Model):
-    user = models.OneToOneField(Profile, u"المصوِّت")
+    user = models.ForeignKey(Profile, u"المصوِّت")
     nomination = models.ForeignKey(Nomination, u"المرشّح")
     submission_date = models.DateTimeField(u"تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(u"تاريخ التعديل", auto_now=True, null=True)
@@ -54,11 +54,11 @@ class Referendum(models.Model):
 
 
 class ReferendumFigure(models.Model):
-    referendum = models.OneToOneField(Referendum, u"الاستفتاء",)
+    referendum = models.ForeignKey(Referendum, u"الاستفتاء",)
 
 
 class VoteReferendum (models.Model):
-    user = models.OneToOneField(Profile, u"المصوٍّت",)
+    user = models.ForeignKey(Profile, u"المصوٍّت",)
     referendum = models.ForeignKey(Referendum, u"الاستفتاء")
     submission_date = models.DateTimeField(u"تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(u"تاريخ التعديل", auto_now=True, null=True)
