@@ -3,7 +3,7 @@
 from django import forms
 from accounts.models import Profile
 from userena.forms import SignupForm, EditProfileForm
-from models import gender_choices, college_choices
+from models import gender_choices, college_choices, city_choices
 
 class CustomSignupForm(SignupForm):
 
@@ -23,6 +23,7 @@ class CustomSignupForm(SignupForm):
 
     college = forms.CharField(label=u"الكلية", max_length=1, widget=forms.Select(choices=college_choices))
 
+    city = forms.CharField(label=u"المدينة", max_length=1, widget=forms.Select(choices=city_choices))
 
     def __init__(self, *args, **kwargs):
         super(CustomSignupForm, self).__init__(*args, **kwargs)

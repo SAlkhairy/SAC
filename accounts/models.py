@@ -14,8 +14,8 @@ from userena.models import UserenaBaseProfile
 
 
 gender_choices = (
-    ('F', u'طالبة'),
-    ('M', u'طالب'),
+    ('F', 'طالبة'),
+    ('M', 'طالب'),
 )
 
 

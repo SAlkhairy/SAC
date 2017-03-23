@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.admindocs',
     'accounts',
-    #'voting',
+    'voting',
     'userena',
     'guardian',
     'easy_thumbnails',

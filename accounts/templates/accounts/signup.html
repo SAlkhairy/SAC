@@ -12,8 +12,15 @@
         <img src="/static/used img/SAC Logo No name.png" alt="SAC" align="middle" vspace="20" height="150">
       </center>
       <h2 align="center">بوابة ترابط | نموذج التسجيل</h2>
-      <form action="" method="">
+      <form action="" method="post">
         <div class="form-group">
+
+
+          {{ form.non_field_errors }}
+    {% for field in form %}
+    {{ field.errors }}
+          {%endfor%}
+
 
           <label for="ar_name">الاسم بالعربي</label>
           <input type="text" class="form-control" id="ar_name">
@@ -29,6 +36,13 @@
 
           <label for="mobile_number">رقم الجوال</label>
           <input type="text" class="form-control" id="mobile_number">
+
+          <label for="city">المدينة</label>
+          <select class="form-control" id="city">
+            <option>الرياض</option>
+            <option>جدة</option>
+            <option>الأحساء</option>
+          </select>
 
           <label for="college">الكلية</label>
           <select class="form-control" id="college">
@@ -55,6 +69,7 @@
 
         </div>
       </form>
+
 
           <p align="center"><input class="btn btn-success" type="submit" value="سجّل"></p>
 
