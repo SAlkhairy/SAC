@@ -18,10 +18,10 @@ from userena import views as userena_views
 
 # Create your views here.
 
-def signup_extra(request, signup_form, template_name):
-    pass
-    #if request.method == 'POST':
-    #    form = SignupForm(request.POST)
-     #   # extra_context for Userena's view
-      #  extra_context = {'form': form}
-       # return userena_views.signup(request, extra_context=extra_context)
+
+#def signup_extra(request, signup_form, template_name):
+#    if request.method == 'POST':
+#        form = SignupForm(request.POST)
+#        # extra_context for Userena's view
+#        extra_context = {'form': form}
+#        return userena_views.signup(request, extra_context=extra_context)###

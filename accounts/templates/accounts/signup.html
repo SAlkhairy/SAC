@@ -1,9 +1,15 @@
-{% extends 'accounts/base.html' %}
-{% load staticfiles %}
+{% extends 'accounts/userena_base_new.html' %}
+{% load i18n %}
 
 {% block title %}التسجيل{% endblock %}
 
-{% block body %}
+
+{% block content %}
+
+
+
+
+
 
 <div class="container" align="right" DIR="rtl">
   <div class="row">
@@ -13,38 +19,36 @@
       </center>
       <h2 align="center">بوابة ترابط | نموذج التسجيل</h2>
       <form action="" method="post">
+            {% csrf_token %}
         <div class="form-group">
 
+        {{ form.non_field_errors }}
+        {% for field in form %}
+        {{ field.errors }}
+        {# Displaying checkboxes differently #}
+        {% if field.name == 'tos' %}
+        <label for="id_{{ field.name }}"></label>
+        <input type="text" class="form-control" id="id_{{ field.name }}">
+        {% endif %}
 
-          {{ form.non_field_errors }}
-    {% for field in form %}
-    {{ field.errors }}
-          {%endfor%}
+        {% if field.name == 'gender' %}
+        <label for="gender">طالب أم طالبة؟</label>
+        <select class="form-control" id="gender">
+           <option>طالب</option>
+           <option>طالبة</option>
+        </select>
 
 
-          <label for="ar_name">الاسم بالعربي</label>
-          <input type="text" class="form-control" id="ar_name">
-
-          <label for="en_name">الاسم بالإنجليزي</label>
-          <input type="text" class="form-control" id="en_name">
-
-          <label for="gender">طالب أم طالبة؟</label>
-          <select class="form-control" id="gender">
-            <option>طالب</option>
-            <option>طالبة</option>
-          </select>
-
-          <label for="mobile_number">رقم الجوال</label>
-          <input type="text" class="form-control" id="mobile_number">
-
-          <label for="city">المدينة</label>
-          <select class="form-control" id="city">
+        {% elif field.name == 'city' %}
+        <label for="city">المدينة</label>
+        <select class="form-control" id="city">
             <option>الرياض</option>
             <option>جدة</option>
             <option>الأحساء</option>
-          </select>
+        </select>
 
-          <label for="college">الكلية</label>
+        {% elif field.name == 'college' %}
+        <label for="college">الكلية</label>
           <select class="form-control" id="college">
             <option>كلية الطب</option>
             <option>كلية العلوم الطبية التطبيقية</option>
@@ -55,28 +59,26 @@
             <option>كلية الصحة العامة والمعلوماتية الصحية</option>
           </select>
 
-          <label for="student_id">الرقم الجامعي</label>
-          <input type="text" class="form-control" id="student_id">
 
-          <label for="email">البريد الإلكتروني الجامعي</label>
-          <input type="email" class="form-control" id="email">
 
-          <label for="password1">إنشاء كلمة سر</label>
-          <input type="password" class="form-control" id="password1">
+        {% else %}
+        <p><label>{{ field.label_tag }}</label>
+        <input type="text" class="form-control"></p>
 
-          <label for="password2">تأكيد كلمة السر</label>
-          <input type="password" class="form-control" id="password2">
+        {% endif %}
+        {% endfor %}
+
+
+    <br><br>
+    <p align="center">
+    <input class="btn btn-success" type="submit" value="{% trans "سجّل"%}" />
+    </p>
 
         </div>
       </form>
-
-
-          <p align="center"><input class="btn btn-success" type="submit" value="سجّل"></p>
-
     </div>
   </div>
 </div>
 
+
 {% endblock %}
-
-

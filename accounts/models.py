@@ -20,21 +20,21 @@ gender_choices = (
 
 
 college_choices = (
-    ('M', u'كلية الطب'),
-    ('A', u'كلية العلوم الطبية التطبيقية'),
-    ('P', u'كلية الصيدلة'),
-    ('D', u'كلية طب الأسنان'),
-    ('B', u'كلية العلوم و المهن الصحية'),
-    ('N', u'كلية التمريض'),
-    ('I', u' كلية الصحة العامة والمعلوماتية الصحية'),
+    ('M', 'كلية الطب'),
+    ('A', 'كلية العلوم الطبية التطبيقية'),
+    ('P', 'كلية الصيدلة'),
+    ('D', 'كلية طب الأسنان'),
+    ('B', 'كلية العلوم و المهن الصحية'),
+    ('N', 'كلية التمريض'),
+    ('I', ' كلية الصحة العامة والمعلوماتية الصحية'),
 )
 
 
 
 city_choices = (
-    ('R', u'الرياض'),
-    ('J', u'جدة'),
-    ('A', u'الأحساء'),
+    ('R', 'الرياض'),
+    ('J', 'جدة'),
+    ('A', 'الأحساء'),
 )
 
 
@@ -50,21 +50,20 @@ class College(models.Model):
 
     class Meta:
         # For the admin interface.
-        verbose_name = u"كلية"
-        verbose_name_plural = u"الكليات"
+        verbose_name = "كلية"
+        verbose_name_plural = "الكليات"
 
 
 
 class Profile(UserenaBaseProfile):
     user = models.OneToOneField(User)
-    ar_name = models.TextField()
-    en_name = models.TextField()
-    college = models.ForeignKey(College)
-    city = models.CharField(max_length=1, choices=city_choices, verbose_name=u"المدينة")
-    gender = models.CharField(max_length=1, choices=gender_choices, verbose_name=u"الجنس")
-    mobile_number = models.CharField(max_length=12)
-    email = models.EmailField(blank=False)
-    student_id = models.IntegerField(unique=True)
+    ar_name = models.TextField(max_length=100, verbose_name="الاسم بالعربي")
+    en_name = models.TextField(max_length=100, verbose_name="الاسم بالإنجليزي")
+    college = models.ForeignKey(College, verbose_name="الكلية")
+    city = models.CharField(max_length=1, choices=city_choices, verbose_name="المدينة")
+    gender = models.CharField(max_length=1, choices=gender_choices, verbose_name="الجنس")
+    mobile_number = models.CharField(verbose_name="رقم الجوال", max_length=14)
+    student_id = models.IntegerField(unique=True, verbose_name="الرقم الجامعي")
     submission_date = models.DateTimeField(verbose_name=u"تاريخ التسجيل", auto_now_add=True)
-    modification_date = models.DateTimeField(auto_now=True, null=True,)
+    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True,)
 

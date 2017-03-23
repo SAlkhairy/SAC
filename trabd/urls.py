@@ -19,10 +19,13 @@ from accounts import urls as accounts_urls
 from voting import views as voting_views
 
 urlpatterns = [
+    url(r'^$', voting_views.show_index, name='home'),
+
     url(r'^admin/', include(admin.site.urls)),
     #url(r'^accounts/', include('userena.urls')),
     url(r'^accounts/', include(accounts_urls)),
-    url(r'^add_nominee/', voting_views.add_nominee)
+    #url(r'^add_nominee/', voting_views.add_nominee)
+
 
 
 ]
