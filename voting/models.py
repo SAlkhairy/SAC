@@ -37,7 +37,7 @@ class Position(models.Model):
 class Nomination(models.Model):
     plan = models.FileField(verbose_name="الخطة")
     cv = models.FileField(verbose_name="السيرة الذاتية")
-    user = models.ForeignKey(Profile, verbose_name="المرشح")
+    user = models.ForeignKey(Profile, verbose_name="المرشَّح")
     position = models.ForeignKey(Position, verbose_name="المنصب")
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
@@ -45,9 +45,9 @@ class Nomination(models.Model):
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(Profile, verbose_name="المصوِّت")
-    nomination = models.ForeignKey(Nomination, "المرشَّح")
-    submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
-    modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
+    nomination = models.ForeignKey(Nomination, verbose_name="المرشَّح")
+    submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
+    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
 
 class Referendum(models.Model):

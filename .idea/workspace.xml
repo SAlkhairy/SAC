@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7df688fc-e514-4466-86ae-6e1ca5a1f261" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/accounts/migrations/0003_auto_20170324_0941.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/voting/migrations/0001_initial.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/voting/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/accounts/static/bootstrap/css/._bootstrap-theme.css.map" afterPath="$PROJECT_DIR$/accounts/static/bootstrap/css/._bootstrap-theme.css.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/accounts/static/bootstrap/css/._bootstrap-theme.min.css.map" afterPath="$PROJECT_DIR$/accounts/static/bootstrap/css/._bootstrap-theme.min.css.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/accounts/static/bootstrap/css/._bootstrap.css.map" afterPath="$PROJECT_DIR$/accounts/static/bootstrap/css/._bootstrap.css.map" />
@@ -62,6 +59,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/voting/forms.py" afterPath="$PROJECT_DIR$/voting/forms.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/voting/models.py" afterPath="$PROJECT_DIR$/voting/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/voting/templates/voting/add_nominee.html" afterPath="$PROJECT_DIR$/voting/templates/voting/add_nominee.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/voting/urls.py" afterPath="$PROJECT_DIR$/voting/urls.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/voting/views.py" afterPath="$PROJECT_DIR$/voting/views.py" />
     </list>
     <ignored path="trabd.iws" />
@@ -99,7 +97,7 @@
         <entry file="file://$PROJECT_DIR$/voting/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+              <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
               <folding>
                 <element signature="e#26#65#0" expanded="true" />
               </folding>
@@ -111,7 +109,7 @@
         <entry file="file://$PROJECT_DIR$/voting/views.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
               <folding>
                 <element signature="e#0#54#0" expanded="true" />
               </folding>
@@ -119,7 +117,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/voting/urls.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
@@ -129,11 +127,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="admin.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/voting/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.32407406">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -161,7 +159,6 @@
         <option value="$PROJECT_DIR$/accounts/بخقةس.py" />
         <option value="$PROJECT_DIR$/voting/templates/add_nominee.html" />
         <option value="$PROJECT_DIR$/voting/templates/voting/add_nominee.html" />
-        <option value="$PROJECT_DIR$/voting/models.py" />
         <option value="$PROJECT_DIR$/accounts/views.py" />
         <option value="$PROJECT_DIR$/accounts/templates/accounts/base.html" />
         <option value="$PROJECT_DIR$/accounts/templates/accounts/home.html" />
@@ -171,11 +168,12 @@
         <option value="$PROJECT_DIR$/accounts/templates/accounts/signin.html" />
         <option value="$PROJECT_DIR$/accounts/models.py" />
         <option value="$PROJECT_DIR$/voting/forms.py" />
-        <option value="$PROJECT_DIR$/voting/views.py" />
         <option value="$PROJECT_DIR$/voting/urls.py" />
         <option value="$PROJECT_DIR$/accounts/urls.py" />
         <option value="$PROJECT_DIR$/trabd/settings.py" />
         <option value="$PROJECT_DIR$/accounts/forms.py" />
+        <option value="$PROJECT_DIR$/voting/models.py" />
+        <option value="$PROJECT_DIR$/voting/views.py" />
         <option value="$PROJECT_DIR$/voting/admin.py" />
       </list>
     </option>
@@ -767,32 +765,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/voting/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="10" column="24" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/voting/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
           <folding>
             <element signature="e#26#65#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voting/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#54#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -802,6 +780,26 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/voting/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#54#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/voting/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.32407406">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
