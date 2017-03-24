@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.admindocs',
     'accounts',
-    'voting',
     'userena',
     'guardian',
     'easy_thumbnails',
+    'voting',
+
 ]
 
 MIDDLEWARE = [

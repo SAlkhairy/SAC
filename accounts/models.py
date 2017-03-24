@@ -67,3 +67,4 @@ class Profile(UserenaBaseProfile):
     submission_date = models.DateTimeField(verbose_name=u"تاريخ التسجيل", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True,)
 
+    username = models.CharField(max_length=1, blank=True)

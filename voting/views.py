@@ -7,13 +7,14 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 
 from models import Position, Nomination
-from forms import NominationForm
+#from forms import NominationForm
 
 # Create your views here.
 
 
 def show_index(request):
     return HttpResponse(render(request, 'accounts/home.html'))
+
 
 
 

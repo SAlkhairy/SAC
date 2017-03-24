@@ -4,8 +4,14 @@ from django import forms
 from accounts.models import Profile
 from userena.forms import SignupForm, EditProfileForm
 from models import gender_choices, college_choices, city_choices
+from userena.models import UserenaBaseProfile
+
+
+
 
 class CustomSignupForm(SignupForm):
+
+    username = None
 
     ar_name = forms.CharField(label=(u'الاسم بالعربي'),
                                  max_length=100,
@@ -30,8 +36,12 @@ class CustomSignupForm(SignupForm):
         self.fields['email'].label = u'البريد الإلكتروني الجامعي'
         self.fields['password1'].label = u'إنشاء كلمة سر'
         self.fields['password2'].label = u'تأكيد كلمة السر'
-
-
+        #below hasn't worked
+        self.fields.keyOrder = ['ar_name', 'en_name',
+                                'gender', 'mobile_number',
+                                'student_id', 'city',
+                                'college', 'email'
+                                'password1', 'password2']
 
     def save(self):
         """
