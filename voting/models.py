@@ -31,7 +31,7 @@ class Position(models.Model):
                                                           related_name='nominate')
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
-    year = models.ForeignKey(SACYear, verbose_name="السنة", max_length=4)
+    year = models.ForeignKey(SACYear, verbose_name="السنة",)
 
 
 class Nomination(models.Model):
