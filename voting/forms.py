@@ -7,12 +7,9 @@ from django.forms import ModelForm
 
 from models import Nomination, Position
 
-class PositionForm(forms.ModelForm):
-    gender_choices = (
-    ('F', 'طالبة'),
-    ('M', 'طالب'),
-    )
-    gender = forms.ChoiceField(choices=gender_choices)
 
-
+class NominationForm(forms.ModelForm):
+    class Meta:
+        model = Nomination
+        fields = ['plan', 'cv']
 

@@ -33,6 +33,8 @@ class Position(models.Model):
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
     year = models.ForeignKey(SACYear, verbose_name="السنة",)
 
+    def __unicode__(self):
+        return self.title
 
 class Nomination(models.Model):
     plan = models.FileField(verbose_name="الخطة")

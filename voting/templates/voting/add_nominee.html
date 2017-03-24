@@ -1,10 +1,25 @@
 {% extends 'accounts/base.html' %}
 {% load staticfiles %}
 
-{% block title %}التسجيل{% endblock %}
+{% block title %}الترشيح{% endblock %}
 
 {% block body %}
     <!--just to check if things are working-->
+
+
+
+
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
     {% for field in form %}
-        {{field.label}}
-(% endblock %}
+    <div class="form-group" style="padding-up: 10px">
+        <label class="control-label col-sm-4">{{ field.label}}</label>
+        <div class="col-sm-8">{{ field }}<br><br></div>
+    </div>
+    {% endfor %}
+    <input class="btn btn-btn-success" type="submit" value="احفظ">
+</form>
+
+
+
+{% endblock %}

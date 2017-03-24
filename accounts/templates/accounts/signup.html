@@ -23,48 +23,49 @@
 
         {{ form.non_field_errors }}
         {% for field in form %}
-        {{ field.errors }}
-        {# Displaying checkboxes differently #}
-        {% if field.name == 'tos' %}
-        <label for="id_{{ field.name }}"></label>
-        <input type="text" class="form-control" id="id_{{ field.name }}">
-        {% endif %}
-
-        {% if field.name == 'gender' %}
-        <label for="gender">طالب أم طالبة؟</label>
-        <select class="form-control" id="gender">
-           <option>طالب</option>
-           <option>طالبة</option>
-        </select>
+            {{ field.errors }}
+            {# Displaying checkboxes differently #}
+            {% if field.name == 'tos' %}
+            <label for="id_{{ field.name }}"></label>
+            <input type="text" class="form-control" id="id_{{ field.name }}">
+            {% endif %}
 
 
-        {% elif field.name == 'city' %}
-        <label for="city">المدينة</label>
-        <select class="form-control" id="city">
-            <option>الرياض</option>
-            <option>جدة</option>
-            <option>الأحساء</option>
-        </select>
-
-        {% elif field.name == 'college' %}
-        <label for="college">الكلية</label>
-          <select class="form-control" id="college">
-            <option>كلية الطب</option>
-            <option>كلية العلوم الطبية التطبيقية</option>
-            <option>كلية الصيدلة</option>
-            <option>كلية طب الأسنان</option>
-            <option>كلية العلوم و المهن الصحية</option>
-            <option>كلية التمريض</option>
-            <option>كلية الصحة العامة والمعلوماتية الصحية</option>
-          </select>
+            {% if field.name == 'gender' %}
+            <label for="gender">طالب أم طالبة؟</label>
+            <select class="form-control" id="gender">
+               <option>طالب</option>
+               <option>طالبة</option>
+            </select>
 
 
+            {% elif field.name == 'city' %}
+            <label for="city">المدينة</label>
+            <select class="form-control" id="city">
+                <option>الرياض</option>
+                <option>جدة</option>
+                <option>الأحساء</option>
+            </select>
 
-        {% else %}
-        <p><label>{{ field.label_tag }}</label>
-        <input type="text" class="form-control"></p>
+            {% elif field.name == 'college' %}
+            <label for="college">الكلية</label>
+              <select class="form-control" id="college">
+                <option>كلية الطب</option>
+                <option>كلية العلوم الطبية التطبيقية</option>
+                <option>كلية الصيدلة</option>
+                <option>كلية طب الأسنان</option>
+                <option>كلية العلوم و المهن الصحية</option>
+                <option>كلية التمريض</option>
+                <option>كلية الصحة العامة والمعلوماتية الصحية</option>
+              </select>
 
-        {% endif %}
+
+
+            {% else %}
+            <label>{{ field.label_tag }}</label>
+            <input type="text" class="form-control">
+
+            {% endif %}
         {% endfor %}
 
 

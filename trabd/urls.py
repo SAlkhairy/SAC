@@ -15,7 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+
 from accounts import urls as accounts_urls
+from voting import urls as voting_urls
+
 from voting import views as voting_views
 
 urlpatterns = [
@@ -25,7 +28,7 @@ urlpatterns = [
 
     #url(r'^accounts/', include('userena.urls')),
     url(r'^accounts/', include(accounts_urls)),
-    #url(r'^add_nominee/', voting_views.add_nominee)
+    url(r'^voting/', include(voting_urls)),
 
 
 
