@@ -45,7 +45,7 @@ class College(models.Model):
 
     def __unicode__(self):
         return u"%s (%s - %s)" % (self.get_name_display(),
-                                       self.get_section_display(),
+                                       self.get_city_display(),
                                        self.get_gender_display())
 
     class Meta:
