@@ -28,12 +28,14 @@ def add_nominee(request, position_id):
             instance = form.save(commit=False)
             instance.user = request.user
             instance.save(request.user)
-            context = {'form': form}
+            context = {'form': form,
+                       'position': position}
         return HttpResponse(render(request,'voting/add_nominee.html', context))
 
     elif request.method == 'GET':
         form = NominationForm(request.GET, instance=instance)
-        context = {'form': form}
+        context = {'form': form,
+                   'position': position}
         return HttpResponse(render(request,'voting/add_nominee.html', context))
 
 login_required

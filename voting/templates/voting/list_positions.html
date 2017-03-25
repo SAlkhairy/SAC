@@ -7,7 +7,8 @@
 
 {% for p in position %}
 
-    <a href="{% url 'add_nominee' position.pk %}" methods="get">{{position.title}}</a>
+    <a href="{% url 'add_nominee' p.pk %}" methods="get">{{p.title}}</a>
+    <br>
 
 {% endfor %}
 
