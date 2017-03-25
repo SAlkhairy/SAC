@@ -5,6 +5,8 @@
 
 {% block body %}
 
+<h2>قائمة المناصب</h2>
+
 {% for p in position %}
 
     <a href="{% url 'add_nominee' p.pk %}" methods="get">{{p.title}}</a>
