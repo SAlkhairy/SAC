@@ -1,0 +1,15 @@
+{% extends 'accounts/base.html' %}
+{% load staticfiles %}
+
+{% block title %}قائمة المناصب{% endblock %}
+
+{% block body %}
+
+{% for p in position %}
+
+    <a href="{% url 'add_nominee' position.pk %}" methods="get">{{position.title}}</a>
+
+{% endfor %}
+
+
+{% endblock %}

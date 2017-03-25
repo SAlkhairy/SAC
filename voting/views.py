@@ -36,5 +36,9 @@ def add_nominee(request, position_id):
         context = {'form': form}
         return HttpResponse(render(request,'voting/add_nominee.html', context))
 
-
+login_required
+def list_positions(request):
+    position = Position.objects.all()
+    context = {'position': position}
+    return HttpResponse(render(request, 'voting/list_positions.html', context))
 

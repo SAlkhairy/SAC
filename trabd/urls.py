@@ -28,7 +28,7 @@ urlpatterns = [
 
     #url(r'^accounts/', include('userena.urls')),
     url(r'^accounts/', include(accounts_urls)),
-    url(r'^voting/', include(voting_urls)),
+    url(r'^position/', include(voting_urls)),
 
 
 
