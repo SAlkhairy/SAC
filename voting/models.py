@@ -1,14 +1,9 @@
 # -*- coding: utf-8  -*-
-
 from __future__ import unicode_literals
-
 from django.db import models
 
 from django.contrib.auth.models import User
 from accounts.models import Profile, College
-
-# Create your models here.
-
 
 
 class SACYear(models.Model):
@@ -19,10 +14,17 @@ class SACYear(models.Model):
     election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
     election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
 
-
 class Position(models.Model):
     title = models.CharField(verbose_name="اسم المنصب",
                              max_length=50)
+    entity_choices = (
+        ('club', 'نادي الطلاب'),
+        ('council', 'المجلس الطلابي الاستشاري'),
+        )
+    entity = models.CharField(verbose_name="اسم المنصب",
+                              default="club",
+                              max_length=50,
+                              choices=entity_choices)
     colleges_allowed_to_vote = models.ManyToManyField(College,
                                                       verbose_name="الكليات المسموحة بالتصويت",
                                                       related_name='vote')
@@ -63,7 +65,7 @@ class Referendum(models.Model):
 
 class ReferendumFigure(models.Model):
     referendum = models.ForeignKey(Referendum, verbose_name="الاستفتاء")
-
+    figure = models.ImageField(u"الصورة")
 
 class VoteReferendum (models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت",)

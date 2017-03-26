@@ -1,18 +1,16 @@
-{% extends 'accounts/base.html' %}
-{% load staticfiles %}
-
-{% block title %}الرئيسية
-
-
+{% extends 'base.html' %}{% load staticfiles %}
+{% block title %}الرئيسية{% endblock %}
+{% block header %}
+                        <h1>أهلا بكم!</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                        </ol>
 {% endblock %}
-
-
-{% block body %}
-
-<h1>This is temporarily for-testing home</h1>
-
-
-
+{% block content %}
+<div class="text-center">
+<p style="font-size: 25px;">أهلا بكم في بوابة المجلس الطلابي الاستشاري!</p>
+</div>
 {% endblock %}
 
 

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}مناصب نادي الطلاب{% endblock %}
+{% block header %}
+                        <h1>مناصب نادي الطلاب</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                            <li class="active">مناصب نادي الطلاب</li>
+                        </ol>
+{% endblock %}
+{% block content %}
+<style>
+.panel{
+   height: 100px;
+}
+
+h2{
+   font-size: 20px;
+   text-align: center;
+}
+</style>
+{% for position in positions %}
+
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <div class="panel panel-bd">
+                                <div class="panel-body">
+                                    <div class="statistic-box">
+                                        <h2><a href="{% url 'voting:add_nominee' position.pk %}">{{ position.title }}</a></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{% endfor %}
+
+
+{% endblock %}

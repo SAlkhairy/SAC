@@ -1,12 +1,24 @@
-{% extends 'accounts/base.html' %}
-{% load staticfiles %}
+{% extends 'base.html' %}
 
-{% block title %}الترشيح{% endblock %}
+{% block title %}الترشيح لِ{{position.title}}{% endblock %}
 
-{% block body %}
+{% block header %}
+                        <h1>الترشيح لِ{{position.title}}</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                           {% if position.entity == 'club' %}
+                            <li class="active">مناصب نادي الطلاب</li>
+                           {% else %}
+                            <li class="active">مناصب المجلس الاستشاري</li>
+                           {% endif %}
+                        </ol>
+{% endblock %}
+
+{% block content %}
     <!--just to check if things are working-->
 
-<h2>الترشيح لِ{{position.title}}</h2>
+
 
 <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}

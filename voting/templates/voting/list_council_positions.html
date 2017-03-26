@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}مناصب المجلس الاستشاري{% endblock %}
+{% block header %}
+                        <h1>مناصب المجلس الاستشاري</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                            <li class="active">مناصب المجلس الاستشاري</li>
+                        </ol>
+{% endblock %}
+{% block content %}
+
+{% for position in positions %}
+
+    <a href="{% url 'voting:add_nominee' position.pk %}">{{ position.title }}</a>
+    <br>
+
+{% endfor %}
+
+
+{% endblock %}
