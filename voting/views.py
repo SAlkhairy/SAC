@@ -29,7 +29,7 @@ def add_nominee(request, position_id):
         form = NominationForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             instance = form.save()
-            return HttpResponseRedirect(reverse("voting:nomination_thanks"))
+            return HttpResponseRedirect(reverse("voting:nomination_thanks", args=(position.pk,)))
     elif request.method == 'GET':
         form = NominationForm()
     context = {'form': form,
