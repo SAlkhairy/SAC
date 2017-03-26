@@ -129,13 +129,6 @@ class ModifiedAuthenticationForm(forms.Form):
         identification = self.cleaned_data.get('identification')
         password = self.cleaned_data.get('password')
 
-        if 'identification' in self.cleaned_data and \
-           not self.cleaned_data['identification'].endswith('ksau-hs.edu.sa') and \
-           not self.cleaned_data['identification'].endswith('ngha.med.sa'):
-            email_msg = u"أدخل عنوانا جامعيا"
-            self._errors['identification'] = self.error_class([email_msg])
-            del self.cleaned_data['identification']
-
         if identification and password:
             username = identification.split('@')[0]
             username = username.lower().strip()
@@ -145,6 +138,12 @@ class ModifiedAuthenticationForm(forms.Form):
             self.cleaned_data['identification'] = username
 
             user = authenticate(username=username, password=password)
+
             if user is None:
-                raise forms.ValidationError("ليست البيانات صحيحة!")
+                if not identification.endswith('ksau-hs.edu.sa'):
+                    email_msg = u"الرجاء إدخال بريد جامعي"
+                    self._errors['identification'] = self.error_class([email_msg])
+                    del self.cleaned_data['identification']
+                else:
+                    raise forms.ValidationError("ليست البيانات صحيحة!")
             return self.cleaned_data
