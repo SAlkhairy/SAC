@@ -26,7 +26,7 @@ def add_nominee(request, position_id):
     position = get_object_or_404(Position, pk=position_id)
     if request.method == 'POST':
         instance = Nomination(user=request.user, position=position)
-        form = NominationForm(request.POST, instance=instance)
+        form = NominationForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             instance = form.save()
             return HttpResponseRedirect(reverse("voting:nomination_thanks"))
