@@ -1,3 +1,4 @@
 *.pyc
 *~
 trabd/secrets.py
+db.sqlite3
