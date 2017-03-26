@@ -1,55 +1,7 @@
-<!DOCTYPE html>{% load staticfiles %}
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>بوابة ترابط - تسجيل</title>
-
-        <!-- Bootstrap -->
-        <link href="{% static 'bdtask/assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css"/>
-        <!-- Bootstrap rtl -->
-        <link href="{% static 'bdtask/assets/bootstrap-rtl/bootstrap-rtl.min.css' %}" rel="stylesheet" type="text/css"/>
-        <!-- Pe-icon-7-stroke -->
-        <link href="{% static 'bdtask/assets/pe-icon-7-stroke/css/pe-icon-7-stroke.css' %}" rel="stylesheet" type="text/css"/>
-        <!-- style css -->
-        <link href="{% static 'bdtask/assets/dist/css/styleBD.css' %}" rel="stylesheet" type="text/css"/>
-        <!-- Theme style rtl -->
-        <link href="{% static 'bdtask/assets/dist/css/styleBD-rtl.css' %}" rel="stylesheet" type="text/css"/>
-<style>
-@font-face {
-    font-family: 'GE Dinar One';
-    font-weight: lighter;
-    font-size: xx-large;
-    src: url("{% static 'fonts/ge-dinar-one-light.woff' %}");
-}
-@font-face {
-    font-family: 'GE Dinar One';
-    font-weight: normal;
-    src: url("{% static 'fonts/ge-dinar-one-med.woff' %}");
-}
-
-body, h1, h2, .header-title h3{
-    font-family: 'GE Dinar One';
-}
-
-.panel .panel-heading h3{
- letter-spacing: 0;
-}
-
-footer a{
- color: inherit;
-}
-</style>
-    </head>
-    <body>
-        <!-- Content Wrapper -->
-        <div class="login-wrapper">
-            <div class="back-link">
-                <a href="{% url 'home' %}" class="btn btn-success">العودة للصفحة الرئيسية</a>
-            </div>
-            <div class="container-center">
+{% extends 'accounts/base.html' %}{% load bootstrap3 %}
+{% block title %}الدخول{% endblock %}
+{% block content %}
+ {% bootstrap_form_errors form %}
                 <div class="panel panel-bd">
                     <div class="panel-heading">
                         <div class="view-header">
@@ -63,30 +15,21 @@ footer a{
                         </div>
                     </div>
                     <div class="panel-body">
-                        <form action="index.html" id="loginForm" novalidate>
-                            <div class="form-group">
-                                <label class="control-label" for="username">اسم المستخدمـ/ـة</label>
-                                <input type="text" placeholder="user@ksau-hs-edu.sa" title="Please enter you username" required="" value="" name="username" id="username" class="form-control">
-                                <span class="help-block small">الاسم الذي تمّ التسجيل من خلاله</span>
+                        <form method="post" id="loginForm" novalidate>
+                            {% csrf_token %}
+                            <div class="form-group english-field">
+                                {% bootstrap_field form.identification %}
+                                <span class="help-block small">بريدك الجامعي الذي تمّ التسجيل عبره في بوابة ترابط.</span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label" for="password">كلمة السر</label>
-                                <input type="password" title="Please enter your password" placeholder="******" required="" value="" name="password" id="password" class="form-control">
+                                {% bootstrap_field form.password %}
                                 <span class="help-block small">كلمة سرّك القويّة</span>
                             </div>
                             <div>
-                                <button class="btn btn-primary">ادخل</button>
-                                <a class="btn btn-warning" href="register.html">تسجيل</a>
+                                <button class="btn btn-primary">أدخلني</button>
+                                <a class="btn btn-warning" href="{% url 'signup' %}">سجّلني</a>
                             </div>
                         </form>
                     </div>
                 </div>
-            </div>
-        </div>
-        <!-- /.content-wrapper -->
-        <!-- jQuery -->
-        <script src="{% static 'bdtask/assets/plugins/jQuery/jquery-1.12.4.min.js' %}" type="text/javascript"></script>
-        <!-- bootstrap js -->
-        <script src="{% static 'bdtask/assets/bootstrap/js/bootstrap.min.js' %}" type="text/javascript"></script>
-    </body>
-</html>
+{% endblock %}

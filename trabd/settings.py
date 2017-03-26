@@ -11,21 +11,23 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
-
+import secrets
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ne$afu7y-#xu#_6+7jz*+$j#d+gv^d)6)3)l37--vx0+@$8+a7'
+SECRET_KEY = secrets.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ['.trabdportal.com']
 
 
 # Application definition
@@ -39,13 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.admindocs',
+    'bootstrap3',
     'voting',
     'accounts',
     'userena',
     'guardian',
     'easy_thumbnails',
-
-
 ]
 
 MIDDLEWARE = [
@@ -76,45 +77,40 @@ TEMPLATES = [
     },
 ]
 
-
-
-
-
-
 WSGI_APPLICATION = 'trabd.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
+DEFAULT_DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+DATABASES = getattr(secrets, 'DATABASES', DEFAULT_DATABASES)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
 
-# AUTH_PASSWORD_VALIDATORS = [
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-#     },
-#     {
-#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-#     },
-# ]
-
-
-
+if DEBUG:
+    AUTH_PASSWORD_VALIDATORS = []
+else:
+    AUTH_PASSWORD_VALIDATORS = [
+        {
+            'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        },
+        {
+            'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        },
+    ]
 
 AUTHENTICATION_BACKENDS = (
     'userena.backends.UserenaAuthenticationBackend',
@@ -122,24 +118,22 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#?
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'yourgmailaccount@gmail.com'
-EMAIL_HOST_PASSWORD = 'yourgmailpassword'
-
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_USE_TLS = getattr(secrets, 'EMAIL_USE_TLS', True)
+EMAIL_HOST = getattr(secrets, 'EMAIL_HOST', '')
+EMAIL_PORT = getattr(secrets, 'EMAIL_PORT', 0)
+EMAIL_HOST_USER = getattr(secrets, 'EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = getattr(secrets, 'EMAIL_HOST_PASSWORD', '')
 
 ANONYMOUS_USER_ID = -1
 
 AUTH_PROFILE_MODULE = 'accounts.Profile'
 
 
-USERENA_SIGNIN_REDIRECT_URL = 'www.trabdportal.com'
+USERENA_SIGNIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/signin/'
 LOGOUT_URL = '/accounts/signout/'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/

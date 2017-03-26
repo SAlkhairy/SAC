@@ -1,84 +1,87 @@
-{% extends 'accounts/userena_base_new.html' %}
-{% load i18n %}
-
-{% block subtitle %}التسجيل{% endblock %}
-
+{% extends 'accounts/base.html' %}{% load bootstrap3 %}
+{% block title %}التسجيل{% endblock %}
 {% block content %}
 
+ 
+
+{% bootstrap_form_errors form %}
 
 
-
-
-
-<div class="container" align="right" DIR="rtl">
-  <div class="row">
-    <div class="col-lg-12">
-      <center>
-        <img src="/static/used img/SAC Logo No name.png" alt="SAC" align="middle" vspace="20" height="150">
-      </center>
-      <h2 align="center">بوابة ترابط | نموذج التسجيل</h2>
-      <form action="" method="post">
-            {% csrf_token %}
-        <div class="form-group">
-
-        {{ form.non_field_errors }}
-        {% for field in form %}
-            {{ field.errors }}
-            {# Displaying checkboxes differently #}
-            {% if field.name == 'tos' %}
-            <label for="id_{{ field.name }}"></label>
-            <input type="text" class="form-control" id="id_{{ field.name }}">
-            {% endif %}
-
-
-            {% if field.name == 'gender' %}
-            <label for="gender">طالب أم طالبة؟</label>
-            <select class="form-control" id="gender">
-               <option>طالب</option>
-               <option>طالبة</option>
-            </select>
-
-
-            {% elif field.name == 'city' %}
-            <label for="city">المدينة</label>
-            <select class="form-control" id="city">
-                <option>الرياض</option>
-                <option>جدة</option>
-                <option>الأحساء</option>
-            </select>
-
-            {% elif field.name == 'college' %}
-            <label for="college">الكلية</label>
-              <select class="form-control" id="college">
-                <option>كلية الطب</option>
-                <option>كلية العلوم الطبية التطبيقية</option>
-                <option>كلية الصيدلة</option>
-                <option>كلية طب الأسنان</option>
-                <option>كلية العلوم و المهن الصحية</option>
-                <option>كلية التمريض</option>
-                <option>كلية الصحة العامة والمعلوماتية الصحية</option>
-              </select>
-
-
-
-            {% else %}
-            <label>{{ field.label_tag }}</label>
-            <input type="text" class="form-control">
-
-            {% endif %}
-        {% endfor %}
-
-
-    <br><br>
-    <p align="center">
-    <input class="btn btn-success" type="submit" value="{% trans "سجّل"%}" />
-    </p>
-
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-
+                <div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="view-header">
+                            <div class="header-icon">
+                                <i class="pe-7s-unlock"></i>
+                            </div>
+                            <div class="header-title">
+                                <h3>التسجيل</h3>
+                                <small><strong>الرجاء إدخال البيانات أدناه للتسجيل.</strong></small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <form method="post" id="loginForm" novalidate>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                <h4 class="text-center">الاسم بالعربيّة</h4>
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                    {% bootstrap_field form.ar_first_name %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                    {% bootstrap_field form.ar_middle_name %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                    {% bootstrap_field form.ar_last_name %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                <hr>
+                                <h4 class="text-center">الاسم بالإنجليزية</h4>
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.en_first_name %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.en_middle_name %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.en_last_name %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    <hr>
+                                    {% bootstrap_field form.email %}
+                                    <span class="help-block small">التسجيل في بوابة ترابط مقتصر على طلاب وطالبات جامعة الملك سعود بن عبد العزيز للعلوم الصحيّة.</span>
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.mobile_number %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.student_id %}
+                                    <span class="help-block small">هذا هو الرقم الذي يبدأ بسنة دخولك للجامعة، مثلا: 34-080-0101</span>
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.gender %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.city %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2 english-field">
+                                    {% bootstrap_field form.college %}
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                    {% bootstrap_field form.password1 %}
+                                    <span class="help-block small">كلمة سرّك التي لا يحزها أحد!</span>
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                    {% bootstrap_field form.password2 %}
+                                    <span class="help-block small">أعد كتابة كلمة السرّ رجاءً</span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-warning">سجّلني</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
 {% endblock %}

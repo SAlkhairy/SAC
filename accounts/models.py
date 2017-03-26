@@ -1,25 +1,18 @@
 # -*- coding: utf-8  -*-
-
 from __future__ import unicode_literals
-
-from django.db import models
-
 from django.contrib.auth.models import User
-
+from django.db import models
 from userena.models import UserenaBaseProfile
 
 
-
-# Create your models here.
-
-
 gender_choices = (
+    ('', '--'),
     ('F', 'طالبات'),
     ('M', 'طلاب'),
 )
 
-
 college_choices = (
+    ('', '--'),
     ('M', 'كلية الطب'),
     ('A', 'كلية العلوم الطبية التطبيقية'),
     ('P', 'كلية الصيدلة'),
@@ -29,42 +22,43 @@ college_choices = (
     ('I', ' كلية الصحة العامة والمعلوماتية الصحية'),
 )
 
-
-
 city_choices = (
+    ('', '--'),
     ('R', 'الرياض'),
     ('J', 'جدة'),
     ('A', 'الأحساء'),
 )
 
-
 class College(models.Model):
-    name = models.CharField(max_length=1, choices=college_choices, verbose_name=u"الاسم")
-    city = models.CharField(max_length=1, choices=city_choices, verbose_name=u"المدينة")
-    gender = models.CharField(max_length=1, choices=gender_choices, verbose_name=u"الجنس")
+    name = models.CharField("الاسم", max_length=1,
+                            choices=college_choices)
+    city = models.CharField("المدينة", max_length=1,
+                            choices=city_choices)
+    gender = models.CharField("الجنس", max_length=1,
+                              choices=gender_choices)
 
     def __unicode__(self):
-        return u"%s (%s - %s)" % (self.get_name_display(),
-                                       self.get_city_display(),
-                                       self.get_gender_display())
+        return "%s (%s - %s)" % (self.get_name_display(),
+                                 self.get_city_display(),
+                                 self.get_gender_display())
 
     class Meta:
         # For the admin interface.
         verbose_name = "كلية"
         verbose_name_plural = "الكليات"
 
-
-
 class Profile(UserenaBaseProfile):
-    user = models.OneToOneField(User)
-    ar_name = models.TextField(max_length=100, verbose_name="الاسم بالعربي")
-    en_name = models.TextField(max_length=100, verbose_name="الاسم بالإنجليزي")
-    college = models.ForeignKey(College, verbose_name="الكلية")
-    city = models.CharField(max_length=1, choices=city_choices, verbose_name="المدينة")
-    gender = models.CharField(max_length=1, choices=gender_choices, verbose_name="الجنس")
-    mobile_number = models.CharField(verbose_name="رقم الجوال", max_length=14)
-    student_id = models.IntegerField(unique=True, verbose_name="الرقم الجامعي")
-    submission_date = models.DateTimeField(verbose_name=u"تاريخ التسجيل", auto_now_add=True)
-    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True,)
-
-    username = models.CharField(max_length=1, blank=True)
+    user = models.OneToOneField(User, verbose_name="مستخدمـ/ـة")
+    ar_first_name = models.CharField(u'الاسم الأول', max_length=30)
+    ar_middle_name = models.CharField(u'الاسم الأوسط', max_length=30)
+    ar_last_name = models.CharField('الاسم الأخير', max_length=30)
+    en_first_name = models.CharField(u'الاسم الأول', max_length=30)
+    en_middle_name = models.CharField('الاسم الأوسط', max_length=30)
+    en_last_name = models.CharField(u'الاسم الأخير', max_length=30)
+    college = models.ForeignKey(College, verbose_name="الكلية", null=True)
+    city = models.CharField("المدينة", max_length=1, choices=city_choices)
+    gender = models.CharField("الجنس", max_length=1, choices=gender_choices)
+    mobile_number = models.CharField("رقم الجوال", max_length=14)
+    student_id = models.IntegerField("الرقم الجامعي", unique=True, null=True)
+    submission_date = models.DateTimeField("تاريخ التسجيل", auto_now_add=True)
+    modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
