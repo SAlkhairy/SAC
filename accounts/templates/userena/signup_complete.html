@@ -1,0 +1,31 @@
+{% extends 'accounts/base.html' %}{% load bootstrap3 %}
+{% block title %}كاد يكتمل التسجيل!{% endblock %}
+
+{% block content_title %}
+<div class="panel panel-bd">
+                    <div class="panel-heading">
+                        <div class="view-header">
+                            <div class="header-title">
+                                <h3>التسجيل</h3>
+                            </div>
+                        </div>
+                    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<p>شكرًا على تسجيلك معنا!</p>
+{% endblock %}
+
+{% if userena_activation_required %}
+<p>{% blocktrans %}أُرسلت رسالة بريدإلكتروني تحتوي رابط التفعيل إلى البريد الإلكتروني المُعطى..{% endblocktrans %}</p>
+<p>{% blocktrans %}سنحافظ على بياناتك لمدة {{ userena_activation_days }} أيام.{% endblocktrans %}</p>
+{% else  %}
+<p>{% blocktrans %}يمكنك الآن استعمال بياناتك المعطاةفي تسجيل دخولك.{% endblocktrans %}</p>
+{% endif %}
+{% endblock %}
+
+
+
+
+
