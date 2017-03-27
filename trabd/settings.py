@@ -24,11 +24,7 @@ SECRET_KEY = secrets.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-if DEBUG:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = ['.trabdportal.com']
-
+ALLOWED_HOSTS = ['127.0.0.1', '.trabdportal.com']
 
 # Application definition
 

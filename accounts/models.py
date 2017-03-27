@@ -62,3 +62,31 @@ class Profile(UserenaBaseProfile):
     student_id = models.IntegerField("الرقم الجامعي", unique=True, null=True)
     submission_date = models.DateTimeField("تاريخ التسجيل", auto_now_add=True)
     modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
+
+    def get_ar_full_name(self):
+        ar_fullname = None
+        try:
+            # If the Arabic first name is missing, let's assume the
+            # rest is also missing.
+            if self.ar_first_name:
+                ar_fullname = " ".join([self.ar_first_name,
+                                        self.ar_middle_name,
+                                        self.ar_last_name])
+        except AttributeError: # If the user has their details missing
+            pass
+
+        return ar_fullname
+
+    def get_en_full_name(self):
+        en_fullname = None
+        try:
+            # If the English first name is missing, let's assume the
+            # rest is also missing.
+            if self.en_first_name:
+                en_fullname = " ".join([self.en_first_name,
+                                        self.en_middle_name,
+                                        self.en_last_name])
+        except AttributeError: # If the user has their details missing
+            pass
+
+        return en_fullname
