@@ -152,4 +152,6 @@ SITE_ID = 1
 STATIC_URL = '/static/'
 STATIC_ROOT = getattr(secrets, 'STATIC_ROOT', None)
 MEDIA_URL = '/media/'
-MEDIA_ROOT = getattr(secrets, 'MEDIA_ROOT', None)
+
+DEFAULT_MEDIA = BASE_DIR + '/media/'
+MEDIA_ROOT = getattr(secrets, 'MEDIA_ROOT', DEFAULT_MEDIA)

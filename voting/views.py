@@ -12,13 +12,16 @@ def show_index(request):
 @login_required
 def list_positions(request, entity):
     if entity in ['club', 'council']:
+        user_nominations = Nomination.objects.filter(position__entity=entity,
+                                                     user=request.user)
         positions = Position.objects.filter(entity=entity)
         if not request.user.is_superuser:
             positions = positions.filter(colleges_allowed_to_nominate=request.user.profile.collge)
     else:
         raise Http404
 
-    context = {'positions': positions}
+    context = {'user_nominations': user_nominations,
+               'positions': positions}
     return render(request, 'voting/list_' + entity + '_positions.html', context)
 
 @login_required
@@ -29,9 +32,21 @@ def add_nominee(request, position_id):
         form = NominationForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             instance = form.save()
+            print instance.pk
             return HttpResponseRedirect(reverse("voting:nomination_thanks", args=(position.pk,)))
     elif request.method == 'GET':
         form = NominationForm()
     context = {'form': form,
                'position': position}
     return render(request,'voting/add_nominee.html', context)
+
+@login_required
+def show_nomination(request, position_id, nomination_id):
+    nomination = get_object_or_404(Nomination, position__pk=position_id,
+                                 pk=nomination_id)
+    if not request.user.is_superuser and \
+       not nomination.user == request.user:
+        raise PermissionDenied
+    context = {'nomination': nomination}
+    return render(request,'voting/show_nomination.html', context)
+

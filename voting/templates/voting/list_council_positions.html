@@ -10,13 +10,42 @@
                         </ol>
 {% endblock %}
 {% block content %}
+<style>
+.panel{
+   height: 100px;
+}
 
-{% for position in positions %}
+h2{
+   font-size: 20px;
+   text-align: center;
+}
+</style>
 
-    <a href="{% url 'voting:add_nominee' position.pk %}">{{ position.title }}</a>
-    <br>
+{% if user_nominations.exists %}
 
+<p>ترشّحت للمناصب التالية:</p>
+{% for nomination in user_nominations %}
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <div class="panel panel-bd">
+                                <div class="panel-body">
+                                    <div class="statistic-box">
+                                        <h2><a href="{% url 'voting:show_nomination' nomination.position.pk nomination.pk %}">{{ nomination.position.title }}</a></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 {% endfor %}
-
-
+{% else %}
+{% for position in positions %}
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                            <div class="panel panel-bd">
+                                <div class="panel-body">
+                                    <div class="statistic-box">
+                                        <h2><a href="{% url 'voting:add_nominee' position.pk %}">{{ position.title }}</a></h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+{% endfor %}
+{% endif %}
 {% endblock %}

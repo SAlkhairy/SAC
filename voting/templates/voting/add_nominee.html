@@ -8,10 +8,11 @@
                         <ol class="breadcrumb">
                             <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
                            {% if position.entity == 'club' %}
-                            <li class="active">مناصب نادي الطلاب</li>
+                            <li>مناصب نادي الطلاب</li>
                            {% else %}
-                            <li class="active">مناصب المجلس الاستشاري</li>
+                            <li>مناصب المجلس الاستشاري</li>
                            {% endif %}
+                            <li class="active">{{ position.title }}</li>
                         </ol>
 {% endblock %}
 

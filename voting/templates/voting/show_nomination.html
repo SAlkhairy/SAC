@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}ترشّح {{ nomination.user.get_ar_full_name }} ك{{ nomination.position.title }}{% endblock %}
+{% block header %}
+                        <h1>ترشّح {{ nomination.user.get_ar_full_name }} ك{{ nomination.position.title }}</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                           {% if nomination.position.entity == 'club' %}
+                            <li>مناصب نادي الطلاب</li>
+                           {% else %}
+                            <li>مناصب المجلس الاستشاري</li>
+                           {% endif %}
+                            <li class="active">{{ nomination.user.get_ar_full_name }}</li>
+                        </ol>
+{% endblock %}
+{% block content %}
+<table class="table table-hover">
+   <tr>
+      <th>الخطّة</th>
+      <td><a href="{{ nomination.plan.url }}">{{ nomination.plan.name }}</td>
+   </tr>
+   <tr>
+      <th>السيرة</th>
+      <td><a href="{{ nomination.cv.url }}">{{ nomination.cv.name }}</td>
+   </tr>
+</table>
+{% endblock %}
