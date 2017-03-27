@@ -44,6 +44,10 @@ class CustomSignupForm(SignupForm):
         cleaned_data = super(CustomSignupForm, self).clean(*args, **kwargs)
         if 'email' in cleaned_data:
             cleaned_data['email'] = cleaned_data['email'].lower()
+            if not cleaned_data['email'].endswith('ksau-hs.edu.sa'):
+                email_msg = u"الرجاء إدخال بريد جامعي"
+                self._errors['email'] = self.error_class([email_msg])
+                del self.cleaned_data['email']
 
         if 'gender' in cleaned_data and \
            'city' in cleaned_data and \
