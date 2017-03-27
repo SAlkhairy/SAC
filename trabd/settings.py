@@ -114,8 +114,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+EMAIL_BACKEND = getattr(secrets, 'EMAIL_BACKEND', 'django.core.mail.backends.dummy.EmailBackend')
 EMAIL_USE_TLS = getattr(secrets, 'EMAIL_USE_TLS', True)
 EMAIL_HOST = getattr(secrets, 'EMAIL_HOST', '')
 EMAIL_PORT = getattr(secrets, 'EMAIL_PORT', 0)

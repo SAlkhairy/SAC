@@ -1,0 +1,111 @@
+<!DOCTYPE html>{% load staticfiles %}
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>بوابة ترابط</title>
+    <!-- Bootstrap -->
+    <link href="{% static 'bdtask/assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- Bootstrap rtl -->
+    <link href="{% static 'bdtask/assets/bootstrap-rtl/bootstrap-rtl.min.css' %}" rel="stylesheet" type="text/css" />
+    <style>
+        @font-face {
+            font-family: 'GE Dinar One';
+            font-weight: lighter;
+            font-size: xx-large;
+            src: url("{% static 'fonts/ge-dinar-one-light.woff' %}");
+        }
+
+        @font-face {
+            font-family: 'GE Dinar One';
+            font-weight: normal;
+            src: url("{% static 'fonts/ge-dinar-one-med.woff' %}");
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'GE Dinar One';
+            color: white;
+            background-image: linear-gradient( rgba(0,
+            0,
+            0,
+            0.85),
+            rgba(0,
+            0,
+            0,
+            0.85)),
+            url('{% static 'images/landing-page-background.jpg' %}');
+            background-attachment: fixed;
+            background-position: bottom;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        img {
+            margin-right: auto;
+            margin-left: auto;
+            width: 200px;
+            margin-top: 100px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 75px;
+            color: #1c743a;
+        }
+
+        .intro {
+            font-size: 30px;
+        }
+
+        .explaintion {
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 6px;
+            padding: 15px;
+        }
+
+        a.btn-xl {
+            color: #fff;
+            background-color: #b18f2f;
+            border-color: #695417;
+            border-radius: 3px;
+            font-size: 18px;
+            padding: 20px 40px;
+        }
+
+        a.btn-xl:hover {
+            color: #fff;
+            background-color: #695417
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-sm-8 col-sm-offset-2">
+                <header>
+                    <img class="img-responsive" src="{% static 'images/logos/logo-no-text.png' %}">
+                    <p class="intro">أهلا بكم في بوابة المجلس الاستشاري الطلابي</p>
+                    <h1>بوّابة ترابط</h1>
+                    <p class="explaintion">من خلال بوابّة ترابط، يشترك الطلاب والطالبات في رسم مسار العمل الطلابي وفي إيصال أصواتهم! يُراد لهذه البوابة أن تجعل المشاركة في صنع القرار عملا فاعلا متيسرًا لكل الطلاب والطالبات في المدن الثلاث في جامعة الملك سعود بن عبد العزيز للعلوم
+                        الصحيّة.</p>
+
+                    <a href="{% url 'userena_signin' %}" class="btn btn-xl">أدخلني</a>
+                </header>
+            </div>
+        </div>
+</body>
+
+</html>
