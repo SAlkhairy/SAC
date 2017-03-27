@@ -42,6 +42,7 @@ class Nomination(models.Model):
     cv = models.FileField(verbose_name="السيرة الذاتية")
     user = models.ForeignKey(User, verbose_name="المرشَّح")
     position = models.ForeignKey(Position, verbose_name="المنصب")
+    is_rejected = models.BooleanField(default=False)
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
