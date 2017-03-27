@@ -7,7 +7,10 @@ from .models import Position, Nomination
 from .forms import NominationForm
 
 def show_index(request):
-    return render(request, 'accounts/home.html')
+    if request.user.is_authenticated():
+        return render(request, 'accounts/home.html')
+    else:
+        return render(request, 'accounts/home_unauthenticated.html')
 
 @login_required
 def list_positions(request, entity):
