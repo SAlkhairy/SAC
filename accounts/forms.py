@@ -37,7 +37,7 @@ class CustomSignupForm(SignupForm):
     def __init__(self, *args, **kwargs):
         super(CustomSignupForm, self).__init__(*args, **kwargs)
         self.fields['email'].label = u'البريد الإلكتروني الجامعي'
-        self.fields['password1'].label = 'إنشاء كلمة سر'
+        self.fields['password1'].label = 'كلمة السر'
         self.fields['password2'].label = 'تأكيد كلمة السر'
 
     def clean(self, *args, **kwargs):
@@ -116,7 +116,7 @@ class ModifiedAuthenticationForm(forms.Form):
                                         widget=forms.TextInput(attrs={'class': 'required'}),
                                         max_length=75,
                                         error_messages={'required': u"رجاءً أدخل بريدك الجامعي."})
-    password = forms.CharField(label=_("Password"),
+    password = forms.CharField(label="كلمة السرّ",
                                widget=forms.PasswordInput(attrs={'class': 'required'}, render_value=False))
     remember_me = forms.BooleanField(widget=forms.CheckboxInput(),
                                      required=False,
