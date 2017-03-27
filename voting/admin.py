@@ -12,7 +12,6 @@ admin.site.register(SACYear)
 admin.site.register(Position)
 
 
-
 def make_rejected(ModelAdmin, request, queryset):
     queryset.update(is_rejected=True)
 make_rejected.short_description = "رفض المرشحـ/ين المختار/ين"

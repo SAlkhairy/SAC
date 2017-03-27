@@ -13,6 +13,10 @@ class SACYear(models.Model):
     election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
     election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
 
+    def __unicode__(self):
+        return "%s-%s" % (self.start_date.year, self.end_date.year)
+
+
 class Position(models.Model):
     title = models.CharField(verbose_name="اسم المنصب",
                              max_length=50)
@@ -46,6 +50,8 @@ class Nomination(models.Model):
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
+    #def __unicode__(self):
+    #    return "ترشّح%s لِ%s" % (self.user.profile.get_ar_full_name, self.position.title)
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
