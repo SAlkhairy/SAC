@@ -19,7 +19,7 @@ def list_positions(request, entity):
                                                      user=request.user)
         positions = Position.objects.filter(entity=entity)
         if not request.user.is_superuser:
-            positions = positions.filter(colleges_allowed_to_nominate=request.user.profile.collge)
+            positions = positions.filter(colleges_allowed_to_nominate=request.user.profile.college)
     else:
         raise Http404
 
