@@ -19,6 +19,13 @@
 {% block content %}
     <!--just to check if things are working-->
 
+<p class="alert alert-warning" style="font-size: 18px; color: black;">
+{% if position.entity == 'club' %}
+يحتوي ملف الخطّّة الرؤى والخطط والبرامج المقترحة، وكذلك فرق العمل للمترشحين والمترشّحات لتمثيل الكليات.
+{% elif position.entity == 'council' %}
+يحتوي ملفّ الخطّة أبرز المعوقات التي تواجه طلاب أو طالبات كليتك مع الحلول المقترحة لها.
+{% endif %}
+</p>
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
