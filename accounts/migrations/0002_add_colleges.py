@@ -37,7 +37,7 @@ def remove_colleges(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0003_auto_20170324_0941'),
+        ('accounts', '0001_initial'),
     ]
 
     operations = [
