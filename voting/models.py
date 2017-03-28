@@ -60,8 +60,8 @@ class Nomination(models.Model):
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
     class Meta:
-        verbose_name = 'المرشح'
-        verbose_name_plural = 'المرشحون'
+        verbose_name = 'المرشحـ/ـة'
+        verbose_name_plural = 'المرشحون/المرشّحات'
 
     def __unicode__(self):
         return "ترشّحـ/ـت %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
