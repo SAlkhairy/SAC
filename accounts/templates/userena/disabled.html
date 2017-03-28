@@ -1,20 +1,16 @@
-{% extends 'accounts/base.html' %}{% load bootstrap3 %}
+{% extends 'base.html' %}{% load bootstrap3 %}
 {% block title %}حساب غير نشط{% endblock %}
 
-{% block content_title %}
-<div class="panel panel-bd">
-                    <div class="panel-heading">
-                        <div class="view-header">
-                            <div class="header-title">
-                                <h3>حسابك غير منشَّط</h3>
-                            </div>
-                        </div>
-                    </div>
-</div>
+{% block header %}
+                        <h1>حسابك غير منشَّط</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                        </ol>
 {% endblock %}
 
 {% block content %}
 <p>حسابك غير منشّط حاليًا.</p>
-<p>إإن بدت لك عملية غير منصفة، تفضل بالتواصل مع الإدارة لمعرفة السبب: support@trabdportal.com .</p>
+<p>إن بدت لك عملية غير واضحة، تفضل بالتواصل مع فريق البوّابة لمعرفة السبب: <a href="mailto:support@trabdportal.com">support@trabdportal.com</a>.</p>
 {% endblock %}
 
