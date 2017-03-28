@@ -64,7 +64,7 @@ class Nomination(models.Model):
         verbose_name_plural = 'المرشحون/المرشّحات'
 
     def __unicode__(self):
-        return "ترشّحـ/ـت %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
+        return "ترشّح %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
