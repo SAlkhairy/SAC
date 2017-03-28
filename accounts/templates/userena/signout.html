@@ -1,20 +1,16 @@
-{% extends 'accounts/base.html' %}{% load bootstrap3 %}
+{% extends 'base.html' %}{% load bootstrap3 %}
 {% block title %}تسجيل الخروج{% endblock %}
 
-{% block content_title %}
-<div class="panel panel-bd">
-                    <div class="panel-heading">
-                        <div class="view-header">
-                            <div class="header-title">
-                                <h3>لقد سُجّل خروجك</h3>
-                            </div>
-                        </div>
-                    </div>
-</div>
+{% block header %}
+                        <h1>لقد سُجّل خروجك</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                        </ol>
 {% endblock %}
 
 {% block content %}
-<p>لقد سُجّل خروجك. إلى لقاء آخر.</p>
+<p>لقد سُجّل خروجك. إلى لقاء آخر!</p>
 {% endblock %}
 
 

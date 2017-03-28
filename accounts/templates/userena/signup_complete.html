@@ -1,16 +1,12 @@
-{% extends 'accounts/base.html' %}{% load bootstrap3 %}
+{% extends 'base.html' %}{% load bootstrap3 %}
 {% block title %}كاد يكتمل التسجيل!{% endblock %}
 
-{% block content_title %}
-<div class="panel panel-bd">
-                    <div class="panel-heading">
-                        <div class="view-header">
-                            <div class="header-title">
-                                <h3>التسجيل</h3>
-                            </div>
-                        </div>
-                    </div>
-</div>
+{% block header %}
+                        <h1>أوشك تسجيلك على الاكتمال!</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                        </ol>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +16,7 @@
 <p>أُرسلت رسالة بريدإلكتروني تحتوي رابط التفعيل إلى البريد الإلكتروني المُعطى.</p>
 <p>سنحافظ على بياناتك لمدة {{ userena_activation_days }} أيام.</p>
 {% else  %}
-<p>يمكنك الآن استعمال بياناتك المعطاةفي تسجيل دخولك.</p>
+<p>يمكنك الآن استعمال بياناتك المعطاة في تسجيل دخولك.</p>
 {% endif %}
 {% endblock %}
 

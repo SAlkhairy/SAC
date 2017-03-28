@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load staticfiles %}
 
 {% block title %}مناصب نادي الطلاب{% endblock %}
 {% block header %}
@@ -15,6 +15,13 @@
    height: 100px;
 }
 
+img{
+      margin-right: auto;
+      margin-left: auto;
+      max-height: 200px;
+      margin-bottom: 20px;
+}
+
 h2{
    font-size: 20px;
    text-align: center;
@@ -24,18 +31,21 @@ p{
     text-align: center;
 }
 </style>
+<div class="row">
+<div class="col-sm-8 col-md-offset-2">
 
-<p>
-    يهدف نادي الطلاب إلى الربط بين طلاب الجامعة وطالباتها واكتشاف مهاراتهم وصقلها وتطويرها في مجالات عدة من خلال أنشطة طلابية فارقة، وذلك بإشراف عمادة شؤون الطلاب ودعمها، لتعزيز انتماء الطلبة وولائهم للجامعة.
+<img class="img-responsive" src="{% static 'images/logos/student-club.png' %}">
+
+<p style="font-size: 20px; text-align: justify;">
+    يهدف نادي الطلاب إلى الربط بين طلاب الجامعة وطالباتها واكتشاف مهاراتهم وصقلها وتطويرها في مجالات عدة من خلال أنشطة طلابية فارقة، وذلك بإشراف عمادة شؤون الطلاب ودعمها، لتعزيز انتماء الطلبة وولائهم للجامعة. يتمثل دور ممثلي نادي الطلاب في اقتراح وتخطيط وإعداد الأنشطة اللاصفية وتنظيمها للطالب والطالبات.
     <br>
-يتمثل دور ممثلي نادي الطلاب في اقتراح وتخطيط وإعداد الأنشطة اللاصفية وتنظيمها للطلاب.
-    <br><br>
-    كونوا جزءًا من الإنجاز، وقيادات النشاط الطلابي في الجامعة!
+    <strong>كونوا جزءًا من الإنجاز، وقيادات النشاط الطلابي في الجامعة!</strong>
 </p>
-
+</div>
+</div>
 {% if user_nominations.exists %}
 
-<p>ترشّحت للمناصب التالية:</p>
+<p>تمّ الترشّح للمناصب التالية:</p>
 {% for nomination in user_nominations %}
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                             <div class="panel panel-bd">
