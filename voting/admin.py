@@ -23,6 +23,9 @@ class NominationAdmin(admin.ModelAdmin):
 
     actions = [make_rejected]
 
+class PositionAdmin(admin.ModelAdmin):
+    list_filter = ['entity', 'year']
+
 admin.site.register(Nomination, NominationAdmin)
+admin.site.register(Position, PositionAdmin)
 admin.site.register(SACYear)
-admin.site.register(Position)
