@@ -90,3 +90,7 @@ class Profile(UserenaBaseProfile):
             pass
 
         return en_fullname
+
+    class Meta:
+        verbose_name = 'الحساب'
+        verbose_name_plural = 'الحسابات'

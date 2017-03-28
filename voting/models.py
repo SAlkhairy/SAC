@@ -13,6 +13,10 @@ class SACYear(models.Model):
     election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
     election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
 
+    class Meta:
+        verbose_name = 'السنة الأكاديمية'
+        verbose_name_plural = "السنوات الأكاديمية"
+
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)
 
@@ -39,6 +43,10 @@ class Position(models.Model):
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
     year = models.ForeignKey(SACYear, verbose_name="السنة",)
 
+    class Meta:
+        verbose_name = 'المنصب'
+        verbose_name_plural = 'المناصب'
+
     def __unicode__(self):
         return self.title
 
@@ -51,6 +59,12 @@ class Nomination(models.Model):
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
+    class Meta:
+        verbose_name = 'المرشح'
+        verbose_name_plural = 'المرشحون'
+
+    def __unicode__(self):
+        return self.user.profile.get_ar_full_name()
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
