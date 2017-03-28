@@ -6,11 +6,11 @@
                         <ol class="breadcrumb">
                             <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
                            {% if nomination.position.entity == 'club' %}
-                            <li>مناصب نادي الطلاب</li>
+                            <li><a href="{% url 'voting:list_positions' 'club' %}">مناصب نادي الطلاب</a></li>
                            {% else %}
-                            <li>مناصب المجلس الاستشاري</li>
+                            <li><a href="{% url 'voting:list_positions' 'council' %}">مناصب المجلس الاستشاري</a></li>
                            {% endif %}
-                            <li class="active">{{ nomination.user.get_ar_full_name }}</li>
+                            <li class="active">{{ nomination.user.profile.get_ar_full_name }}</li>
                         </ol>
 {% endblock %}
 {% block content %}
