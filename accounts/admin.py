@@ -23,8 +23,7 @@ class ModifiedUserAdmin(UserenaAdmin):
                     'profile__en_middle_name',
                     'profile__en_last_name',
                     'profile__student_id',
-                    'profile__mobile_number',
-                    'profile__job_description')
+                    'profile__mobile_number')
     list_filter = ['profile__college', 'profile__city', 'profile__gender']
 
     inlines = [ProfileInline]
