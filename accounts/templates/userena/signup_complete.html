@@ -18,10 +18,10 @@
 {% endblock %}
 
 {% if userena_activation_required %}
-<p>{% blocktrans %}أُرسلت رسالة بريدإلكتروني تحتوي رابط التفعيل إلى البريد الإلكتروني المُعطى..{% endblocktrans %}</p>
-<p>{% blocktrans %}سنحافظ على بياناتك لمدة {{ userena_activation_days }} أيام.{% endblocktrans %}</p>
+<p>أُرسلت رسالة بريدإلكتروني تحتوي رابط التفعيل إلى البريد الإلكتروني المُعطى..</p>
+<p>سنحافظ على بياناتك لمدة {{ userena_activation_days }} أيام.</p>
 {% else  %}
-<p>{% blocktrans %}يمكنك الآن استعمال بياناتك المعطاةفي تسجيل دخولك.{% endblocktrans %}</p>
+<p>يمكنك الآن استعمال بياناتك المعطاةفي تسجيل دخولك.</p>
 {% endif %}
 {% endblock %}
 
