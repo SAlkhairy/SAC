@@ -23,5 +23,9 @@
       <th>السيرة</th>
       <td><a href="{{ nomination.cv.url }}">{{ nomination.cv.name }}</td>
    </tr>
+   <tr>
+      <th>الشهادات والمساهمات</th>
+      <td><a href="{{ nomination.certificates.url }}">{{ nomination.certificates.name }}</td>
+   </tr>
 </table>
 {% endblock %}
