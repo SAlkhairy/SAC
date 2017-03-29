@@ -30,7 +30,44 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input class="btn btn-btn-success" type="submit" value="أرسل">
+<div class="form-group">
+<div class="col-sm-8 checkbox checkbox-success">
+     <input id="checkbox1" type="checkbox">
+     <label for="checkbox1">أقر بالموافقة على <a target="_blank" href="http://sac.ksau-hs.edu.sa/index.php/rules/13-%D9%84%D8%AC%D9%86%D8%A9-%D8%A7%D9%84%D8%A7%D9%86%D8%AA%D8%AE%D8%A7%D8%A8%D8%A7%D8%AA-%D8%A7%D9%84%D8%B7%D9%84%D8%A7%D8%A8%D9%8A%D8%A9">شروط الترشيحات والانتخابات.</a></label>
+</div>
+</div>
+<div class="form-group">
+<div class="col-sm-8 checkbox checkbox-success">
+     <input id="checkbox2" type="checkbox">
+     <label for="checkbox2">أقر بأن جميع المعلومات التي تم تعبئتها في نموذج التسجيل في البوابة وفي هذا النموذج صحيحة، وأنه في حال اكتشاف أي معلومات مغلوطة يحق للجنة الانتخابات استبعادي من الترشيحات الطلابية حتى بعد فوزي بالمنصب.</label>
+</div>
+</div>
+<div class="form-group">
+<div class="col-sm-8 checkbox checkbox-success">
+     <input id="checkbox3" type="checkbox">
+     <label for="checkbox3">أوافق على نشر السيرة الذاتية وملف الترشح.</label>
+</div>
+</div>
+<div class="form-group">
+<div class="row">
+    <div class="col-sm-12">
+    <input id="submit" disabled class="btn btn-btn-success" type="submit" value="أرسل">
+    </div>
+</div>
+</div>
 </form>
 {% endif %}
+{% endblock %}
+{% block customscript %}
+<script>
+$(function(){
+   $("input[type=checkbox]").change(function(){
+      if ($("input[type=checkbox]:checked").length == 3){
+       $("#submit").removeAttr('disabled');
+      } else {
+       $("#submit").attr('disabled', 'disabled');
+      }
+   })
+});
+</script>
 {% endblock %}
