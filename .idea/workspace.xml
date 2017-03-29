@@ -89,11 +89,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/voting/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="54" column="36" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
+            <state vertical-scroll-proportion="1.0442387">
+              <caret line="65" column="23" selection-start-line="65" selection-start-column="23" selection-end-line="65" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -111,21 +111,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="show_nomination.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="show_nomination.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/voting/templates/voting/show_nomination.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6788793">
-              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="list_club_positions.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/voting/templates/voting/list_club_positions.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.9772727">
-              <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
+            <state vertical-scroll-proportion="-13.136364">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -212,10 +202,10 @@
         <option value="$PROJECT_DIR$/voting/views.py" />
         <option value="$PROJECT_DIR$/accounts/templates/userena/emails/activation_email_message.html" />
         <option value="$PROJECT_DIR$/voting/admin.py" />
-        <option value="$PROJECT_DIR$/voting/models.py" />
-        <option value="$PROJECT_DIR$/voting/forms.py" />
         <option value="$PROJECT_DIR$/accounts/models.py" />
         <option value="$PROJECT_DIR$/voting/templates/voting/show_nomination.html" />
+        <option value="$PROJECT_DIR$/voting/forms.py" />
+        <option value="$PROJECT_DIR$/voting/models.py" />
       </list>
     </option>
   </component>
@@ -870,10 +860,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/voting/models.py">
+    <entry file="file://$PROJECT_DIR$/voting/templates/voting/list_club_positions.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="36" selection-start-line="54" selection-start-column="36" selection-end-line="54" selection-end-column="36" />
+        <state vertical-scroll-proportion="1.2640086">
+          <caret line="63" column="33" selection-start-line="63" selection-start-column="33" selection-end-line="63" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/voting/templates/voting/show_nomination.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.136364">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -888,18 +886,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/voting/templates/voting/list_club_positions.html">
+    <entry file="file://$PROJECT_DIR$/voting/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9772727">
-          <caret line="32" column="8" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/voting/templates/voting/show_nomination.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6788793">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.0442387">
+          <caret line="65" column="23" selection-start-line="65" selection-start-column="23" selection-end-line="65" selection-end-column="23" />
           <folding />
         </state>
       </provider>
