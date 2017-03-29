@@ -24,18 +24,17 @@
       <td><a href="{{ nomination.cv.url }}">{{ nomination.cv.name }}</td>
       <span class="help-block small">. نموذج السيرة الذاتية (https://goo.gl/ceKPnM) </span>
    </tr>
-    {% if nomination.certificates %}
    <tr>
       <th>الشهادات والمساهمات</th>
       <td><a href="{{ nomination.certificates.url }}">{{ nomination.certificates.name }}</td>
    </tr>
-    {% endif %}
     {% if nomination.user.profile.get_gender == 'M' %}
    <tr>
       <th>الصورة الشخصية</th>
       <td><a href="{{ nomination.photo.url }}">{{ nomination.photo.name }}</td>
       <span class="help-block small">هذا حقل اختياري</span>
    </tr>
+
     {% endif %}
 </table>
 {% endblock %}
