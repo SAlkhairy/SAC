@@ -30,17 +30,24 @@ def list_positions(request, entity):
 @login_required
 def add_nominee(request, position_id):
     position = get_object_or_404(Position, pk=position_id)
-    if request.method == 'POST':
-        instance = Nomination(user=request.user, position=position)
-        form = NominationForm(request.POST, request.FILES, instance=instance)
-        if form.is_valid():
-            instance = form.save()
-            print instance.pk
-            return HttpResponseRedirect(reverse("voting:nomination_thanks", args=(position.pk,)))
-    elif request.method == 'GET':
-        form = NominationForm()
-    context = {'form': form,
-               'position': position}
+    context = {'position': position}
+
+    user_nominations = Nomination.objects.filter(position__entity=position.entity,
+                                                 user=request.user)
+    if user_nominations.exists():
+        context['already_on'] = True
+    else:
+        if request.method == 'POST':
+            instance = Nomination(user=request.user, position=position)
+            form = NominationForm(request.POST, request.FILES, instance=instance)
+            if form.is_valid():
+                instance = form.save()
+                print instance.pk
+                return HttpResponseRedirect(reverse("voting:nomination_thanks", args=(position.pk,)))
+        elif request.method == 'GET':
+            form = NominationForm()
+        context['form'] = form
+
     return render(request,'voting/add_nominee.html', context)
 
 @login_required

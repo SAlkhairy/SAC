@@ -17,8 +17,9 @@
 {% endblock %}
 
 {% block content %}
-    <!--just to check if things are working-->
-
+{% if already_on %}
+<p class="alert alert-danger" style="font-size: 18px; color: black;">سبق أن ترشّحت  لمنصب في {{ position.get_entity_display }}! يمكنك الترشّح لمنصب واحد فقط.</p>
+{% else %}
 <p class="alert alert-warning" style="font-size: 18px; color: black;">
 {% if position.entity == 'club' %}
 يحتوي ملف الخطّّة الرؤى والخطط والبرامج المقترحة، وكذلك فرق العمل للمترشحين والمترشّحات لتمثيل الكليات.
@@ -31,7 +32,5 @@
     {% bootstrap_form form %}
     <input class="btn btn-btn-success" type="submit" value="أرسل">
 </form>
-
-
-
+{% endif %}
 {% endblock %}
