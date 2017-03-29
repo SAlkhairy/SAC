@@ -63,6 +63,9 @@ class Profile(UserenaBaseProfile):
     submission_date = models.DateTimeField("تاريخ التسجيل", auto_now_add=True)
     modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
 
+    def get_gender(self):
+        return self.gender
+
     def get_ar_full_name(self):
         ar_fullname = None
         try:
