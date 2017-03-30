@@ -60,9 +60,20 @@
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
-                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                <div class="form-group">
                                     {% bootstrap_field form.plan %}
-                                    <span class="help-block small"><a href="https://goo.gl/IdQjuH">ملف الترشح لنادي الطلاب (يستلزم تعبئة الرؤى والخطط وفرق العمل إن وجد)</a> </span>
+                                    <span class="help-block small"><a href="https://goo.gl/IdQjuH">ملف الترشح (يستلزم تعبئة الرؤى والخطط وفرق العمل إن وجد)</a> </span>
+                                </div>
+                                </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    {% bootstrap_field form.cv %}
+                                    <span class="help-block small"><a href="https://goo.gl/ceKPnM">نموذج السيرة الذاتية</a> </span>
+                                </div>
+                                </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    {% bootstrap_field form.certificates %}
                                 </div>
                                 </div>
                             </form>
