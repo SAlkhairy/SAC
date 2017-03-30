@@ -33,7 +33,11 @@
         <div class="row">
             <div class="form-group">
                 {% bootstrap_field form.plan %}
-                <span class="help-block small"><a href="https://goo.gl/IdQjuH">ملف الترشح (يستلزم تعبئة الرؤى والخطط وفرق العمل إن وجد)</a> </span>
+                {% if position.entity == 'club' %}
+                <span class="help-block small"><a target="_blank" href="https://goo.gl/IdQjuH">ملف الترشح (يستلزم تعبئة الرؤى والخطط وفرق العمل إن وجد)</a> </span>
+                {% elif position.entity == 'council' %}
+                <span class="help-block small"><a target="_blank" href="(https://goo.gl/clUr5H">ملف الترشح (يستلزم ذكر أبرز العقبات مع حلول لها)  </a> </span>
+                {% endif %}
             </div>
             </div>
         <div class="row">
