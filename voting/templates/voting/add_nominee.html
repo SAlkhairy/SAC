@@ -56,6 +56,19 @@
 </div>
 </div>
 </form>
+                    <p>testing, please ignore</p>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                <h4 class="text-center">الخطة 2</h4>
+                                </div>
+                                <div class="form-group col-lg-8 col-lg-offset-2">
+                                    {% bootstrap_field form.plan %}
+                                </div>
+                                </div>
+                            </form>
+
 {% endif %}
 {% endblock %}
 {% block customscript %}
