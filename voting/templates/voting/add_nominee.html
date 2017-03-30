@@ -56,15 +56,13 @@
 </div>
 </div>
 </form>
-                    <p>testing, please ignore</p>
+                    <p>تجاهلوا هذه الجزئية التجريبية رجاءً</p>
                         <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="row">
                                 <div class="form-group col-lg-8 col-lg-offset-2">
-                                <h4 class="text-center">الخطة 2</h4>
-                                </div>
-                                <div class="form-group col-lg-8 col-lg-offset-2">
                                     {% bootstrap_field form.plan %}
+                                    <span class="help-block small"><a href="https://goo.gl/IdQjuH">ملف الترشح لنادي الطلاب (يستلزم تعبئة الرؤى والخطط وفرق العمل إن وجد)</a> </span>
                                 </div>
                                 </div>
                             </form>
