@@ -14,7 +14,7 @@
                         </ol>
 {% endblock %}
 {% block content %}
-<table class="table table-hover">
+< class="table table-hover">
    <tr>
       <th>الخطّة</th>
       <td><a href="{{ nomination.plan.url }}">{{ nomination.plan.name }}</td>
@@ -22,7 +22,9 @@
    <tr>
       <th>السيرة</th>
       <td><a href="{{ nomination.cv.url }}">{{ nomination.cv.name }}</td>
-      <div class="help-block small"><a href="https://goo.gl/ceKPnM">نموذج السيرة الذاتية</a></div>
+   </tr>
+   <tr>
+      <th class="help-block small"><a href="https://goo.gl/ceKPnM">نموذج السيرة الذاتية</a></th>
    </tr>
    {% if nomination.cerificates %}
    <tr>

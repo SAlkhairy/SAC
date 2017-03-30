@@ -102,8 +102,8 @@
       <file leaf-file-name="show_nomination.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/voting/templates/voting/show_nomination.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.43426725">
-              <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+            <state vertical-scroll-proportion="0.7737069">
+              <caret line="33" column="14" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -887,8 +887,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/voting/templates/voting/show_nomination.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.43426725">
-          <caret line="24" column="38" selection-start-line="24" selection-start-column="38" selection-end-line="24" selection-end-column="38" />
+        <state vertical-scroll-proportion="0.7737069">
+          <caret line="33" column="14" selection-start-line="33" selection-start-column="14" selection-end-line="33" selection-end-column="14" />
           <folding />
         </state>
       </provider>
