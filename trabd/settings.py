@@ -158,3 +158,5 @@ MEDIA_ROOT = getattr(secrets, 'MEDIA_ROOT', DEFAULT_MEDIA)
 SERVER_EMAIL = 'errors@trabdportal.com'
 ADMINS = [('Errors', 'errors@trabdportal.com')]
 SECURE_HSTS_SECONDS = getattr(secrets, 'SECURE_HSTS_SECONDS', 0)
+SESSION_COOKIE_DOMAIN = getattr(secrets, 'SESSION_COOKIE_DOMAIN', None)
+CSRF_COOKIE_DOMAIN = getattr(secrets, 'CSRF_COOKIE_DOMAIN', None)
