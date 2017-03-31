@@ -78,10 +78,31 @@
                                     <span class="help-block small">أعد كتابة كلمة السرّ رجاءً</span>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-12 checkbox checkbox-success">
+                                    <input id="checkbox" type="checkbox">
+                                    <label for="checkbox">أقر بأن جميع المعلومات التي تم تعبئتها في نموذج التسجيل  صحيحة وأنه في حال اكتشاف أي معلومات مغلوطة يحق للجنة الانتخابات استبعادي من العملية الانتخابية وذلك يشمل التصويت والترشّح.</label>
+                                </div>
+                            </div>
+
                             <div>
-                                <button class="btn btn-warning">سجّلني</button>
+                                <button id="submit" disabled class="btn btn-btn-warning">سجّلني</button>
                             </div>
                         </form>
                     </div>
                 </div>
+{% endblock %}
+{% block customscript %}
+<script>
+$(function(){
+   $("input[type=checkbox]").change(function(){
+      if ($("input[type=checkbox]:checked").length == 1){
+       $("#submit").removeAttr('disabled');
+      } else {
+       $("#submit").attr('disabled', 'disabled');
+      }
+   })
+});
+</script>
 {% endblock %}
