@@ -10,7 +10,7 @@ make_rejected.short_description = "رفض المرشحـ/ين المختار/ي�
 
 class NominationAdmin(admin.ModelAdmin):
     list_filter = ['position', 'is_rejected']
-    list_display = ['__unicode__', 'cv', 'plan', 'certificates', 'gpa', 'is_rejected']
+    list_display = ['__unicode__', 'cv', 'plan', 'certificates', 'is_rejected']
     search_fields = ['position__title', 'user__username',
                      'user__email', 'user__profile__ar_first_name',
                      'user__profile__ar_middle_name',
