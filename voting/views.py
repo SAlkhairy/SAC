@@ -37,6 +37,12 @@ def add_nominee(request, position_id):
     if user_nominations.exists():
         context['already_on'] = True
     else:
+        if request.user.is_superuser:
+            positions = Position.objects.all()
+        else:
+            positions = Position.objects.filter(colleges_allowed_to_nominate=request.user.profile.college)
+            if position not in positions:
+                raise PermissionDenied
         if request.method == 'POST':
             instance = Nomination(user=request.user, position=position)
             form = NominationForm(request.POST, request.FILES, instance=instance)
