@@ -1,9 +1,10 @@
 # -*- coding: utf-8  -*-
 from __future__ import unicode_literals
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.utils import timezone
 from accounts.models import Profile, College
-
+from .managers import YearQuerySet
 
 class SACYear(models.Model):
     start_date = models.DateTimeField(verbose_name="تاريخ البداية")
@@ -12,10 +13,23 @@ class SACYear(models.Model):
     election_nomination_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية الترشيحات")
     election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
     election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
+    objects = YearQuerySet.as_manager()
 
     class Meta:
         verbose_name = 'السنة الأكاديمية'
         verbose_name_plural = "السنوات الأكاديمية"
+
+    def get_next_year_name(self):
+        return "%s-%s" % (self.start_date.year + 1, self.end_date.year + 1)
+
+    def is_nomination_open(self):
+        # If no election nomination end was specified, let's consider
+        # the elections open forever.  Otherwise, respect the
+        # specified time.
+        if not self.election_nomination_end_datetime:
+            return True
+        else:
+            return self.election_nomination_end_datetime > timezone.now()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)

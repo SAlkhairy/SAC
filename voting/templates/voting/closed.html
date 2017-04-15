@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}انتهاء فترة الترشّح{% endblock %}
+{% block header %}
+                        <h1>انتهاء فترة الترشّح</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                            <li class="active">انتهاء فترة الترشّح</li>
+                        </ol>
+{% endblock %}
+{% block content %}
+
+
+
+<p class="text-center" style="font-size: 25px;"><i class="fa fa-exclamation-triangle fa-4x"></i><br>انتهت فترة الترشّح لعام {{ sac_year.get_next_year_name }} يوم {{ sac_year.election_nomination_end_datetime|date:"l j F Y" }}!</p>
+
+{% endblock %}

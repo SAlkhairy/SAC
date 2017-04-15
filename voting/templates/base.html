@@ -154,18 +154,32 @@ footer a{
                             <a href="{% url 'home' %}"><i class="ti-home"></i> <span>الرئيسية</span>
                             </a>
                         </li>
-     
+                                {% if not sac_year.is_nomination_open %}
+                        <li class="treeview">
+                            <a href="{% url 'voting:closed' %}">
+                                <i class="ti-medall"></i> <span>الترشيح</span>
+                                <span class="pull-right-container">
+                                    <small class="label pull-right bg-red">انتهى الترشح</small>
+                                </span>
+                            </a>
+                                {% else %}  
                         <li class="treeview">
                             <a href="#">
-                                <i class="ti-medall"></i> <span>الترشيح</span>
+                                <i class="ti-medall"></i> <span>الترشيح</span>       
                                 <span class="pull-right-container">
                                     <i style="transform: none;" class="fa fa-angle-left pull-right"></i>
                                 </span>
+
                             </a>
                             <ul class="treeview-menu">
-                                <li><a href="{% url 'voting:list_positions' 'club' %}">ترشيحات نادي الطلاب</a></li>
-                                <li><a href="{% url 'voting:list_positions' 'council' %}">ترشيحات المجلس الاستشاري</a></li>
+                                <li>
+                                   <a href="{% url 'voting:list_positions' 'club' %}">ترشيحات نادي الطلاب</a>
+                                </li>
+                                <li>
+                                  <a href="{% url 'voting:list_positions' 'council' %}">ترشيحات المجلس الاستشاري</a>
+                                </li>
                             </ul>
+                                {% endif %}
                         </li>
                         <li class="treeview">
                             <a href="#">

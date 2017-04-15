@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from .models import Position, Nomination
+from .models import SACYear, Position, Nomination
 from .forms import NominationForm
 
 def show_index(request):
@@ -14,6 +14,10 @@ def show_index(request):
 
 @login_required
 def list_positions(request, entity):
+    current_year = SACYear.objects.get_current()
+    if not current_year.is_nomination_open():
+        return HttpResponseRedirect(reverse("voting:closed"))
+
     if entity in ['club', 'council']:
         user_nominations = Nomination.objects.filter(position__entity=entity,
                                                      user=request.user)
@@ -29,6 +33,10 @@ def list_positions(request, entity):
 
 @login_required
 def add_nominee(request, position_id):
+    current_year = SACYear.objects.get_current()
+    if not current_year.is_nomination_open():
+        return HttpResponseRedirect(reverse("voting:closed"))
+
     position = get_object_or_404(Position, pk=position_id)
     context = {'position': position}
 
