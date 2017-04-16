@@ -3,8 +3,13 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.views.decorators import csrf
 from .models import SACYear, Position, Nomination
 from .forms import NominationForm
+from . import decorators
+import StringIO
+import qrcode
+import qrcode.image.svg
 
 def show_index(request):
     if request.user.is_authenticated():
@@ -74,3 +79,26 @@ def show_nomination(request, position_id, nomination_id):
     context = {'nomination': nomination}
     return render(request,'voting/show_nomination.html', context)
 
+@login_required
+def show_voting_index(request):
+    qrcode_output = StringIO.StringIO()
+    qrcode.make("aaaa", image_factory=qrcode.image.svg.SvgImage, version=3).save(qrcode_output)
+    qrcode_value = "".join(qrcode_output.getvalue().split('\n')[1:])
+    
+    return render(request,'voting/show_voting.html', {"qrcode_value": qrcode_value})
+
+@login_required
+@decorators.ajax_only
+@decorators.post_only
+@csrf.csrf_exempt
+def handle_vote(request):
+    if 'nomination_pk' in request.POST:
+        pass
+        # nomation =
+        # VoteNomination.objects.create
+
+    # {"position_name": ,
+    #    "nomiations": [{"pk": ,
+    #                     "nominee_name": },
+    #                     ]}
+    return {"position_name": "Vice President of the Student Club"}
