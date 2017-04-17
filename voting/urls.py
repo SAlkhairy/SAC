@@ -10,6 +10,4 @@ urlpatterns = [
     url(r'^(?P<position_id>\d+)/(?P<nomination_id>\d+)/$', voting_views.show_nomination, name='show_nomination'),
     url(r'^(?P<position_id>\d+)/add_nominee/thanks/$', TemplateView.as_view(template_name='voting/nomination_thanks.html'), name='nomination_thanks'),
     url(r'^closed/$', TemplateView.as_view(template_name="voting/closed.html"), name='closed'),
-    url(r'^voting/ajax$', voting_views.handle_vote, name='handle_vote'),
-    url(r'^voting/$', voting_views.show_voting_index, name='show_voting_index'),
 ]
