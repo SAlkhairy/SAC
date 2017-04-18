@@ -79,13 +79,27 @@ def show_nomination(request, position_id, nomination_id):
     context = {'nomination': nomination}
     return render(request,'voting/show_nomination.html', context)
 
+def announce_nominees(request):
+    current_year = SACYear.objects.get_current()
+    context = {'sacyear': current_year}
+    if current_year.is_announcement_due():
+        nominations = Nomination.objects.filter(is_rejected=False,)
+        context['nominations'] = nominations
+    return render(request, 'voting/announce_nominees.html', context)
+
+
+
 @login_required
 def show_voting_index(request):
-    qrcode_output = StringIO.StringIO()
-    qrcode.make("aaaa", image_factory=qrcode.image.svg.SvgImage, version=3).save(qrcode_output)
-    qrcode_value = "".join(qrcode_output.getvalue().split('\n')[1:])
-    
-    return render(request,'voting/show_voting.html', {"qrcode_value": qrcode_value})
+    current_year = SACYear.objects.get_current()
+    if not current_year.is_voting_open():
+        return HttpResponseRedirect(reverse("voting:voting_closed"))
+    else:
+        qrcode_output = StringIO.StringIO()
+        qrcode.make("aaaa", image_factory=qrcode.image.svg.SvgImage, version=3).save(qrcode_output)
+        qrcode_value = "".join(qrcode_output.getvalue().split('\n')[1:])
+
+        return render(request,'voting/show_voting.html', {"qrcode_value": qrcode_value})
 
 @login_required
 @decorators.ajax_only

@@ -11,6 +11,7 @@ class SACYear(models.Model):
     end_date = models.DateTimeField(verbose_name="تاريخ النهاية")
     election_nomination_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية الترشيحات")
     election_nomination_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية الترشيحات")
+    election_nomination_announcement_datetime = models.DateTimeField(verbose_name="تاريخ إعلان الترشيحات", null=True)
     election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
     election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
     objects = YearQuerySet.as_manager()
@@ -30,6 +31,24 @@ class SACYear(models.Model):
             return True
         else:
             return self.election_nomination_end_datetime > timezone.now()
+
+    def is_announcement_due(self):
+        # If no announcement date is specified,
+        # we'll consider the announcement not due;
+        # so that, during nominations, non-rejected nominees (all of them)
+        # will not appear until the proper date.
+        if not self.election_nomination_announcement_datetime:
+            return False
+        else:
+            return self.election_nomination_announcement_datetime < timezone.now()
+
+    def is_voting_open(self):
+        # If no election voting start is specified,
+        # the voting is always closed.
+        if not self.election_vote_start_datetime:
+            return False
+        else:
+            return self.election_vote_end_datetime > timezone.now()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)
