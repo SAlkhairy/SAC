@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^voting/ajax$', voting_views.handle_vote, name='handle_vote'),
     url(r'^voting/$', voting_views.show_voting_index, name='show_voting_index'),
 
-    url(r'^show_nominees/$', voting_views.announce_nominees, name='announce_nominees'),
+    url(r'^announce_(?P<entity>(club|council))_nominees/$', voting_views.announce_nominees, name='announce_nominees'),
     url(r'^voting_closed/$', TemplateView.as_view(template_name="voting/voting_closed.html"), name='voting_closed'),
 
 

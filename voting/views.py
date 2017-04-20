@@ -7,6 +7,9 @@ from django.views.decorators import csrf
 from .models import SACYear, Position, Nomination
 from .forms import NominationForm
 from . import decorators
+
+from django.db.models import Count
+
 import StringIO
 import qrcode
 import qrcode.image.svg
@@ -79,13 +82,20 @@ def show_nomination(request, position_id, nomination_id):
     context = {'nomination': nomination}
     return render(request,'voting/show_nomination.html', context)
 
-def announce_nominees(request):
+def announce_nominees(request, entity):
     current_year = SACYear.objects.get_current()
     context = {'sacyear': current_year}
     if current_year.is_announcement_due():
-        nominations = Nomination.objects.filter(is_rejected=False,)
-        context['nominations'] = nominations
-    return render(request, 'voting/announce_nominees.html', context)
+        if entity in ['club', 'council']:
+            positions = Position.objects\
+               .filter(entity=entity)\
+               .annotate(nomination_count=Count('nomination'))\
+               .filter(nomination_count__gt=1)
+            context.update({'positions': positions})
+        else:
+            raise Http404
+
+    return render(request, 'voting/announce_' + entity + '_nominees.html', context)
 
 
 
