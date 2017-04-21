@@ -84,18 +84,17 @@ def show_nomination(request, position_id, nomination_id):
 
 def announce_nominees(request, entity):
     current_year = SACYear.objects.get_current()
-    context = {'sacyear': current_year}
     if current_year.is_announcement_due():
         if entity in ['club', 'council']:
             positions = Position.objects\
                .filter(entity=entity)\
                .annotate(nomination_count=Count('nomination'))\
                .filter(nomination_count__gt=1)
-            context.update({'positions': positions})
+            context = {'entity': entity, 'positions': positions}
         else:
             raise Http404
 
-    return render(request, 'voting/announce_' + entity + '_nominees.html', context)
+    return render(request, 'voting/announce_nominees.html', context)
 
 
 

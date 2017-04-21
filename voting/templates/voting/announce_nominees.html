@@ -1,12 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}إعلان ترشيحات نادي الطلاب{% endblock %}
 {% block header %}
-<h1>قائمة المرشحين والمرشحات لنادي الطلاب للعام {{sac_year.get_next_year_name}}</h1>
+
+{% if entity == 'club' %}
+    <h1>قائمة المرشحين والمرشحات لنادي الطلاب للعام {{sac_year.get_next_year_name}}</h1>
+{% else %}
+    <h1>قائمة المرشحين والمرشحات للمجلس الاستشاري للعام {{sac_year.get_next_year_name}}</h1>
+{% endif %}
 {% endblock %}
 
 {% block content %}
 
-{% if not sacyear.is_announcement_due %}
+{% if not sac_year.is_announcement_due %}
     <p class="alert alert-warning" style="color: black; font-size: 18px;">ما زالت الترشيحات جارية.</p>
 {% else %}
 
@@ -22,9 +27,9 @@
                                 <h2>{{ nomination.user.profile.get_ar_full_name }}</h2>
                                 <br>
                                 <p align="center">
-                                    <a href="{{ nomination.plan.url }}">الخطة</a>
-                                    ،
                                     <a href="{{ nomination.cv.url }}">السيرة</a>
+                                    ،
+                                    <a href="{{ nomination.plan.url }}">الخطة</a>
                                 </p>
                             </div>
                         </div>
