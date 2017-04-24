@@ -88,7 +88,7 @@ def announce_nominees(request, entity):
         if entity in ['club', 'council']:
             positions = Position.objects\
                .filter(entity=entity)\
-               .annotate(nomination_count=Count('nomination'))\
+               .annotate(nomination_count=Count('nominationannouncement'))\
                .filter(nomination_count__gt=1)
             context = {'entity': entity, 'positions': positions}
         else:

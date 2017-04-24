@@ -101,6 +101,21 @@ class Nomination(models.Model):
     def __unicode__(self):
         return "ترشّح %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
 
+class NominationAnnouncement(models.Model):
+    plan = models.FileField(verbose_name="الخطة", null=True)
+    cv = models.FileField(verbose_name="السيرة الذاتية", null=True)
+    certificates = models.FileField(verbose_name="الشهادات والمساهمات", null=True)
+    user = models.ForeignKey(User, verbose_name="المرشَّح")
+    position = models.ForeignKey(Position, verbose_name="المنصب")
+
+    class Meta:
+        verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
+        verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
+
+    def __unicode__(self):
+        return "تأهُّل %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
+
+
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
     nomination = models.ForeignKey(Nomination, verbose_name="المرشَّح")

@@ -19,17 +19,17 @@
         <p style="font-size: 20px;">* المنصب: {{position.title}}</p>
         <br>
         <div class="row">
-            {% for nomination in position.nomination_set.all %}
+            {% for nomination in position.nominationannouncement_set.all %}
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
                     <div class="panel panel-bd">
                         <div class="panel-body">
                             <div class="statistic-box">
-                                <h2>{{ nomination.user.profile.get_ar_full_name }}</h2>
+                                <h2>{{ nominationannouncement.user.profile.get_ar_full_name }}</h2>
                                 <br>
                                 <p align="center">
-                                    <a href="{{ nomination.cv.url }}">السيرة</a>
+                                    <a href="{{ nominationannouncement.cv.url }}">السيرة</a>
                                     ،
-                                    <a href="{{ nomination.plan.url }}">الخطة</a>
+                                    <a href="{{ nominationannouncement.plan.url }}">الخطة</a>
                                 </p>
                             </div>
                         </div>
