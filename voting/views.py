@@ -118,7 +118,7 @@ def handle_vote(request):
     if 'nomination_pk' in request.POST:
         pass
         # nomation =
-        # VoteNomination.objects.create
+        # VoteNomination.objects.create()
 
     # {"position_name": ,
     #    "nomiations": [{"pk": ,
