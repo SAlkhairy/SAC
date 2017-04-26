@@ -3,6 +3,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Count
 from .models import SACYear, Position, Nomination
 from .forms import NominationForm
 
