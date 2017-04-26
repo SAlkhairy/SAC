@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
-{% block title %}{% endblock %}
+{% block title %}التصويت{% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
 
+<div align="center">
 {{ qrcode_value|safe }}
+</div>
 
 <div id="introduction">
-<button id="start">Start!</button>
+    <p>تعليمات هامة:...</p>
+<button class="btn btn-success" id="start">ابدأ التصويت!</button>
 </div>
 <div style="display:none;" id="voting-section">
-<h2>التصويت ل<span id="position-name"></span></h2>
+    {% for position in positions %}
+    <h2>التصويت ل<span id="position-name"></span></h2>
+    {% endfor %}
 
 <div id="nomiations">
 </div>

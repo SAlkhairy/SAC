@@ -108,7 +108,11 @@ def show_voting_index(request):
         qrcode.make("aaaa", image_factory=qrcode.image.svg.SvgImage, version=3).save(qrcode_output)
         qrcode_value = "".join(qrcode_output.getvalue().split('\n')[1:])
 
-        return render(request,'voting/show_voting.html', {"qrcode_value": qrcode_value})
+        positions = Position.objects.filter(colleges_allowed_to_vote=request.user.profile.college)
+
+        context = {'qrcode_value': qrcode_value,
+                   'positions': positions}
+        return render(request,'voting/show_voting.html', context)
 
 @login_required
 @decorators.ajax_only
@@ -124,4 +128,10 @@ def handle_vote(request):
     #    "nomiations": [{"pk": ,
     #                     "nominee_name": },
     #                     ]}
-    return {"position_name": "Vice President of the Student Club"}
+    positions = Position.objects.filter(colleges_allowed_to_vote=request.user.profile.college)
+    for p in positions:
+        position_name = p.title
+    nominations = Nomination.objects.filter(is_rejected=False,)
+
+    #return {"position_name": "Vice President of the Student Club"}
+    return {'position_name': position_name}
