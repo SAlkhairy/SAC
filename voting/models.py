@@ -102,9 +102,9 @@ class Nomination(models.Model):
         return "ترشّح %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
 
 class NominationAnnouncement(models.Model):
-    plan = models.FileField(verbose_name="الخطة", null=True)
-    cv = models.FileField(verbose_name="السيرة الذاتية", null=True)
-    certificates = models.FileField(verbose_name="الشهادات والمساهمات", null=True)
+    plan = models.FileField(verbose_name="الخطة")
+    cv = models.FileField(verbose_name="السيرة الذاتية")
+    certificates = models.FileField(verbose_name="الشهادات والمساهمات")
     user = models.ForeignKey(User, verbose_name="المرشَّح")
     position = models.ForeignKey(Position, verbose_name="المنصب")
 
