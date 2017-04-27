@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}إعلان ترشيحات نادي الطلاب{% endblock %}
+{% block header %}
+
+{% if entity == 'club' %}
+    <h1>قائمة المرشحين والمرشحات لنادي الطلاب للعام {{sac_year.get_next_year_name}}</h1>
+{% else %}
+    <h1>قائمة المرشحين والمرشحات للمجلس الاستشاري للعام {{sac_year.get_next_year_name}}</h1>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if not sac_year.is_announcement_due %}
+    <p class="alert alert-warning" style="color: black; font-size: 18px;">ما زالت الترشيحات جارية.</p>
+{% else %}
+
+    {% for position in positions %}
+        <p style="font-size: 20px;">* المنصب: {{position.title}}</p>
+        <br>
+        <div class="row">
+            {% for nomination in position.nominationannouncement_set.all %}
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                    <div class="panel panel-bd">
+                        <div class="panel-body">
+                            <div class="statistic-box">
+                                <h2>{{ nomination.user.profile.get_ar_full_name }}</h2>
+                                <br>
+                                <p align="center">
+                                    <a href="{{ nomination.cv.url }}" target="_blank" >السيرة</a>
+                                    ،
+                                    <a href="{{ nomination.plan.url }}" target="_blank">الخطة</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+{% endif %}
+{% endblock %}

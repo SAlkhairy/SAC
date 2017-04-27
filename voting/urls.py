@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^(?P<position_id>\d+)/(?P<nomination_id>\d+)/$', voting_views.show_nomination, name='show_nomination'),
     url(r'^(?P<position_id>\d+)/add_nominee/thanks/$', TemplateView.as_view(template_name='voting/nomination_thanks.html'), name='nomination_thanks'),
     url(r'^closed/$', TemplateView.as_view(template_name="voting/closed.html"), name='closed'),
+    url(r'^announce_(?P<entity>(club|council))_nominees/$', voting_views.announce_nominees, name='announce_nominees'),
+
 ]

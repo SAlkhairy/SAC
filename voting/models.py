@@ -11,6 +11,7 @@ class SACYear(models.Model):
     end_date = models.DateTimeField(verbose_name="تاريخ النهاية")
     election_nomination_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية الترشيحات")
     election_nomination_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية الترشيحات")
+    election_nomination_announcement_datetime = models.DateTimeField(verbose_name="تاريخ إعلان الترشيحات", null=True)
     election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
     election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
     objects = YearQuerySet.as_manager()
@@ -30,6 +31,24 @@ class SACYear(models.Model):
             return True
         else:
             return self.election_nomination_end_datetime > timezone.now()
+
+    def is_announcement_due(self):
+        # If no announcement date is specified,
+        # we'll consider the announcement not due;
+        # so that, during nominations, non-rejected nominees (all of them)
+        # will not appear until the proper date.
+        if not self.election_nomination_announcement_datetime:
+            return False
+        else:
+            return self.election_nomination_announcement_datetime < timezone.now()
+
+    def is_voting_open(self):
+        # If no election voting start is specified,
+        # the voting is always closed.
+        if not self.election_vote_start_datetime:
+            return False
+        else:
+            return self.election_vote_end_datetime > timezone.now()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)
@@ -82,6 +101,21 @@ class Nomination(models.Model):
     def __unicode__(self):
         return "ترشّح %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
 
+class NominationAnnouncement(models.Model):
+    plan = models.FileField(verbose_name="الخطة")
+    cv = models.FileField(verbose_name="السيرة الذاتية")
+    certificates = models.FileField(verbose_name="الشهادات والمساهمات")
+    user = models.ForeignKey(User, verbose_name="المرشَّح")
+    position = models.ForeignKey(Position, verbose_name="المنصب")
+
+    class Meta:
+        verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
+        verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
+
+    def __unicode__(self):
+        return "تأهُّل %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
+
+
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
     nomination = models.ForeignKey(Nomination, verbose_name="المرشَّح")
@@ -107,3 +141,5 @@ class VoteReferendum (models.Model):
     referendum = models.ForeignKey(Referendum, verbose_name="الاستفتاء")
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
+
+
