@@ -30,9 +30,4 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': '\u0627\u0644\u0645\u0631\u0634\u062d\u0648\u0646/\u0627\u0644\u0645\u0631\u0634\u0651\u062d\u0627\u062a \u0627\u0644\u0645\u0624\u0647\u0644\u0648\u0646/\u0627\u0644\u0645\u0624\u0647\u0644\u0627\u062a',
             },
         ),
-        migrations.AddField(
-            model_name='sacyear',
-            name='election_nomination_announcement_datetime',
-            field=models.DateTimeField(null=True, verbose_name='\u062a\u0627\u0631\u064a\u062e \u0625\u0639\u0644\u0627\u0646 \u0627\u0644\u062a\u0631\u0634\u064a\u062d\u0627\u062a'),
-        ),
     ]
