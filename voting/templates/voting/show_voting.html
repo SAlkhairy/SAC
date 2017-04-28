@@ -12,14 +12,23 @@
     <p>تعليمات هامة:...</p>
 <button class="btn btn-success" id="start">ابدأ التصويت!</button>
 </div>
-<div style="display:none;" id="voting-section">
-    {% for position in positions %}
-    <h2>التصويت ل<span id="position-name"></span></h2>
-    {% endfor %}
 
+<div style="display:none;" id="voting-section">
+    {% for n in nominations %}
+    <h2>التصويت ل<span id="position-name">{{position_name}}</span></h2>
+    <br>
+    <!--
+    {% for nominee in position.nomination_set.all %}
+    <input type="radio" id="nominee"> {{ nominee.user.profile.get_ar_full_name }}
+    <br>
+    {% endfor %}-->
+    <button class="submit" id="vote2">Vote</button>
+    {% endfor %}
 <div id="nomiations">
 </div>
 </div>
+
+
 
 {% endblock %}
 {% block customscript %}
@@ -34,13 +43,15 @@ $(document).ready(function(){
               $("#introduction").hide();
               $("#voting-section").show();
               $("#position-name").html(data.position_name);
+              $("#nominations").html(data.nominations);
+
         }
       });
   });
 
 
   $("#vote").click(function(){
-      // pk
+      // var pk = ('#nominee').data('pk')
       $.ajax({
         url: "{% url 'voting:handle_vote' %}",
         data: {pk: null},
@@ -50,6 +61,10 @@ $(document).ready(function(){
         }
       });
   });
+
+
+
+
 });
 
 </script>

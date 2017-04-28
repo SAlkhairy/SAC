@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators import csrf
-from .models import SACYear, Position, Nomination
+from .models import SACYear, Position, Nomination, NominationAnnouncement
 from .forms import NominationForm
 from . import decorators
 
@@ -96,8 +96,6 @@ def announce_nominees(request, entity):
 
     return render(request, 'voting/announce_nominees.html', context)
 
-
-
 @login_required
 def show_voting_index(request):
     current_year = SACYear.objects.get_current()
@@ -119,19 +117,25 @@ def show_voting_index(request):
 @decorators.post_only
 @csrf.csrf_exempt
 def handle_vote(request):
-    if 'nomination_pk' in request.POST:
-        pass
-        # nomation =
-        # VoteNomination.objects.create()
+    nominations = Nomination.objects.filter(position__colleges_allowed_to_vote=request.user.profile.college)
+    for nomination in nominations:
+        nominee_name = dict(nomination.user.profile.get_ar_full_name)
+        return {"position_name": nomination.position.title,
+                "nominations": [
+                    {"pk": nomination.pk,
+                     "nominee_name": nominee_name},
+                ]}
+
+
+
+    #if 'nomination_pk' in request.POST:
+    #    pass
+        # nomination =
+        # VoteNomination.objects.create(user=request.user, nomination=)
 
     # {"position_name": ,
     #    "nomiations": [{"pk": ,
     #                     "nominee_name": },
     #                     ]}
-    positions = Position.objects.filter(colleges_allowed_to_vote=request.user.profile.college)
-    for p in positions:
-        position_name = p.title
-    nominations = Nomination.objects.filter(is_rejected=False,)
 
     #return {"position_name": "Vice President of the Student Club"}
-    return {'position_name': position_name}
