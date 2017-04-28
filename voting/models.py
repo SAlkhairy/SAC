@@ -104,7 +104,6 @@ class Nomination(models.Model):
 class NominationAnnouncement(models.Model):
     plan = models.FileField(verbose_name="الخطة")
     cv = models.FileField(verbose_name="السيرة الذاتية")
-    certificates = models.FileField(verbose_name="الشهادات والمساهمات")
     user = models.ForeignKey(User, verbose_name="المرشَّح")
     position = models.ForeignKey(Position, verbose_name="المنصب")
 
