@@ -14,17 +14,11 @@
 </div>
 
 <div style="display:none;" id="voting-section">
-    {% for n in nominations %}
     <h2>التصويت ل<span id="position-name">{{position_name}}</span></h2>
     <br>
-    <!--
-    {% for nominee in position.nomination_set.all %}
-    <input type="radio" id="nominee"> {{ nominee.user.profile.get_ar_full_name }}
-    <br>
-    {% endfor %}-->
+    <h3><span id="nominee-name">{{nomination.nominee_name}}</span></h3>
     <button class="submit" id="vote2">Vote</button>
-    {% endfor %}
-<div id="nomiations">
+<div id="nominations">
 </div>
 </div>
 
@@ -44,6 +38,11 @@ $(document).ready(function(){
               $("#voting-section").show();
               $("#position-name").html(data.position_name);
               $("#nominations").html(data.nominations);
+
+              for (nominee in data.nominations) {
+                var radioBtn = $('<input type="radio" name="rbtnCount" />');
+                radioBtn.appendTo('#nominee-name');
+                }
 
         }
       });

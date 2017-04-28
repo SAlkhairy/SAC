@@ -119,23 +119,11 @@ def show_voting_index(request):
 def handle_vote(request):
     nominations = Nomination.objects.filter(position__colleges_allowed_to_vote=request.user.profile.college)
     for nomination in nominations:
-        nominee_name = dict(nomination.user.profile.get_ar_full_name)
+        nominee_name = nomination.user.profile.get_ar_full_name()
         return {"position_name": nomination.position.title,
                 "nominations": [
                     {"pk": nomination.pk,
                      "nominee_name": nominee_name},
                 ]}
-
-
-
-    #if 'nomination_pk' in request.POST:
-    #    pass
-        # nomination =
-        # VoteNomination.objects.create(user=request.user, nomination=)
-
-    # {"position_name": ,
-    #    "nomiations": [{"pk": ,
-    #                     "nominee_name": },
-    #                     ]}
-
-    #return {"position_name": "Vice President of the Student Club"}
+# if 'nomination_pk' in request.POST:
+#   VoteNomination.objects.create()
