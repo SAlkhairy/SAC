@@ -41,11 +41,6 @@ $(document).ready(function(){
               $("#position-name").html(data.position_name);
               $("#nominations").html(data.nominations);
 
-// var arrayLength = myStringArray.length;
-// for (nominee in data.nominations) {
-
-
-
               var nominationsLength = data.nominations.length;
               for (var i = 0; i < nominationsLength; i++) {
                 var label = $('<label for="nominee_name">'+data.nominations[i].nominee_name+'</label>');
@@ -54,23 +49,34 @@ $(document).ready(function(){
                 label.appendTo('#nominee-name');
                 radioBtn.appendTo('#nominee-name');
                 }
-            console.log(data)
+  console.log(data)
+
         }
       });
   });
 
 
   $("#vote").click(function(){
-      // var pk = ('#nominee').data('pk')
       $.ajax({
         url: "{% url 'voting:handle_vote' %}",
-        data: {pk: null},
+        data: {nomination_vote_pk: nomination_vote_pk},
         method: "POST",
         success: function(data){
-              alert(data.message);
+          var checked_nominee_radio = $('input:radio[name=rbtnCount]:checked').val();
+          if(checked_nominee_radio!=undefined)
+            {
+            var nomination_vote_pk = radioBtn.data('pk');
+            }
+          if(checked_nominee_radio===undefined)
+            {alert('Please select a nominee!');}
+          else
+            {alert('Your chose "' +checked_nominee_radio + '"');}
+
         }
       });
   });
+
+
 
 
 

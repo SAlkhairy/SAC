@@ -116,8 +116,9 @@ def show_voting_index(request):
 def handle_vote(request):
     nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
     if nomination_vote_pk:
+        nomination = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
+        VoteNomination.objects.create(nomination=nomination)
         # TODO: HANDLE THE VOTE
-        pass
 
     # To be included, a position must have at least two announced
     # nominations and must not have a previous vote by the current
@@ -126,6 +127,7 @@ def handle_vote(request):
     # TODO: VoteNomination should be linked to NominationAnnouncement
     # rather than Nomination.  The query below should be changed
     # accordingly.
+
     position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
                                     .filter(announced_count__gte=2)\
                                     .exclude(nomination__votenomination__user=request.user)

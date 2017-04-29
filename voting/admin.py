@@ -1,7 +1,7 @@
 # -*- coding: utf-8  -*-
 from __future__ import unicode_literals
 from django.contrib import admin
-from voting.models import Position, SACYear, Nomination, NominationAnnouncement
+from voting.models import Position, SACYear, Nomination, NominationAnnouncement, VoteNomination
 
 
 def make_rejected(ModelAdmin, request, queryset):
@@ -35,4 +35,5 @@ class PositionAdmin(admin.ModelAdmin):
 admin.site.register(Nomination, NominationAdmin)
 admin.site.register(NominationAnnouncement)
 admin.site.register(Position, PositionAdmin)
+admin.site.register(VoteNomination)
 admin.site.register(SACYear)
