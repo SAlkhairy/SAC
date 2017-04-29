@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators import csrf
-from .models import SACYear, Position, Nomination, NominationAnnouncement
+from .models import SACYear, Position, Nomination, NominationAnnouncement, VoteNomination
 from .forms import NominationForm
 from . import decorators
 
@@ -120,10 +120,14 @@ def handle_vote(request):
     nominations = Nomination.objects.filter(position__colleges_allowed_to_vote=request.user.profile.college)
     for nomination in nominations:
         nominee_name = nomination.user.profile.get_ar_full_name()
-        return {"position_name": nomination.position.title,
-                "nominations": [
-                    {"pk": nomination.pk,
-                     "nominee_name": nominee_name},
-                ]}
+        if nomination.pk in request.POST:
+            nomination = Nomination.objects.get(pk=nomination.pk)
+            VoteNomination.objects.create(nomination=nomination)
+        else:
+            return {"position_name": nomination.position.title,
+                    "nominations": [
+                        {"pk": nomination.pk,
+                         "nominee_name": nominee_name},
+                    ]}
 # if 'nomination_pk' in request.POST:
 #   VoteNomination.objects.create()

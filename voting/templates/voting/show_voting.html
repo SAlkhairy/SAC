@@ -16,7 +16,9 @@
 <div style="display:none;" id="voting-section">
     <h2>التصويت ل<span id="position-name">{{position_name}}</span></h2>
     <br>
-    <h3><span id="nominee-name">{{nomination.nominee_name}}</span></h3>
+    <div id="nominee-name"></div>
+
+
     <button class="submit" id="vote2">Vote</button>
 <div id="nominations">
 </div>
@@ -39,11 +41,20 @@ $(document).ready(function(){
               $("#position-name").html(data.position_name);
               $("#nominations").html(data.nominations);
 
-              for (nominee in data.nominations) {
-                var radioBtn = $('<input type="radio" name="rbtnCount" />');
+// var arrayLength = myStringArray.length;
+// for (nominee in data.nominations) {
+
+
+
+              var nominationsLength = data.nominations.length;
+              for (var i = 0; i < nominationsLength; i++) {
+                var label = $('<label for="nominee_name">'+nominations[i].nominee_name+'</label>');
+                var radioBtn = $('<input type="radio" name="rbtnCount" id="nominee_name"/>');
+                radioBtn.data('pk', data.nominations[i].pk);
+                label.appendTo('#nominee-name');
                 radioBtn.appendTo('#nominee-name');
                 }
-
+            console.log(data)
         }
       });
   });
