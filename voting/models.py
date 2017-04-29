@@ -1,6 +1,7 @@
 # -*- coding: utf-8  -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
 from accounts.models import Profile, College
@@ -99,13 +100,17 @@ class Nomination(models.Model):
         verbose_name_plural = 'المرشحون/المرشّحات'
 
     def __unicode__(self):
-        return "ترشّح %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
+        try:
+            name = self.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.user.username
+        return "ترشّح %s لِ%s" % (name, self.position.title)
 
 class NominationAnnouncement(models.Model):
-    plan = models.FileField(verbose_name="الخطة", null=True)
-    cv = models.FileField(verbose_name="السيرة الذاتية", null=True)
-    certificates = models.FileField(verbose_name="الشهادات والمساهمات", null=True)
-    user = models.ForeignKey(User, verbose_name="المرشَّح")
+    plan = models.FileField(verbose_name="الخطة", default="")
+    cv = models.FileField(verbose_name="السيرة الذاتية", default="")
+    user = models.ForeignKey(User, verbose_name="المرشَّح", default="")
     position = models.ForeignKey(Position, verbose_name="المنصب")
 
     class Meta:
@@ -113,7 +118,12 @@ class NominationAnnouncement(models.Model):
         verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
 
     def __unicode__(self):
-        return "تأهُّل %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
+        try:
+            name = self.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.user.username
+        return "تأهُّل %s لِ%s" % (name, self.position.title)
 
 
 class VoteNomination(models.Model):
@@ -141,3 +151,5 @@ class VoteReferendum (models.Model):
     referendum = models.ForeignKey(Referendum, verbose_name="الاستفتاء")
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
+
+

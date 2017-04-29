@@ -106,10 +106,7 @@ def show_voting_index(request):
         qrcode.make("aaaa", image_factory=qrcode.image.svg.SvgImage, version=3).save(qrcode_output)
         qrcode_value = "".join(qrcode_output.getvalue().split('\n')[1:])
 
-        positions = Position.objects.filter(colleges_allowed_to_vote=request.user.profile.college)
-
-        context = {'qrcode_value': qrcode_value,
-                   'positions': positions}
+        context = {'qrcode_value': qrcode_value}
         return render(request,'voting/show_voting.html', context)
 
 @login_required
@@ -117,17 +114,35 @@ def show_voting_index(request):
 @decorators.post_only
 @csrf.csrf_exempt
 def handle_vote(request):
-    nominations = Nomination.objects.filter(position__colleges_allowed_to_vote=request.user.profile.college)
-    for nomination in nominations:
-        nominee_name = nomination.user.profile.get_ar_full_name()
-        if nomination.pk in request.POST:
-            nomination = Nomination.objects.get(pk=nomination.pk)
-            VoteNomination.objects.create(nomination=nomination)
-        else:
-            return {"position_name": nomination.position.title,
-                    "nominations": [
-                        {"pk": nomination.pk,
-                         "nominee_name": nominee_name},
-                    ]}
-# if 'nomination_pk' in request.POST:
-#   VoteNomination.objects.create()
+    nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
+    if nomination_vote_pk:
+        # TODO: HANDLE THE VOTE
+        pass
+
+    # To be included, a position must have at least two announced
+    # nominations and must not have a previous vote by the current
+    # year.
+    #
+    # TODO: VoteNomination should be linked to NominationAnnouncement
+    # rather than Nomination.  The query below should be changed
+    # accordingly.
+    position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+                                    .filter(announced_count__gte=2)\
+                                    .exclude(nomination__votenomination__user=request.user)
+    if request.user.is_superuser:
+        next_position = position_pool.first()
+    else:
+        next_position = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)\
+                                     .first()
+    if next_position:
+        nominations = []
+        for nomination in next_position.nominationannouncement_set.all():
+            nomination = {'pk': nomination.pk,
+                          'nominee_name': nomination.user.username,
+                          'plan': nomination.plan.url,
+                          'cv': nomination.cv.url}
+            nominations.append(nomination)
+        return {"position_name": next_position.title,
+                "nominations": nominations}
+    else:
+        return {'done': 1}
