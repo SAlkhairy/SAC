@@ -128,10 +128,21 @@ class NominationAnnouncement(models.Model):
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
-    nomination = models.ForeignKey(Nomination, verbose_name="المرشَّح")
+    nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True)
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
+    class Meta:
+        verbose_name = 'صوت'
+        verbose_name_plural = 'الأصوات'
+
+    def __unicode__(self):
+        try:
+            name = self.nomination_announcement.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.nomination_announcement.user.username
+        return "صوت لِ%s" % (name)
 
 class Referendum(models.Model):
     year = models.CharField(verbose_name="السنة", max_length=4)

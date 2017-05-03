@@ -1,3 +1,5 @@
+# -*- coding: utf-8  -*-
+
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -6,13 +8,9 @@ from django.shortcuts import render, get_object_or_404
 from django.views.decorators import csrf
 from .models import SACYear, Position, Nomination, NominationAnnouncement, VoteNomination
 from .forms import NominationForm
-from . import decorators
-
+from . import decorators, utils
 from django.db.models import Count
 
-import StringIO
-import qrcode
-import qrcode.image.svg
 
 def show_index(request):
     if request.user.is_authenticated():
@@ -102,9 +100,7 @@ def show_voting_index(request):
     if not current_year.is_voting_open():
         return HttpResponseRedirect(reverse("voting:voting_closed"))
     else:
-        qrcode_output = StringIO.StringIO()
-        qrcode.make("aaaa", image_factory=qrcode.image.svg.SvgImage, version=3).save(qrcode_output)
-        qrcode_value = "".join(qrcode_output.getvalue().split('\n')[1:])
+        qrcode_value = utils.get_ticket(request.user)
 
         context = {'qrcode_value': qrcode_value}
         return render(request,'voting/show_voting.html', context)
@@ -114,12 +110,22 @@ def show_voting_index(request):
 @decorators.post_only
 @csrf.csrf_exempt
 def handle_vote(request):
-    if request.method == 'POST':
-        nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
-        if nomination_vote_pk:
-            nomination = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
-            VoteNomination.objects.create(nomination=nomination)
-            #exclude done positions
+    nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
+    if nomination_vote_pk:
+        nomination_announcement = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
+        previous_vote = VoteNomination.objects.filter(nomination_announcement=nomination_announcement,
+                                                      user=request.user).exists()
+        if previous_vote:
+            raise Exception('سبق أن صوتّ لهذا المنصب')
+        else:
+            VoteNomination.objects.create(nomination_announcement=nomination_announcement,
+                                          user=request.user)
+
+
+
+
+            #if previous_vote:
+            #    raise Exception("سبق")
 
             # TODO: HANDLE THE VOTE
 
@@ -132,23 +138,24 @@ def handle_vote(request):
         # accordingly.
 
 
-        position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
-                                        .filter(announced_count__gte=2)\
-                                        .exclude(nomination__votenomination__user=request.user)
-        if request.user.is_superuser:
-            next_position = position_pool.first()
-        else:
-            next_position = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)\
-                                        .first()
-        if next_position:
-            nominations = []
-            for nomination in next_position.nominationannouncement_set.all():
-                nomination = {'pk': nomination.pk,
-                              'nominee_name': nomination.user.username,
-                              'plan': nomination.plan.url,
-                              'cv': nomination.cv.url}
-                nominations.append(nomination)
-            return {"position_name": next_position.title,
-                    "nominations": nominations}
-        else:
-            return {'done': 1}
+    position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+                                    .filter(announced_count__gte=2)\
+                                    .exclude(nominationannouncement__votenomination__user=request.user)
+    if request.user.is_superuser:
+        next_position = position_pool.first()
+    else:
+        next_position = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)\
+                                     .first()
+    if next_position:
+        nominations = []
+        for nomination in next_position.nominationannouncement_set.all():
+            nomination = {'pk': nomination.pk,
+                          'nominee_name': nomination.user.username,
+                          'plan': nomination.plan.url,
+                          'cv': nomination.cv.url}
+            nominations.append(nomination)
+        return {"position_title": next_position.title,
+                "nominations": nominations}
+    else:
+        qrcode_value = utils.get_ticket(request.user)
+        return {'done': 1, 'qrcode_value': qrcode_value}
