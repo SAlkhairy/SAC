@@ -114,37 +114,41 @@ def show_voting_index(request):
 @decorators.post_only
 @csrf.csrf_exempt
 def handle_vote(request):
-    nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
-    if nomination_vote_pk:
-        nomination = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
-        VoteNomination.objects.create(nomination=nomination)
-        # TODO: HANDLE THE VOTE
+    if request.method == 'POST':
+        nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
+        if nomination_vote_pk:
+            nomination = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
+            VoteNomination.objects.create(nomination=nomination)
+            #exclude done positions
 
-    # To be included, a position must have at least two announced
-    # nominations and must not have a previous vote by the current
-    # year.
-    #
-    # TODO: VoteNomination should be linked to NominationAnnouncement
-    # rather than Nomination.  The query below should be changed
-    # accordingly.
+            # TODO: HANDLE THE VOTE
 
-    position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
-                                    .filter(announced_count__gte=2)\
-                                    .exclude(nomination__votenomination__user=request.user)
-    if request.user.is_superuser:
-        next_position = position_pool.first()
-    else:
-        next_position = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)\
-                                     .first()
-    if next_position:
-        nominations = []
-        for nomination in next_position.nominationannouncement_set.all():
-            nomination = {'pk': nomination.pk,
-                          'nominee_name': nomination.user.username,
-                          'plan': nomination.plan.url,
-                          'cv': nomination.cv.url}
-            nominations.append(nomination)
-        return {"position_name": next_position.title,
-                "nominations": nominations}
-    else:
-        return {'done': 1}
+        # To be included, a position must have at least two announced
+        # nominations and must not have a previous vote by the current
+        # year.
+        #
+        # TODO: VoteNomination should be linked to NominationAnnouncement
+        # rather than Nomination.  The query below should be changed
+        # accordingly.
+
+
+        position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+                                        .filter(announced_count__gte=2)\
+                                        .exclude(nomination__votenomination__user=request.user)
+        if request.user.is_superuser:
+            next_position = position_pool.first()
+        else:
+            next_position = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)\
+                                        .first()
+        if next_position:
+            nominations = []
+            for nomination in next_position.nominationannouncement_set.all():
+                nomination = {'pk': nomination.pk,
+                              'nominee_name': nomination.user.username,
+                              'plan': nomination.plan.url,
+                              'cv': nomination.cv.url}
+                nominations.append(nomination)
+            return {"position_name": next_position.title,
+                    "nominations": nominations}
+        else:
+            return {'done': 1}

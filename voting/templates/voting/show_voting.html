@@ -19,10 +19,11 @@
     <div id="nominee-name"></div>
 
 
-    <button class="submit" id="vote2">Vote</button>
+    <button class="submit" id="vote">Vote</button>
 <div id="nominations">
 </div>
 </div>
+
 
 
 
@@ -49,8 +50,8 @@ $(document).ready(function(){
                 label.appendTo('#nominee-name');
                 radioBtn.appendTo('#nominee-name');
                 }
+                return radioBtn;
   console.log(data)
-
         }
       });
   });
@@ -59,26 +60,22 @@ $(document).ready(function(){
   $("#vote").click(function(){
       $.ajax({
         url: "{% url 'voting:handle_vote' %}",
-        data: {nomination_vote_pk: nomination_vote_pk},
+        data: ({nomination_vote_pk: 'nomination_vote_pk'}),
         method: "POST",
-        success: function(data){
-          var checked_nominee_radio = $('input:radio[name=rbtnCount]:checked').val();
-          if(checked_nominee_radio!=undefined)
+        success: function(data, radioBtn){
+          var checked_nominee_radio = $('input:radio[name=rbtnCount]:checked');
+          if(checked_nominee_radio!= undefined)
             {
-            var nomination_vote_pk = radioBtn.data('pk');
+            var nomination_vote_pk = radioBtn.pk;
             }
           if(checked_nominee_radio===undefined)
             {alert('Please select a nominee!');}
           else
-            {alert('Your chose "' +checked_nominee_radio + '"');}
-
+            {alert('You chose "' + nomination_vote_pk + '"');}
+console.log(data)
         }
       });
   });
-
-
-
-
 
 
 });
