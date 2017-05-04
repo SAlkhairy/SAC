@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}إحصائيات{% endblock %}
+{% block header %}
+{% endblock %}
+{% block content %}
+
+    <div id="flot-placeholder" style="width:300px;height:150px"></div>
+
+{% endblock %}
+{% block customscript %}
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        //$.plot($("#flot-placeholder"),
+        //       data,
+        //       options);
+        $.plot($("flot-placeholder"), [ [[0, 0], [1, 1]] ], { yaxis: { max: 1 } });
+    });
+    </script>
+
+{% endblock %}

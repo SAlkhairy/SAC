@@ -159,3 +159,7 @@ def handle_vote(request):
     else:
         qrcode_value = utils.get_ticket(request.user)
         return {'done': 1, 'qrcode_value': qrcode_value}
+
+
+def get_stats(request):
+    return HttpResponseRedirect(reverse("voting:stats"))

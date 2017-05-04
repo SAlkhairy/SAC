@@ -16,11 +16,16 @@
 <div style="display:none;" id="voting-section">
     <h2>التصويت ل<span id="position-title"></span></h2>
     <br>
-    <div id="nominations">
-        <span id="btn"></span> <span id="label"></span>
-    </div>
-    
-    <button class="submit" id="vote">Vote</button>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="panel panel-bd">
+                <div class="panel-body">
+                    <div id="container">
+                        <div id="nominations"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <button class="btn btn-success" id="vote">Vote</button>
 </div>
 
 
@@ -41,11 +46,17 @@ function constructChoices(data){
                 var label = $('<label for="' + radio_id + '">' + nomination.nominee_name + '</label>');
                 var radioBtn = $('<input type="radio" name="rbtnCount" id="nominee-' + nomination.pk +  '"/>');
                 radioBtn.data('pk', nomination.pk);
-                $('#btn').html(radioBtn);
-                //$('#btn').addClass("radio radio-succcess");
-                $('#label').html(label);
+                var box = $('<div id="'nominee-box' '+ radio_id +'" class="statistic-box"></div>');
+                var nomineeDiv = $('<div id="nomineeDiv" class="radio radio-success"></div>');
+                $('#nominations').append(box);
+                $('#nominee-box + radio_id').append(nomineeDiv);
+                $('#nomineeDiv').append(radioBtn);
+                $('#nomineeDiv').append(label);
                 }
 }
+
+
+
 
 
 // function isDone(data){} should this be made?
