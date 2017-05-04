@@ -115,17 +115,17 @@ def handle_vote(request):
         nomination_announcement = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
         previous_vote = VoteNomination.objects.filter(nomination_announcement=nomination_announcement,
                                                       user=request.user).exists()
-        if previous_vote:
-            raise Exception('سبق أن صوتّ لهذا المنصب')
+        if not request.user.is_superuser and \
+            request.user.profile.college not in\
+                nomination_announcement.position.colleges_allowed_to_vote:
+            raise PermissionDenied
         else:
-            VoteNomination.objects.create(nomination_announcement=nomination_announcement,
-                                          user=request.user)
+            if previous_vote:
+                raise Exception('سبق أن صوتّ لهذا المنصب')
+            else:
+                VoteNomination.objects.create(nomination_announcement=nomination_announcement,
+                                              user=request.user)
 
-
-
-
-            #if previous_vote:
-            #    raise Exception("سبق")
 
             # TODO: HANDLE THE VOTE
 

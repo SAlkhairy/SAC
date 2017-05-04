@@ -17,9 +17,9 @@
     <h2>التصويت ل<span id="position-title"></span></h2>
     <br>
     <div id="nominations">
-        <div class="radio radio-success" id="btn"></div>
+        <span id="btn"></span> <span id="label"></span>
     </div>
-
+    
     <button class="submit" id="vote">Vote</button>
 </div>
 
@@ -41,8 +41,9 @@ function constructChoices(data){
                 var label = $('<label for="' + radio_id + '">' + nomination.nominee_name + '</label>');
                 var radioBtn = $('<input type="radio" name="rbtnCount" id="nominee-' + nomination.pk +  '"/>');
                 radioBtn.data('pk', nomination.pk);
-                label.appendTo('#btn');
-                radioBtn.appendTo('#btn');
+                $('#btn').html(radioBtn);
+                //$('#btn').addClass("radio radio-succcess");
+                $('#label').html(label);
                 }
 }
 
@@ -69,18 +70,22 @@ function constructChoices(data){
   $("#vote").click(function(){
       var checked_nominee_radio = $('input:radio[name=rbtnCount]:checked');
       var nomination_vote_pk = checked_nominee_radio.data('pk')
-      $.ajax({
-        url: "{% url 'voting:handle_vote' %}",
-        data: ({nomination_vote_pk: nomination_vote_pk}),
-        method: "POST",
-        success: function(data){
-                      if (data.done == 1){
-                        alert("you're done!");
-                      }else{
-                        constructChoices(data);}
+      if (nomination_vote_pk == undefined){
+        alert('please choose')
+      }else{
+          $.ajax({
+            url: "{% url 'voting:handle_vote' %}",
+            data: ({nomination_vote_pk: nomination_vote_pk}),
+            method: "POST",
+            success: function(data){
+                          if (data.done == 1){
+                            alert("you're done!");
+                          }else{
+                            constructChoices(data);}
 
-        }
-      });
+            }
+          });
+      }
   });
 
 
