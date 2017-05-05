@@ -4,9 +4,6 @@
 {% endblock %}
 {% block content %}
 
-<div align="center">
-{{ qrcode_value|safe }}
-</div>
 
 <div id="introduction">
     <p>تعليمات هامة:...</p>
@@ -16,25 +13,34 @@
 <div style="display:none;" id="voting-section">
     <h2>التصويت ل<span id="position-title"></span></h2>
     <br>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+    <div align="center">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="panel panel-bd">
                 <div class="panel-body">
                     <div id="container">
-                        <div id="nominations"></div>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div align="center" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <button class="btn btn-success" id="vote">Vote</button>
+    </div>
 </div>
 
-
+<div id="ticket">
+    {{ qrcode_value|safe }}
+</div>
 
 
 {% endblock %}
 {% block customscript %}
 <script>
+
 $(document).ready(function(){
+
+    $('#ticket').hide();
 
 function constructChoices(data){
               $("#position-title").html(data.position_title);
@@ -44,18 +50,18 @@ function constructChoices(data){
                 var nomination = data.nominations[i];
                 var radio_id = 'nominee-' + nomination.pk;
                 var label = $('<label for="' + radio_id + '">' + nomination.nominee_name + '</label>');
-                var radioBtn = $('<input type="radio" name="rbtnCount" id="nominee-' + nomination.pk +  '"/>');
+                var radioBtn = $('<input type="radio" name="rbtnCount" id="' + radio_id +  '"/>');
                 radioBtn.data('pk', nomination.pk);
-                var box = $('<div id="'nominee-box' '+ radio_id +'" class="statistic-box"></div>');
+                var nominationsDiv = $('<div id="nominations" style="font-size:24px"></div>');
+                var box = $('<div class="statistic-box"></div>');
                 var nomineeDiv = $('<div id="nomineeDiv" class="radio radio-success"></div>');
-                $('#nominations').append(box);
-                $('#nominee-box + radio_id').append(nomineeDiv);
-                $('#nomineeDiv').append(radioBtn);
-                $('#nomineeDiv').append(label);
+                $('#container').append(nominationsDiv);
+                nominationsDiv.append(box);
+                box.append(nomineeDiv);
+                nomineeDiv.append(radioBtn);
+                nomineeDiv.append(label);
                 }
 }
-
-
 
 
 
@@ -82,15 +88,19 @@ function constructChoices(data){
       var checked_nominee_radio = $('input:radio[name=rbtnCount]:checked');
       var nomination_vote_pk = checked_nominee_radio.data('pk')
       if (nomination_vote_pk == undefined){
-        alert('please choose')
+        alert('رجاءً اختر/اختاري مرشحًا/مرشحة')
       }else{
+          $('#nominations').hide();
           $.ajax({
             url: "{% url 'voting:handle_vote' %}",
             data: ({nomination_vote_pk: nomination_vote_pk}),
             method: "POST",
             success: function(data){
                           if (data.done == 1){
-                            alert("you're done!");
+                            $('#nominations').hide();
+                            alert("انتهيت من التصويت");
+                            $('#ticket').show();
+
                           }else{
                             constructChoices(data);}
 

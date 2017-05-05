@@ -58,7 +58,7 @@ class SACYear(models.Model):
 
 class Position(models.Model):
     title = models.CharField(verbose_name="اسم المنصب",
-                             max_length=50)
+                             max_length=55)
     entity_choices = (
         ('club', 'نادي الطلاب'),
         ('council', 'المجلس الطلابي الاستشاري'),
