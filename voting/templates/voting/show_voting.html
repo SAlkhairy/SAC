@@ -18,7 +18,6 @@
             <div class="panel panel-bd">
                 <div class="panel-body">
                     <div id="container">
-
                     </div>
                 </div>
             </div>
@@ -29,9 +28,7 @@
     </div>
 </div>
 
-<div id="ticket">
-    {{ qrcode_value|safe }}
-</div>
+<div id="ticket" align="center"></div>
 
 
 {% endblock %}
@@ -40,12 +37,12 @@
 
 $(document).ready(function(){
 
-    $('#ticket').hide();
 
 function constructChoices(data){
               $("#position-title").html(data.position_title);
 
               var nominationsLength = data.nominations.length;
+              $('#container').html('');
               for (var i = 0; i < nominationsLength; i++) {
                 var nomination = data.nominations[i];
                 var radio_id = 'nominee-' + nomination.pk;
@@ -65,7 +62,14 @@ function constructChoices(data){
 
 
 
-// function isDone(data){} should this be made?
+function votingDone(data){
+    $('#voting-section').html("");
+    alert("انتهيت من التصويت");
+    var qrNote = $('  <p> يمكن الاحتفاظ بهذه التذكرة مرجعًا للأصوات التي أُدليت</p> ')
+    var qrCode = $('{{ qrcode_value|safe }}');
+    $('#ticket').append(qrNote);
+    $('#ticket').append(qrCode);
+}
 
 
   $("#start").click(function(){
@@ -76,7 +80,7 @@ function constructChoices(data){
               $("#introduction").hide();
               $("#voting-section").show();
               if (data.done == 1){
-                alert("you're done!");
+                votingDone(data);
               }else{
                 constructChoices(data);}
         }
@@ -90,20 +94,15 @@ function constructChoices(data){
       if (nomination_vote_pk == undefined){
         alert('رجاءً اختر/اختاري مرشحًا/مرشحة')
       }else{
-          $('#nominations').hide();
           $.ajax({
             url: "{% url 'voting:handle_vote' %}",
             data: ({nomination_vote_pk: nomination_vote_pk}),
             method: "POST",
             success: function(data){
-                          if (data.done == 1){
-                            $('#nominations').hide();
-                            alert("انتهيت من التصويت");
-                            $('#ticket').show();
-
-                          }else{
-                            constructChoices(data);}
-
+                if (data.done == 1){
+                    votingDone(data);
+                }else{
+                    constructChoices(data);}
             }
           });
       }
