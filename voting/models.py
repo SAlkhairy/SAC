@@ -49,7 +49,14 @@ class SACYear(models.Model):
         if not self.election_vote_start_datetime:
             return False
         else:
-            return self.election_vote_end_datetime > timezone.now()
+            #this needs a bit of thought
+            #whether voting is closed or yet to begin
+            #is_open = self.election_vote_start_datetime < timezone.now()\
+            #          and self.election_vote_end_datetime > timezone.now()
+            #to_be_open = self.election_vote_start_datetime > timezone.now()
+
+            return self.election_vote_start_datetime < timezone.now()\
+                   and self.election_vote_end_datetime > timezone.now()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)

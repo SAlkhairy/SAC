@@ -65,10 +65,22 @@ function constructChoices(data){
 function votingDone(data){
     $('#voting-section').html("");
     alert("انتهيت من التصويت");
-    var qrNote = $('  <p> يمكن الاحتفاظ بهذه التذكرة مرجعًا للأصوات التي أُدليت</p> ')
+    var qrNote = $('  <p><h2>شكرًا على مشاركتك</h2> <br>  يمكن الاحتفاظ بهذه التذكرة مرجعًا للأصوات التي أُدليت</p> ')
     var qrCode = $('{{ qrcode_value|safe }}');
     $('#ticket').append(qrNote);
     $('#ticket').append(qrCode);
+
+    function(){
+      $.ajax({
+        url: "{% url 'voting:handle_vote' %}",
+        method: "POST",
+        success: function(data){
+        if (data.votes){
+            var votesLength = data.votes.length;
+            for (var v = 0; v < votesLength; v++) {
+                
+            }
+        }
 }
 
 
