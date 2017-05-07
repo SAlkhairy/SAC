@@ -9,12 +9,17 @@
    text-align: right;
 }
 
-#voting-section, #club-logo, #council-logo{
+#voting-section, #club-logo, #council-logo, #note{
    display: none;
 }
 
 #club-logo, #council-logo{
    width: 150px;
+}
+
+#note{
+   text-align: center;
+   font-size: 20px;
 }
 
 #container label{
@@ -67,7 +72,8 @@
     <img id="club-logo" class="img-responsive" src="{% static 'images/logos/student-club.png' %}">
     <img id="council-logo" class="img-responsive" src="{% static 'images/logos/logo-no-text.png' %}">
 </div>
-    <h2>التصويت ل<span id="position-title"></span></h2>
+    <h2 class="text-center">التصويت ل<span id="position-title"></span></h2>
+<p id="note"><strong style="color: red">ملاحظة:</strong><span></span></p>
     <br>
     <div align="center">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -103,6 +109,12 @@ function constructChoices(data){
                   $("#club-logo").hide();
                   $("#council-logo").show();
               }
+              if (data.note){
+                  $("#note").show();
+                  $("#note span").html(data.note);
+              } else {
+                  $("#note").hide();
+              }
               $("#position-title").html(data.position_title);
               var nominationsLength = data.nominations.length;
               $('#container').html('');
@@ -110,10 +122,11 @@ function constructChoices(data){
                 var nomination = data.nominations[i];
                 var radio_id = 'nominee-' + nomination.pk;
                 var label = $('<label for="' + radio_id + '">' + nomination.nominee_name
-                                                               + '(<a href="' +  nomination.cv + '">السيرة الذاتية</a>، ' 
+                                                               + ' (<a href="' +  nomination.cv + '">السيرة الذاتية</a>، ' 
                                                                + ' <a href="' + nomination.plan + '">الخطّة</a>)</label>');
                 var radioBtn = $('<input type="radio" name="rbtnCount" id="' + radio_id +  '"/>');
                 radioBtn.data('pk', nomination.pk);
+                radioBtn.data('position_pk', data.position_pk);
                 var nominationsDiv = $('<div style="font-size:24px"></div>');
                 var box = $('<div class="statistic-box"></div>');
                 var nomineeDiv = $('<div ></div>'); // class="radio radio-success"
@@ -151,13 +164,16 @@ function votingDone(data){
 
   $("#vote").click(function(){
       var checked_nominee_radio = $('input:radio[name=rbtnCount]:checked');
-      var nomination_vote_pk = checked_nominee_radio.data('pk')
+      var nomination_vote_pk = checked_nominee_radio.data('pk');
+      var position_pk = checked_nominee_radio.data('position_pk');
       if (nomination_vote_pk == undefined){
-        alert('رجاءً اختر/اختاري مرشحًا/مرشحة')
-      }else{
-          $.ajax({
+        nomination_vote_pk = 'skip';
+        console.log(nomination_vote_pk);
+        position_pk = $('input:radio[name=rbtnCount]').data('position_pk')
+      }
+      $.ajax({
             url: "{% url 'voting:handle_vote' %}",
-            data: ({nomination_vote_pk: nomination_vote_pk}),
+            data: {nomination_vote_pk: nomination_vote_pk, position_pk: position_pk},
             method: "POST",
             success: function(data){
                 if (data.done == 1){
@@ -167,8 +183,7 @@ function votingDone(data){
                 } else {
                     constructChoices(data);
                 }
-          }});
-      }
+      }});
   });
 
 

@@ -90,6 +90,7 @@ class Position(models.Model):
     colleges_allowed_to_nominate = models.ManyToManyField(College,
                                                           verbose_name="الكليات المسموحة بالترشيح",
                                                           related_name='nominate')
+    note = models.TextField(verbose_name="ملاحظة", blank=True)
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
     year = models.ForeignKey(SACYear, verbose_name="السنة",)
@@ -159,7 +160,8 @@ class NominationAnnouncement(models.Model):
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
-    nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True)
+    position = models.ForeignKey(Position, verbose_name="المنصب", null=True)
+    nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True, blank=True)
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
@@ -168,11 +170,17 @@ class VoteNomination(models.Model):
         verbose_name_plural = 'الأصوات'
 
     def __unicode__(self):
-        try:
-            name = self.nomination_announcement.user.profile.get_ar_full_name()
-        except ObjectDoesNotExist:
-            # If no profile
-            name = self.nomination_announcement.user.username
+        if not self.nomination_announcement and \
+           self.position:
+            name = self.position.title
+        elif self.nomination_announcement:
+            try:
+                name = self.nomination_announcement.user.profile.get_ar_full_name()
+            except ObjectDoesNotExist:
+                # If no profile
+                name = self.nomination_announcement.user.username
+        else:
+            name = ""
         return "صوت لِ%s" % (name)
 
 class Referendum(models.Model):

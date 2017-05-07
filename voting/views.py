@@ -131,9 +131,17 @@ def handle_vote(request):
         raise Exception("التصويت غير مُتاح حاليًا!")
 
     nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
+    print nomination_vote_pk
     if nomination_vote_pk:
-        nomination_announcement = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
-        previous_vote = VoteNomination.objects.filter(nomination_announcement__position=nomination_announcement.position,
+        if nomination_vote_pk == 'skip':
+            position_pk = request.POST.get('position_pk')
+            nomination_announcement = None
+            position = Position.objects.get(pk=position_pk)
+        else:
+            nomination_announcement = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
+            position = nomination_announcement.position
+
+        previous_vote = VoteNomination.objects.filter(position=position,
                                                       user=request.user).exists()
         if previous_vote:
             raise Exception(u'سبق أن صوتّ لهذا المنصب')
@@ -144,11 +152,12 @@ def handle_vote(request):
             raise PermissionDenied
         else:
             VoteNomination.objects.create(nomination_announcement=nomination_announcement,
+                                          position=position,
                                           user=request.user)
 
     position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
                                     .filter(announced_count__gte=2)\
-                                    .exclude(nominationannouncement__votenomination__user=request.user)
+                                    .exclude(votenomination__user=request.user)
     if request.user.is_superuser:
         next_position = position_pool.first()
     else:
@@ -163,7 +172,9 @@ def handle_vote(request):
                           'cv': nomination.cv.url}
             nominations.append(nomination)
         return {"position_title": next_position.title,
-                "entity": next_position.entity, 
+                "position_pk": next_position.pk,
+                "entity": next_position.entity,
+                "note": next_position.note, 
                 "nominations": nominations}
     else:
         return {'done': 1}
