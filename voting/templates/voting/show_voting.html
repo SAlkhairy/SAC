@@ -1,16 +1,72 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load staticfiles %}
 {% block title %}التصويت{% endblock %}
 {% block header %}
 {% endblock %}
 {% block content %}
 
+<style>
+#container{
+   text-align: right;
+}
 
-<div id="introduction">
-    <p>تعليمات هامة:...</p>
+#voting-section, #club-logo, #council-logo{
+   display: none;
+}
+
+#club-logo, #council-logo{
+   width: 150px;
+}
+
+#container label{
+   margin-right: 10px;
+}
+{% if completed_voting %}
+#introductions{
+    display: none;
+}
+{% else %}
+#ticket{
+    display: none;
+}
+{% endif %}
+</style>
+
+<div id="ticket" class="text-center">
+<h2>شكرًا على مشاركتك</h2>
+<p>يمكن الاحتفاظ بهذه التذكرة مرجعًا للأصوات التي أُدليت</p>
+{{ qrcode_value|safe }}
+
+{% if votes %}
+
+<table class="text-right table table-hover">
+  <thead>
+    <th>المنصب</th>
+    <th>الترشيح</th>
+  </thead>
+  <tbody>
+  {% for vote in votes %}
+    <tr>
+      <td>{{ vote.nomination_announcement.position }}</td>
+      <td>{{ vote.nomination_announcement.user.profile.get_ar_full_name }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+</div>
+
+<div id="introductions" class="text-center">
+<h2>أهلا بكم في الترشيحات الطلابية!</h2>
+<p>هنا يرسم الطلاب والطالبات مستقبل نادي الطلاب والمجلس الاستشاري باختيار المرشحين والمرشحات لهذه المناصب!</p>
 <button class="btn btn-success" id="start">ابدأ التصويت!</button>
 </div>
 
-<div style="display:none;" id="voting-section">
+<div id="voting-section">
+<div class="row text-center">
+    <img id="club-logo" class="img-responsive" src="{% static 'images/logos/student-club.png' %}">
+    <img id="council-logo" class="img-responsive" src="{% static 'images/logos/logo-no-text.png' %}">
+</div>
     <h2>التصويت ل<span id="position-title"></span></h2>
     <br>
     <div align="center">
@@ -24,34 +80,43 @@
         </div>
     </div>
     <div align="center" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <button class="btn btn-success" id="vote">Vote</button>
+    <button class="btn btn-success" id="vote">التصويت</button>
     </div>
 </div>
-
-<div id="ticket" align="center"></div>
 
 
 {% endblock %}
 {% block customscript %}
+
+<script src="{% static 'bdtask/assets/plugins/toastr/toastr.min.js' %}"></script>
+<link rel="stylesheet" src="{% static 'bdtask/assets/plugins/toastr/toastr.css' %}">
 <script>
 
 $(document).ready(function(){
 
-
+toastr.options.positionClass = "toast-top-left";
 function constructChoices(data){
+              if (data.entity == 'club'){
+                  $("#club-logo").show();
+                  $("#council-logo").hide();
+              } else if (data.entity == 'council'){
+                  $("#club-logo").hide();
+                  $("#council-logo").show();
+              }
               $("#position-title").html(data.position_title);
-
               var nominationsLength = data.nominations.length;
               $('#container').html('');
               for (var i = 0; i < nominationsLength; i++) {
                 var nomination = data.nominations[i];
                 var radio_id = 'nominee-' + nomination.pk;
-                var label = $('<label for="' + radio_id + '">' + nomination.nominee_name + '</label>');
+                var label = $('<label for="' + radio_id + '">' + nomination.nominee_name
+                                                               + '(<a href="' +  nomination.cv + '">السيرة الذاتية</a>، ' 
+                                                               + ' <a href="' + nomination.plan + '">الخطّة</a>)</label>');
                 var radioBtn = $('<input type="radio" name="rbtnCount" id="' + radio_id +  '"/>');
                 radioBtn.data('pk', nomination.pk);
-                var nominationsDiv = $('<div id="nominations" style="font-size:24px"></div>');
+                var nominationsDiv = $('<div style="font-size:24px"></div>');
                 var box = $('<div class="statistic-box"></div>');
-                var nomineeDiv = $('<div id="nomineeDiv" class="radio radio-success"></div>');
+                var nomineeDiv = $('<div ></div>'); // class="radio radio-success"
                 $('#container').append(nominationsDiv);
                 nominationsDiv.append(box);
                 box.append(nomineeDiv);
@@ -60,27 +125,9 @@ function constructChoices(data){
                 }
 }
 
-
-
 function votingDone(data){
-    $('#voting-section').html("");
-    alert("انتهيت من التصويت");
-    var qrNote = $('  <p><h2>شكرًا على مشاركتك</h2> <br>  يمكن الاحتفاظ بهذه التذكرة مرجعًا للأصوات التي أُدليت</p> ')
-    var qrCode = $('{{ qrcode_value|safe }}');
-    $('#ticket').append(qrNote);
-    $('#ticket').append(qrCode);
-
-    function(){
-      $.ajax({
-        url: "{% url 'voting:handle_vote' %}",
-        method: "POST",
-        success: function(data){
-        if (data.votes){
-            var votesLength = data.votes.length;
-            for (var v = 0; v < votesLength; v++) {
-                
-            }
-        }
+    $('#voting-section').hide();
+    $('#ticket').show();
 }
 
 
@@ -89,10 +136,12 @@ function votingDone(data){
         url: "{% url 'voting:handle_vote' %}",
         method: "POST",
         success: function(data){
-              $("#introduction").hide();
+              $("#introductions").hide();
               $("#voting-section").show();
               if (data.done == 1){
                 votingDone(data);
+              }else if (data.success == 0){
+                toastr.danger(data.message);
               }else{
                 constructChoices(data);}
         }
@@ -113,10 +162,12 @@ function votingDone(data){
             success: function(data){
                 if (data.done == 1){
                     votingDone(data);
-                }else{
-                    constructChoices(data);}
-            }
-          });
+                }else if (data.success == 0){
+                    toastr.danger(data.message);
+                } else {
+                    constructChoices(data);
+                }
+          }});
       }
   });
 

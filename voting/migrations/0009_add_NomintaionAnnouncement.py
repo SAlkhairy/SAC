@@ -30,4 +30,9 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': '\u0627\u0644\u0645\u0631\u0634\u062d\u0648\u0646/\u0627\u0644\u0645\u0631\u0634\u0651\u062d\u0627\u062a \u0627\u0644\u0645\u0624\u0647\u0644\u0648\u0646/\u0627\u0644\u0645\u0624\u0647\u0644\u0627\u062a',
             },
         ),
+        migrations.RemoveField(
+            model_name='nominationannouncement',
+            name='certificates',
+        ),
+
     ]

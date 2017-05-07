@@ -184,10 +184,15 @@ footer a{
                                 {% endif %}
                         </li>
                         <li class="treeview">
-                            <a href="#">
+                            <a {% if sac_year.is_voting_open %}href="{% url 'voting:show_voting_index' %}"{% else %}{% endif %}>
                                 <i class="ti-pencil-alt"></i> <span>التصويت!</span>
+
                                         <span class="pull-right-container">
-                                            <small class="label pull-right bg-green">ليس بعد!</small>
+                                           {% if sac_year.is_voting_open %}
+                                            <small class="label pull-right bg-green">بدأ التصويت!</small>
+                                           {% else %}
+                                            <small class="label pull-right bg-green">لم يبدأ بعد!</small>
+                                           {% endif %}
                                         </span>
                             </a>
                         </li>

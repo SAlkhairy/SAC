@@ -14,12 +14,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name='nominationannouncement',
-            name='certificates',
-            field=models.FileField(default='empty', upload_to=b'', verbose_name='\u0627\u0644\u0634\u0647\u0627\u062f\u0627\u062a \u0648\u0627\u0644\u0645\u0633\u0627\u0647\u0645\u0627\u062a'),
-            preserve_default=False,
-        ),
-        migrations.AlterField(
-            model_name='nominationannouncement',
             name='cv',
             field=models.FileField(default='empty', upload_to=b'', verbose_name='\u0627\u0644\u0633\u064a\u0631\u0629 \u0627\u0644\u0630\u0627\u062a\u064a\u0629'),
             preserve_default=False,
