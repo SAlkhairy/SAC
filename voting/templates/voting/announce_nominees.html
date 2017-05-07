@@ -15,8 +15,10 @@
     <p class="alert alert-warning" style="color: black; font-size: 18px;">ما زالت الترشيحات جارية.</p>
 {% else %}
 
-    {% for position in positions %}
-        <p style="font-size: 20px;">* المنصب: {{position.title}}</p>
+    {% for position_city, positions in per_city %}
+        <h2>مناصب {{ position_city }}</h2>
+       {% for position in positions %}
+        <p style="font-size: 20px;">المنصب: {{position.title}}</p>
         <br>
         <div class="row">
             {% for nomination in position.nominationannouncement_set.all %}
@@ -37,7 +39,7 @@
                 </div>
             {% endfor %}
         </div>
+       {% endfor %}
     {% endfor %}
-
 {% endif %}
 {% endblock %}
