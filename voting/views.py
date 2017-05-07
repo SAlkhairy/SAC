@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators import csrf
-from .models import SACYear, Position, Nomination, NominationAnnouncement, VoteNomination
+from .models import SACYear, Position, Nomination, NominationAnnouncement, VoteNomination, city_choices
 from .forms import NominationForm
 from . import decorators
 
@@ -84,13 +84,18 @@ def show_nomination(request, position_id, nomination_id):
 
 def announce_nominees(request, entity):
     current_year = SACYear.objects.get_current()
+    context = {}
     if current_year.is_announcement_due():
         if entity in ['club', 'council']:
-            positions = Position.objects\
-               .filter(entity=entity)\
-               .annotate(nomination_count=Count('nominationannouncement'))\
-               .filter(nomination_count__gt=1)
-            context = {'entity': entity, 'positions': positions}
+            per_city = []
+            for city_code, city_name in city_choices:
+                position = Position.objects\
+                                   .filter(entity=entity, city=city_code)\
+                                   .annotate(nomination_count=Count('nominationannouncement'))\
+                                   .filter(nomination_count__gt=1)
+                per_city.append((city_name, position))
+            context = {'entity': entity, 'per_city': per_city}
+            
         else:
             raise Http404
 

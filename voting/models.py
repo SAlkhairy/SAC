@@ -7,6 +7,14 @@ from django.utils import timezone
 from accounts.models import Profile, College
 from .managers import YearQuerySet
 
+city_choices = (
+    ('', 'عامة'),
+    ('R', 'الرياض'),
+    ('J', 'جدة'),
+    ('A', 'الأحساء'),
+    )
+
+
 class SACYear(models.Model):
     start_date = models.DateTimeField(verbose_name="تاريخ البداية")
     end_date = models.DateTimeField(verbose_name="تاريخ النهاية")
@@ -67,6 +75,8 @@ class Position(models.Model):
                               default="club",
                               max_length=50,
                               choices=entity_choices)
+    city = models.CharField("المدينة", max_length=1, blank=True,
+                            default="", choices=city_choices)
     colleges_allowed_to_vote = models.ManyToManyField(College,
                                                       verbose_name="الكليات المسموحة بالتصويت",
                                                       related_name='vote')
@@ -124,6 +134,20 @@ class NominationAnnouncement(models.Model):
             # If no profile
             name = self.user.username
         return "تأهُّل %s لِ%s" % (name, self.position.title)
+
+
+class NominationAnnouncement(models.Model):
+    plan = models.FileField(verbose_name="الخطة")
+    cv = models.FileField(verbose_name="السيرة الذاتية")
+    user = models.ForeignKey(User, verbose_name="المرشَّح")
+    position = models.ForeignKey(Position, verbose_name="المنصب")
+
+    class Meta:
+        verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
+        verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
+
+    def __unicode__(self):
+        return "تأهُّل %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
 
 
 class VoteNomination(models.Model):

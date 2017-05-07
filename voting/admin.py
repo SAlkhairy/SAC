@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib import admin
 from voting.models import Position, SACYear, Nomination, NominationAnnouncement, VoteNomination
-
+from voting.models import Position, SACYear, Nomination, NominationAnnouncement
 
 def make_rejected(ModelAdmin, request, queryset):
     queryset.update(is_rejected=True)
