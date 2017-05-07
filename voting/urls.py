@@ -15,4 +15,5 @@ urlpatterns = [
 
     url(r'^announce_(?P<entity>(club|council))_nominees/$', voting_views.announce_nominees, name='announce_nominees'),
     url(r'^voting_closed/$', TemplateView.as_view(template_name="voting/voting_closed.html"), name='voting_closed'),
+    url(r'^get_stats/$', TemplateView.as_view(template_name="voting/stats.html"), name='stats')
 ]

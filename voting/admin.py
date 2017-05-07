@@ -1,8 +1,8 @@
 # -*- coding: utf-8  -*-
 from __future__ import unicode_literals
 from django.contrib import admin
-from voting.models import Position, SACYear, Nomination, NominationAnnouncement, VoteNomination
-from voting.models import Position, SACYear, Nomination, NominationAnnouncement
+from voting.models import Position, SACYear, Nomination,\
+                          NominationAnnouncement, VoteNomination
 
 def make_rejected(ModelAdmin, request, queryset):
     queryset.update(is_rejected=True)
@@ -32,8 +32,12 @@ class NominationAdmin(admin.ModelAdmin):
 class PositionAdmin(admin.ModelAdmin):
     list_filter = ['entity', 'year']
 
+class VoteNominationAdmin(admin.ModelAdmin):
+    list_filter = ['nomination_announcement__position',
+                   'nomination_announcement__position__entity']
+
 admin.site.register(Nomination, NominationAdmin)
 admin.site.register(NominationAnnouncement)
 admin.site.register(Position, PositionAdmin)
-admin.site.register(VoteNomination)
+admin.site.register(VoteNomination, VoteNominationAdmin)
 admin.site.register(SACYear)
