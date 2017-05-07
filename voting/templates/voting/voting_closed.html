@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}انتهاء فترة التصويت{% endblock %}
+{% block header %}
+                        <h1>انتهاء فترة التصويت</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                            <li class="active">انتهاء فترة التصويت</li>
+                        </ol>
+{% endblock %}
+{% block content %}
+
+
+
+<p class="text-center" style="font-size: 25px;"><i class="fa fa-exclamation-triangle fa-4x"></i>
+    <br>انتهت فترة التصويت لعام {{ sac_year.get_next_year_name }}
+    ، وستُعلن النتائج
+</p>
+
+{% endblock %}

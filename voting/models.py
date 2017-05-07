@@ -1,6 +1,7 @@
 # -*- coding: utf-8  -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils import timezone
 from accounts.models import Profile, College
@@ -56,7 +57,14 @@ class SACYear(models.Model):
         if not self.election_vote_start_datetime:
             return False
         else:
-            return self.election_vote_end_datetime > timezone.now()
+            #this needs a bit of thought
+            #whether voting is closed or yet to begin
+            #is_open = self.election_vote_start_datetime < timezone.now()\
+            #          and self.election_vote_end_datetime > timezone.now()
+            #to_be_open = self.election_vote_start_datetime > timezone.now()
+
+            return self.election_vote_start_datetime < timezone.now()\
+                   and self.election_vote_end_datetime > timezone.now()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)
@@ -65,7 +73,7 @@ class SACYear(models.Model):
 
 class Position(models.Model):
     title = models.CharField(verbose_name="اسم المنصب",
-                             max_length=50)
+                             max_length=55)
     entity_choices = (
         ('club', 'نادي الطلاب'),
         ('council', 'المجلس الطلابي الاستشاري'),
@@ -109,7 +117,31 @@ class Nomination(models.Model):
         verbose_name_plural = 'المرشحون/المرشّحات'
 
     def __unicode__(self):
-        return "ترشّح %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
+        try:
+            name = self.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.user.username
+        return "ترشّح %s لِ%s" % (name, self.position.title)
+
+class NominationAnnouncement(models.Model):
+    plan = models.FileField(verbose_name="الخطة", default="")
+    cv = models.FileField(verbose_name="السيرة الذاتية", default="")
+    user = models.ForeignKey(User, verbose_name="المرشَّح", default="")
+    position = models.ForeignKey(Position, verbose_name="المنصب")
+
+    class Meta:
+        verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
+        verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
+
+    def __unicode__(self):
+        try:
+            name = self.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.user.username
+        return "تأهُّل %s لِ%s" % (name, self.position.title)
+
 
 class NominationAnnouncement(models.Model):
     plan = models.FileField(verbose_name="الخطة")
@@ -127,10 +159,21 @@ class NominationAnnouncement(models.Model):
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
-    nomination = models.ForeignKey(Nomination, verbose_name="المرشَّح")
+    nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True)
     submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
 
+    class Meta:
+        verbose_name = 'صوت'
+        verbose_name_plural = 'الأصوات'
+
+    def __unicode__(self):
+        try:
+            name = self.nomination_announcement.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.nomination_announcement.user.username
+        return "صوت لِ%s" % (name)
 
 class Referendum(models.Model):
     year = models.CharField(verbose_name="السنة", max_length=4)

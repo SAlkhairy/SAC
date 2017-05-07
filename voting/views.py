@@ -1,11 +1,16 @@
+# -*- coding: utf-8  -*-
+
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
-from django.db.models import Count
-from .models import SACYear, Position, Nomination, city_choices
+from django.views.decorators import csrf
+from .models import SACYear, Position, Nomination, NominationAnnouncement, VoteNomination, city_choices
 from .forms import NominationForm
+from . import decorators, utils
+from django.db.models import Count
+
 
 def show_index(request):
     if request.user.is_authenticated():
@@ -93,3 +98,77 @@ def announce_nominees(request, entity):
             raise Http404
 
     return render(request, 'voting/announce_nominees.html', context)
+
+@login_required
+def show_voting_index(request):
+    current_year = SACYear.objects.get_current()
+    if not current_year.is_voting_open():
+        return HttpResponseRedirect(reverse("voting:voting_closed"))
+    else:
+        position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+                                        .filter(announced_count__gte=2)\
+                                        .exclude(nominationannouncement__votenomination__user=request.user)\
+                                        .order_by('entity')
+        if position_pool.exists():
+            completed_voting = False
+            votes = VoteNomination.objects.none()
+        else:
+            completed_voting = True
+            votes = VoteNomination.objects.filter(user=request.user)
+        qrcode_value = utils.get_ticket(request.user)
+        context = {'qrcode_value': qrcode_value,
+                   'completed_voting': completed_voting,
+                   'votes': votes}
+        return render(request,'voting/show_voting.html', context)
+
+@login_required
+@decorators.ajax_only
+@decorators.post_only
+@csrf.csrf_exempt
+def handle_vote(request):
+    current_year = SACYear.objects.get_current()
+    if not current_year.is_voting_open():
+        raise Exception("التصويت غير مُتاح حاليًا!")
+
+    nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
+    if nomination_vote_pk:
+        nomination_announcement = NominationAnnouncement.objects.get(pk=nomination_vote_pk)
+        previous_vote = VoteNomination.objects.filter(nomination_announcement__position=nomination_announcement.position,
+                                                      user=request.user).exists()
+        if previous_vote:
+            raise Exception(u'سبق أن صوتّ لهذا المنصب')
+
+        if not request.user.is_superuser and \
+           not request.user.profile.college in\
+               nomination_announcement.position.colleges_allowed_to_vote:
+            raise PermissionDenied
+        else:
+            VoteNomination.objects.create(nomination_announcement=nomination_announcement,
+                                          user=request.user)
+
+    position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+                                    .filter(announced_count__gte=2)\
+                                    .exclude(nominationannouncement__votenomination__user=request.user)
+    if request.user.is_superuser:
+        next_position = position_pool.first()
+    else:
+        next_position = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)\
+                                     .first()
+    if next_position:
+        nominations = []
+        for nomination in next_position.nominationannouncement_set.order_by('user__profile__ar_first_name'):
+            nomination = {'pk': nomination.pk,
+                          'nominee_name': nomination.user.profile.get_ar_full_name(),
+                          'plan': nomination.plan.url,
+                          'cv': nomination.cv.url}
+            nominations.append(nomination)
+        return {"position_title": next_position.title,
+                "entity": next_position.entity, 
+                "nominations": nominations}
+    else:
+        return {'done': 1}
+
+
+
+def get_stats(request):
+    return HttpResponseRedirect(reverse("voting:stats"))
