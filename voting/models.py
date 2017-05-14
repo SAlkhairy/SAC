@@ -111,7 +111,8 @@ class Position(models.Model):
         if not total_count:
             return 0
         blank_count = self.votenomination_set.filter(nomination_announcement__isnull=True).count()
-        return float(blank_count) / float(total_count) * 100
+        percentage = float(blank_count) / float(total_count) * 100
+        return "{:.2f}".format(percentage)
 
     def __unicode__(self):
         return self.title
@@ -154,7 +155,8 @@ class NominationAnnouncement(models.Model):
         if not total_count:
             return 0
         nomination_count = self.votenomination_set.count()
-        return float(nomination_count) / float(total_count) * 100
+        percentage = float(nomination_count) / float(total_count) * 100
+        return "{:.2f}".format(percentage)
 
     def __unicode__(self):
         try:
