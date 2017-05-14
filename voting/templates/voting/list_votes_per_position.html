@@ -22,7 +22,7 @@
        <td>{{ vote.user.profile.get_ar_full_name|default:vote.user.username }}</td>
        <td>{{ vote.user.profile.student_id }}</td>
        <td>{{ vote.user.profile.college }}</td>
-       <td>{{ vote.nomination_announcement.user.profile.get_ar_full_name }}</td>
+       <td>{% if not vote.nomination_announcement %}امتناع عن التصويت{% else %}{{ vote.nomination_announcement.user.profile.get_ar_full_name }}{% endif %}</td>
        <td data-order="{{ vote.submission_date|date:"U" }}">{{ vote.submission_date }}</td>
     </tr>
     {% endfor %}
