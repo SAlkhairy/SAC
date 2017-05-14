@@ -5,6 +5,11 @@
 هنا نستعرض نتائج الانتخابات!
 {% endblock %}
 {% block content %}
+<style>
+.table-striped tr.blank{
+ background-color: #cfcfcf
+}
+</style>
 
 {% for position in election_positions %}
 {% cycle "<div class='row'>" '' '' %} 
@@ -25,7 +30,7 @@
        <td>{{ nominaton.get_percentage }}%</td>
     <tr>
 {% endfor %}
-    <tr>
+    <tr class="blank">
        <td>امتناع عن التصويت</td>
        <td>{{ position.get_blank_vote_count }}</td>
        <td>{{ position.get_blank_vote_percentage }}%</td>
