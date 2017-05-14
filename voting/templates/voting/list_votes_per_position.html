@@ -2,6 +2,12 @@
 {% block title %}أصوات {{ position.title }}{% endblock %}
 {% block header %}
 <h1>أصوات {{ position.title }}</h1>
+                        <small>بوابة ترابط</small>
+                        <ol class="breadcrumb">
+                            <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+                            <li><a href="{% url 'voting:indicators' %}">مؤشرات التصويت</a></li>
+                            <li class="active">أصوات {{ position.title }}</li>
+                        </ol>
 {% endblock %}
 {% block content %}
 <table class="datatable table table-bordered table-striped table-hover">
