@@ -178,7 +178,7 @@ def indicators(request):
         raise PermissionDenied
 
     election_positions = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
-                                         .filter(announced_count__gte=2)
+                                         .filter(announced_count__gte=2).order_by('entity', 'city')
     context = {'election_positions': election_positions}
 
     return render(request, 'voting/indicators.html', context)

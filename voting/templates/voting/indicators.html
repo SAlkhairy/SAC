@@ -2,13 +2,14 @@
 {% block title %}مؤشرات التصويت{% endblock %}
 {% block header %}
 <h1>مؤشرات التصويت</h1>
+هنا نستعرض نتائج الانتخابات!
 {% endblock %}
 {% block content %}
 
 {% for position in election_positions %}
-
-<div class="col-sm-6 col-md-4">
-<h2><a href="{% url 'voting:list_votes_per_position' position.pk %}">{{ position.title }}</a></h2>
+{% cycle "<div class='row'>" '' '' %} 
+<div class="col-sm-4">
+<h2>{{ position.get_entity_display }}: <a href="{% url 'voting:list_votes_per_position' position.pk %}">{{ position.title }}</a></h2>
 <table class="datatable table table-bordered table-striped table-hover">
   <thead>
     <tr>
@@ -27,6 +28,7 @@
   </tbody>
 </table>
 </div>
+{% cycle '' '' '</div>' %}
 {% endfor %}
 
 {% endblock %}

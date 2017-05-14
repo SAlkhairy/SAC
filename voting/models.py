@@ -99,6 +99,20 @@ class Position(models.Model):
         verbose_name = 'المنصب'
         verbose_name_plural = 'المناصب'
 
+    def get_total_votes(self):
+        total_count = self.votenomination_set.count()
+        return total_count
+
+    def get_blank_vote_count(self):
+        return self.votenomination_set.filter(nomination_announcement__isnull=True).count()
+
+    def get_blank_vote_percentage(self):
+        total_count = self.get_total_votes()
+        if not total_count:
+            return 0
+        blank_count = self.votenomination_set.filter(nomination_announcement__isnull=True).count()
+        return float(blank_count) / float(total_count) * 100
+
     def __unicode__(self):
         return self.title
 
@@ -136,11 +150,11 @@ class NominationAnnouncement(models.Model):
         verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
 
     def get_percentage(self):
-        total_count = self.position.votenomination_set.count()
+        total_count = self.position.get_total_votes()
         if not total_count:
-            return
+            return 0
         nomination_count = self.votenomination_set.count()
-        return float(nomination_count) / float(total_count)
+        return float(nomination_count) / float(total_count) * 100
 
     def __unicode__(self):
         try:
@@ -149,21 +163,6 @@ class NominationAnnouncement(models.Model):
             # If no profile
             name = self.user.username
         return "تأهُّل %s لِ%s" % (name, self.position.title)
-
-
-class NominationAnnouncement(models.Model):
-    plan = models.FileField(verbose_name="الخطة")
-    cv = models.FileField(verbose_name="السيرة الذاتية")
-    user = models.ForeignKey(User, verbose_name="المرشَّح")
-    position = models.ForeignKey(Position, verbose_name="المنصب")
-
-    class Meta:
-        verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
-        verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
-
-    def __unicode__(self):
-        return "تأهُّل %s لِ%s" % (self.user.profile.get_ar_full_name(), self.position.title)
-
 
 class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
