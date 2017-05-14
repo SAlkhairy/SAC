@@ -1,0 +1,55 @@
+{% extends 'base.html' %}{% load staticfiles %}
+{% block title %}مؤشرات التصويت{% endblock %}
+{% block header %}
+<h1>مؤشرات التصويت</h1>
+{% endblock %}
+{% block content %}
+
+{% for position in election_positions %}
+
+<div class="col-sm-6 col-md-4">
+<h2><a href="{% url 'voting:list_votes_per_position' position.pk %}">{{ position.title }}</a></h2>
+<table class="datatable table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>المُرشّحـ/ـة</th>
+      <th>عدد الأصوات</th>
+      <th>النسبة</th>
+    </tr>
+  <tbody>
+{% for nominaton in position.nominationannouncement_set.all %}
+    <tr>
+       <td>{{ nominaton.user.profile.get_ar_full_name }}</td>
+       <td>{{ nominaton.votenomination_set.count }}</td>
+       <td>{{ nominaton.get_percentage }}%</td>
+    <tr>
+{% endfor %}
+  </tbody>
+</table>
+</div>
+{% endfor %}
+
+{% endblock %}
+{% block customscript %}
+<link rel="stylesheet" href="{% static 'bdtask/assets/plugins/datatables/dataTables.min.css' %}">
+<script src="{% static 'bdtask/assets/plugins/datatables/dataTables.min.js' %}"></script>
+<script>
+        language = {% include 'js/dataTables-arabic.json' %};
+$(function(){
+   $(".datatable").DataTable({
+                    dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    buttons: [
+                        {extend: 'copy', className: 'btn-sm'},
+                        {extend: 'excel', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'pdf', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'print', className: 'btn-sm'}
+                    ], 
+                    order: [[5, 'desc']],
+                    language: language});
+});
+
+</script>
+
+
+{% endblock %}

@@ -1,15 +1,16 @@
 # -*- coding: utf-8  -*-
-
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators import csrf
-from .models import SACYear, Position, Nomination, NominationAnnouncement, VoteNomination, city_choices
 from .forms import NominationForm
+from .models import SACYear, Position, Nomination, \
+                    NominationAnnouncement, VoteNomination, \
+                    city_choices
 from . import decorators, utils
-from django.db.models import Count
 
 
 def show_index(request):
@@ -24,14 +25,11 @@ def list_positions(request, entity):
     if not current_year.is_nomination_open():
         return HttpResponseRedirect(reverse("voting:closed"))
 
-    if entity in ['club', 'council']:
-        user_nominations = Nomination.objects.filter(position__entity=entity,
-                                                     user=request.user)
-        positions = Position.objects.filter(entity=entity)
-        if not request.user.is_superuser:
-            positions = positions.filter(colleges_allowed_to_nominate=request.user.profile.college)
-    else:
-        raise Http404
+    user_nominations = Nomination.objects.filter(position__entity=entity,
+                                                 user=request.user)
+    positions = Position.objects.filter(entity=entity)
+    if not request.user.is_superuser:
+        positions = positions.filter(colleges_allowed_to_nominate=request.user.profile.college)
 
     context = {'user_nominations': user_nominations,
                'positions': positions}
@@ -62,7 +60,6 @@ def add_nominee(request, position_id):
             form = NominationForm(request.POST, request.FILES, instance=instance)
             if form.is_valid():
                 instance = form.save()
-                print instance.pk
                 return HttpResponseRedirect(reverse("voting:nomination_thanks", args=(position.pk,)))
         elif request.method == 'GET':
             form = NominationForm()
@@ -84,18 +81,15 @@ def announce_nominees(request, entity):
     current_year = SACYear.objects.get_current()
     context = {}
     if current_year.is_announcement_due():
-        if entity in ['club', 'council']:
-            per_city = []
-            for city_code, city_name in city_choices:
-                position = Position.objects\
-                                   .filter(entity=entity, city=city_code)\
-                                   .annotate(nomination_count=Count('nominationannouncement'))\
-                                   .filter(nomination_count__gt=1)
-                per_city.append((city_name, position))
-            context = {'entity': entity, 'per_city': per_city}
-            
-        else:
-            raise Http404
+        per_city = []
+        for city_code, city_name in city_choices:
+            positions = Position.objects\
+                               .filter(entity=entity, city=city_code)\
+                               .annotate(nomination_count=Count('nominationannouncement'))\
+                               .filter(nomination_count__gt=1)
+            if positions.exists():
+                per_city.append((city_name, positions))
+        context = {'entity': entity, 'per_city': per_city}
 
     return render(request, 'voting/announce_nominees.html', context)
 
@@ -131,7 +125,6 @@ def handle_vote(request):
         raise Exception("التصويت غير مُتاح حاليًا!")
 
     nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
-    print nomination_vote_pk
     if nomination_vote_pk:
         if nomination_vote_pk == 'skip':
             position_pk = request.POST.get('position_pk')
@@ -179,7 +172,27 @@ def handle_vote(request):
     else:
         return {'done': 1}
 
+@login_required
+def indicators(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied
 
+    election_positions = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+                                         .filter(announced_count__gte=2)
+    context = {'election_positions': election_positions}
+
+    return render(request, 'voting/indicators.html', context)
+
+@login_required
+def list_votes_per_position(request, position_id):
+    if not request.user.is_superuser:
+        raise PermissionDenied
+
+    position = get_object_or_404(Position, pk=position_id)
+    votes = VoteNomination.objects.filter(position=position)
+    context = {'position': position, 'votes': votes}
+
+    return render(request, 'voting/list_votes_per_position.html', context)
 
 def get_stats(request):
     return HttpResponseRedirect(reverse("voting:stats"))

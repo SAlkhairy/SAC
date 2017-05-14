@@ -135,6 +135,13 @@ class NominationAnnouncement(models.Model):
         verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
         verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
 
+    def get_percentage(self):
+        total_count = self.position.votenomination_set.count()
+        if not total_count:
+            return
+        nomination_count = self.votenomination_set.count()
+        return float(nomination_count) / float(total_count)
+
     def __unicode__(self):
         try:
             name = self.user.profile.get_ar_full_name()

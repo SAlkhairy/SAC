@@ -1,0 +1,55 @@
+{% extends 'base.html' %}{% load staticfiles %}
+{% block title %}أصوات {{ position.title }}{% endblock %}
+{% block header %}
+<h1>أصوات {{ position.title }}</h1>
+{% endblock %}
+{% block content %}
+<table class="datatable table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>المُصوّتـ/ـة</th>
+      <th>الرقم الجامعي</th>
+      <th>الكلية</th>
+      <th>المُرشّحـ/ـة</th>
+      <th>تاريخ التصويت</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for vote in votes %}
+    <tr>
+       <td>{{ vote.pk }}</td>
+       <td>{{ vote.user.profile.get_ar_full_name|default:vote.user.username }}</td>
+       <td>{{ vote.user.profile.student_id }}</td>
+       <td>{{ vote.user.profile.college }}</td>
+       <td>{{ vote.nomination_announcement.user.profile.get_ar_full_name }}</td>
+       <td data-order="{{ vote.submission_date|date:"U" }}">{{ vote.submission_date }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
+{% block customscript %}
+<link rel="stylesheet" href="{% static 'bdtask/assets/plugins/datatables/dataTables.min.css' %}">
+<script src="{% static 'bdtask/assets/plugins/datatables/dataTables.min.js' %}"></script>
+<script>
+        language = {% include 'js/dataTables-arabic.json' %};
+$(function(){
+   $(".datatable").DataTable({
+                    dom: "<'row'<'col-sm-4'l><'col-sm-4 text-center'B><'col-sm-4'f>>tp",
+                    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    buttons: [
+                        {extend: 'copy', className: 'btn-sm'},
+                        {extend: 'excel', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'pdf', title: 'ExampleFile', className: 'btn-sm'},
+                        {extend: 'print', className: 'btn-sm'}
+                    ], 
+                    order: [[5, 'desc']],
+                    language: language});
+});
+
+</script>
+
+
+{% endblock %}
