@@ -96,13 +96,16 @@ def announce_nominees(request, entity):
 @login_required
 def show_voting_index(request):
     current_year = SACYear.objects.get_current()
-    if not current_year.is_voting_open():
+    if not request.user.is_superuser and not current_year.is_voting_open():
         return HttpResponseRedirect(reverse("voting:voting_closed"))
     else:
         position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
                                         .filter(announced_count__gte=2)\
-                                        .exclude(nominationannouncement__votenomination__user=request.user)\
+                                        .exclude(votenomination__user=request.user)\
                                         .order_by('entity')
+        if request.user.profile:
+            position_pool = position_pool.filter(colleges_allowed_to_vote=request.user.profile.college)
+
         if position_pool.exists():
             completed_voting = False
             votes = VoteNomination.objects.none()
@@ -121,7 +124,7 @@ def show_voting_index(request):
 @csrf.csrf_exempt
 def handle_vote(request):
     current_year = SACYear.objects.get_current()
-    if not current_year.is_voting_open():
+    if not request.user.is_superuser and not current_year.is_voting_open():
         raise Exception("التصويت غير مُتاح حاليًا!")
 
     nomination_vote_pk = request.POST.get('nomination_vote_pk', None)
@@ -141,7 +144,7 @@ def handle_vote(request):
 
         if not request.user.is_superuser and \
            not request.user.profile.college in\
-               nomination_announcement.position.colleges_allowed_to_vote:
+               nomination_announcement.position.colleges_allowed_to_vote.all():
             raise PermissionDenied
         else:
             VoteNomination.objects.create(nomination_announcement=nomination_announcement,
