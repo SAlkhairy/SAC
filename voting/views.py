@@ -23,7 +23,7 @@ def show_index(request):
 def list_positions(request, entity):
     current_year = SACYear.objects.get_current()
     if not current_year.is_nomination_open():
-        return HttpResponseRedirect(reverse("voting:closed"))
+        return render(request, "voting/closed.html")
 
     user_nominations = Nomination.objects.filter(position__entity=entity,
                                                  user=request.user)
@@ -97,7 +97,7 @@ def announce_nominees(request, entity):
 def show_voting_index(request):
     current_year = SACYear.objects.get_current()
     if not request.user.is_superuser and not current_year.is_voting_open():
-        return HttpResponseRedirect(reverse("voting:voting_closed"))
+        return render(request, "voting/voting_closed.html")
     else:
         position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
                                         .filter(announced_count__gte=2)\
@@ -196,6 +196,3 @@ def list_votes_per_position(request, position_id):
     context = {'position': position, 'votes': votes}
 
     return render(request, 'voting/list_votes_per_position.html', context)
-
-def get_stats(request):
-    return HttpResponseRedirect(reverse("voting:stats"))

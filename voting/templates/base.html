@@ -158,8 +158,8 @@ footer a{
                         </li>
                                 {% if not sac_year.is_nomination_open %}
                         <li class="treeview">
-                            <a href="{% url 'voting:closed' %}">
-                                <i class="ti-medall"></i> <span>الترشيح</span>
+                            <a>
+                                <i class="ti-receipt"></i> <span>تقديم ترشّح</span>
                                 <span class="pull-right-container">
                                     <small class="label pull-right bg-red">انتهى الترشح</small>
                                 </span>
@@ -167,7 +167,7 @@ footer a{
                                 {% else %}  
                         <li class="treeview">
                             <a href="#">
-                                <i class="ti-medall"></i> <span>الترشيح</span>       
+                                <i class="ti-receipt"></i> <span>تقديم ترشّح</span>       
                                 <span class="pull-right-container">
                                     <i style="transform: none;" class="fa fa-angle-left pull-right"></i>
                                 </span>
@@ -183,6 +183,25 @@ footer a{
                             </ul>
                                 {% endif %}
                         </li>
+                        {% if sac_year.has_voting_closed %}
+                        <li class="treeview">
+                            <a href="#">
+                                <i class="ti-medall"></i> <span>ترشيّحات انتخابات {{ sac_year }}</span>       
+                                <span class="pull-right-container">
+                                    <i style="transform: none;" class="fa fa-angle-left pull-right"></i>
+                                </span>
+
+                            </a>
+                            <ul class="treeview-menu">
+                                <li>
+                                   <a href="{% url 'voting:announce_nominees' 'club' %}">ترشيحات نادي الطلاب</a>
+                                </li>
+                                <li>
+                                  <a href="{% url 'voting:announce_nominees' 'council' %}">ترشيحات المجلس الاستشاري</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {% endif %}
                         <li class="treeview">
                             <a {% if sac_year.is_voting_open %}href="{% url 'voting:show_voting_index' %}"{% else %}{% endif %}>
                                 <i class="ti-pencil-alt"></i> <span>التصويت!</span>
@@ -190,12 +209,21 @@ footer a{
                                         <span class="pull-right-container">
                                            {% if sac_year.is_voting_open %}
                                             <small class="label pull-right bg-green">بدأ التصويت!</small>
-                                           {% else %}
-                                            <small class="label pull-right bg-green">لم يبدأ بعد!</small>
+                                           {% elif sac_year.has_voting_closed %}
+                                            <small class="label pull-right bg-red">انتهى التصويت!</small>
+                                           {% elif not sac_year.has_voting_started %}
+                                            <small class="label pull-right bg-red">لم يبدأ بعد!</small>
                                            {% endif %}
                                         </span>
                             </a>
                         </li>
+                        {% if request.user.is_superuser %}
+                        <li class="treeview">
+                            <a href="{% url 'voting:indicators' %}">
+                                <i class="ti-stats-up"></i> <span>مؤشرات التصويت</span>
+                            </a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div> <!-- /.sidebar -->
             </aside>

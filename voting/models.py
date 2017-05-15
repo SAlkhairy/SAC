@@ -16,13 +16,13 @@ city_choices = (
 
 
 class SACYear(models.Model):
-    start_date = models.DateTimeField(verbose_name="تاريخ البداية")
-    end_date = models.DateTimeField(verbose_name="تاريخ النهاية")
-    election_nomination_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية الترشيحات")
-    election_nomination_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية الترشيحات")
-    election_nomination_announcement_datetime = models.DateTimeField(verbose_name="تاريخ إعلان الترشيحات", null=True)
-    election_vote_start_datetime = models.DateTimeField(verbose_name="تاريخ بداية التصويت")
-    election_vote_end_datetime = models.DateTimeField(verbose_name="تاريخ نهاية التصويت")
+    start_date = models.DateTimeField("تاريخ البداية")
+    end_date = models.DateTimeField("تاريخ النهاية")
+    election_nomination_start_datetime = models.DateTimeField("تاريخ بداية الترشيحات")
+    election_nomination_end_datetime = models.DateTimeField("تاريخ نهاية الترشيحات")
+    election_nomination_announcement_datetime = models.DateTimeField("تاريخ إعلان الترشيحات", null=True)
+    election_vote_start_datetime = models.DateTimeField("تاريخ بداية التصويت", null=True, blank=True)
+    election_vote_end_datetime = models.DateTimeField("تاريخ نهاية التصويت", null=True, blank=True)
     objects = YearQuerySet.as_manager()
 
     class Meta:
@@ -33,52 +33,52 @@ class SACYear(models.Model):
         return "%s-%s" % (self.start_date.year + 1, self.end_date.year + 1)
 
     def is_nomination_open(self):
-        # If no election nomination end was specified, let's consider
-        # the elections open forever.  Otherwise, respect the
+        # If no election nomination start was specified, let's
+        # consider the elections closed.  Otherwise, respect the
         # specified time.
-        if not self.election_nomination_end_datetime:
-            return True
-        else:
-            return self.election_nomination_end_datetime > timezone.now()
+        return self.election_nomination_start_datetime and \
+               self.election_nomination_end_datetime and \
+               self.election_nomination_start_datetime < timezone.now() and \
+               self.election_nomination_end_datetime > timezone.now()
 
     def is_announcement_due(self):
         # If no announcement date is specified,
         # we'll consider the announcement not due;
         # so that, during nominations, non-rejected nominees (all of them)
         # will not appear until the proper date.
-        if not self.election_nomination_announcement_datetime:
-            return False
+        return self.election_nomination_announcement_datetime and \
+            self.election_nomination_announcement_datetime < timezone.now()
+
+    def has_voting_started(self):
+        if not self.election_vote_start_datetime:
+            return
         else:
-            return self.election_nomination_announcement_datetime < timezone.now()
+            return self.election_vote_start_datetime > timezone.now()
+
+    def has_voting_closed(self):
+        if not self.election_vote_end_datetime:
+            return
+        else:
+            return timezone.now() > self.election_vote_end_datetime
 
     def is_voting_open(self):
-        # If no election voting start is specified,
-        # the voting is always closed.
-        if not self.election_vote_start_datetime:
-            return False
-        else:
-            #this needs a bit of thought
-            #whether voting is closed or yet to begin
-            #is_open = self.election_vote_start_datetime < timezone.now()\
-            #          and self.election_vote_end_datetime > timezone.now()
-            #to_be_open = self.election_vote_start_datetime > timezone.now()
-
-            return self.election_vote_start_datetime < timezone.now()\
-                   and self.election_vote_end_datetime > timezone.now()
+        # If no election voting start is specified, the voting is
+        # always closed.
+        return self.has_voting_started() and \
+               not self.has_voting_closed()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)
 
 
-
 class Position(models.Model):
-    title = models.CharField(verbose_name="اسم المنصب",
+    title = models.CharField("اسم المنصب",
                              max_length=55)
     entity_choices = (
         ('club', 'نادي الطلاب'),
         ('council', 'المجلس الطلابي الاستشاري'),
         )
-    entity = models.CharField(verbose_name="اسم المنصب",
+    entity = models.CharField("اسم المنصب",
                               default="club",
                               max_length=50,
                               choices=entity_choices)
@@ -86,22 +86,21 @@ class Position(models.Model):
                             default="", choices=city_choices)
     colleges_allowed_to_vote = models.ManyToManyField(College,
                                                       verbose_name="الكليات المسموحة بالتصويت",
-                                                      related_name='vote')
+                                                      related_name='voting_positions')
     colleges_allowed_to_nominate = models.ManyToManyField(College,
                                                           verbose_name="الكليات المسموحة بالترشيح",
-                                                          related_name='nominate')
-    note = models.TextField(verbose_name="ملاحظة", blank=True)
-    submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
-    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
-    year = models.ForeignKey(SACYear, verbose_name="السنة",)
+                                                          related_name='nomination_positions')
+    note = models.TextField("ملاحظة", blank=True)
+    submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
+    modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
+    year = models.ForeignKey(SACYear, verbose_name="السنة")
 
     class Meta:
         verbose_name = 'المنصب'
         verbose_name_plural = 'المناصب'
 
     def get_total_votes(self):
-        total_count = self.votenomination_set.count()
-        return total_count
+        return self.votenomination_set.count()
 
     def get_blank_vote_count(self):
         return self.votenomination_set.filter(nomination_announcement__isnull=True).count()
@@ -118,15 +117,15 @@ class Position(models.Model):
         return self.title
 
 class Nomination(models.Model):
-    plan = models.FileField(verbose_name="الخطة")
-    cv = models.FileField(verbose_name="السيرة الذاتية")
+    plan = models.FileField("الخطة")
+    cv = models.FileField("السيرة الذاتية")
     certificates = models.FileField(null=True, verbose_name="الشهادات والمساهمات")
-    gpa = models.FloatField(verbose_name="المعدل الجامعي", null=True)
+    gpa = models.FloatField("المعدل الجامعي", null=True)
     user = models.ForeignKey(User, verbose_name="المرشَّح")
     position = models.ForeignKey(Position, verbose_name="المنصب")
     is_rejected = models.BooleanField(default=False)
-    submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
-    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
+    submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
+    modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
 
     class Meta:
         verbose_name = 'المرشحـ/ـة'
@@ -141,8 +140,8 @@ class Nomination(models.Model):
         return "ترشّح %s لِ%s" % (name, self.position.title)
 
 class NominationAnnouncement(models.Model):
-    plan = models.FileField(verbose_name="الخطة", default="")
-    cv = models.FileField(verbose_name="السيرة الذاتية", default="")
+    plan = models.FileField("الخطة", default="")
+    cv = models.FileField("السيرة الذاتية", default="")
     user = models.ForeignKey(User, verbose_name="المرشَّح", default="")
     position = models.ForeignKey(Position, verbose_name="المنصب")
 
@@ -170,8 +169,8 @@ class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
     position = models.ForeignKey(Position, verbose_name="المنصب", null=True)
     nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True, blank=True)
-    submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
-    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
+    submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
+    modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
 
     class Meta:
         verbose_name = 'صوت'
@@ -192,11 +191,11 @@ class VoteNomination(models.Model):
         return "صوت لِ%s" % (name)
 
 class Referendum(models.Model):
-    year = models.CharField(verbose_name="السنة", max_length=4)
-    title = models.CharField(verbose_name="الموضوع", max_length=100)
-    description = models.TextField(verbose_name="الوصف", )
-    opening_datetime = models.DateTimeField(verbose_name="تاريخ الابتداء",)
-    closing_datetime = models.DateTimeField(verbose_name="تاريخ الانتهاء",)
+    year = models.CharField("السنة", max_length=4)
+    title = models.CharField("الموضوع", max_length=100)
+    description = models.TextField("الوصف")
+    opening_datetime = models.DateTimeField("تاريخ الابتداء")
+    closing_datetime = models.DateTimeField("تاريخ الانتهاء")
     colleges_allowed = models.ManyToManyField(College, verbose_name="الكليات المسموحة")
 
 
@@ -205,9 +204,7 @@ class ReferendumFigure(models.Model):
     figure = models.ImageField(u"الصورة")
 
 class VoteReferendum (models.Model):
-    user = models.ForeignKey(User, verbose_name="المصوِّت",)
+    user = models.ForeignKey(User, verbose_name="المصوِّت")
     referendum = models.ForeignKey(Referendum, verbose_name="الاستفتاء")
-    submission_date = models.DateTimeField(verbose_name="تاريخ التقديم", auto_now_add=True)
-    modification_date = models.DateTimeField(verbose_name="تاريخ التعديل", auto_now=True, null=True)
-
-
+    submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
+    modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
