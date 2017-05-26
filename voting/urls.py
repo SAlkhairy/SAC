@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^voting/stats/(?P<position_id>\d+)/$', voting_views.list_votes_per_position, name='list_votes_per_position'),
 
     url(r'^announce_(?P<entity>(club|council))_nominees/$', voting_views.announce_nominees, name='announce_nominees'),
+    url(r'^announce_(?P<entity>(club|council))_winners/$', voting_views.announce_winners, name='announce_winners'),
+
 
     # Obsolete
     url(r'^voting_closed/$', RedirectView.as_view(pattern_name="show_voting_index"), name='voting_closed'),

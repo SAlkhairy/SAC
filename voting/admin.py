@@ -1,5 +1,6 @@
 # -*- coding: utf-8  -*-
 from __future__ import unicode_literals
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import admin
 from voting.models import Position, SACYear, Nomination,\
                           NominationAnnouncement, VoteNomination
@@ -13,6 +14,11 @@ def create_nomination_announcement(ModelAdmin, request, queryset):
         NominationAnnouncement.objects.create(user=nomination.user, position=nomination.position)
 create_nomination_announcement.short_description =\
     "إنشاء حساب المرشحين/المرشحات المؤهلين/المؤهلات"
+
+def make_uncounted(ModelAdmin, request, queryset):
+    queryset.update(is_counted=False)
+make_uncounted.short_description = "استبعاد الأصوات المختارة"
+
 
 class NominationAdmin(admin.ModelAdmin):
     list_filter = ['position', 'is_rejected']
@@ -35,6 +41,13 @@ class PositionAdmin(admin.ModelAdmin):
 class VoteNominationAdmin(admin.ModelAdmin):
     list_filter = ['nomination_announcement__position',
                    'nomination_announcement__position__entity']
+    list_display = ['get_student_id']
+
+    def get_student_id(self, obj):
+        try:
+            return obj.user.profile.student_id
+        except ObjectDoesNotExist:
+            return
 
 admin.site.register(Nomination, NominationAdmin)
 admin.site.register(NominationAnnouncement)

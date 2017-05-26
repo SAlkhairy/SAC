@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}إعلان النتائج{% endblock %}
+{% block header %}
+
+{% if entity == 'club' %}
+    <h1>قائمة الفائزين والفائزات لمناصب نادي الطلاب للعام {{sac_year.get_next_year_name}}</h1>
+{% else %}
+    <h1>قائمة الفائزين والفائزات لمناصب المجلس الاستشاري للعام {{sac_year.get_next_year_name}}</h1>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if not sac_year.is_announcement_due %}
+    <p class="alert alert-warning" style="color: black; font-size: 18px;">ما زالت الترشيحات جارية.</p>
+{% else %}
+
+    {% for position_city, positions in per_city %}
+        <h2>مناصب {{ position_city }}</h2>
+        {% for position in positions %}
+            {% if position.is_elected %}
+                <p style="font-size: 20px;">المنصب: {{position.title}}</p>
+                {{ position.get_winner }}
+            {% else %}
+
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

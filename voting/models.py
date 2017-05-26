@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models import Max
 from django.utils import timezone
 from accounts.models import Profile, College
 from .managers import YearQuerySet
@@ -113,6 +114,18 @@ class Position(models.Model):
         percentage = float(blank_count) / float(total_count) * 100
         return "{:.2f}".format(percentage)
 
+    def get_winner(self):
+        if self.nominationannouncement_set:
+            return self.nominationannouncement_set.aggregate(Max('votenomination'))
+        elif self.unelectedwinner_set:
+            return self.unelectedwinner_set
+        else:
+            return None
+
+    def is_elected(self):
+        if self.nominationannouncement_set:
+            return True
+
     def __unicode__(self):
         return self.title
 
@@ -169,6 +182,7 @@ class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
     position = models.ForeignKey(Position, verbose_name="المنصب", null=True)
     nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True, blank=True)
+    is_counted = models.BooleanField(default=True)
     submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
 
@@ -189,6 +203,10 @@ class VoteNomination(models.Model):
         else:
             name = ""
         return "صوت لِ%s" % (name)
+
+class UnelectedWinner(models.Model):
+    user = models.ForeignKey(User, verbose_name="")
+    position = models.ForeignKey(Position, verbose_name="المنصب")
 
 class Referendum(models.Model):
     year = models.CharField("السنة", max_length=4)

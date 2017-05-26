@@ -196,3 +196,12 @@ def list_votes_per_position(request, position_id):
     context = {'position': position, 'votes': votes}
 
     return render(request, 'voting/list_votes_per_position.html', context)
+
+def announce_winners(request, entity):
+    current_year = SACYear.objects.get_current()
+    per_city = []
+    for city_code, city_name in city_choices:
+        positions = Position.objects.filter(entity=entity, city=city_code)
+        per_city.append((city_name, positions))
+    context = {'entity': entity, 'per_city': per_city}
+    return render(request, 'voting/announce_winners.html', context)
