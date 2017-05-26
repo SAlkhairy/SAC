@@ -3,7 +3,8 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import admin
 from voting.models import Position, SACYear, Nomination,\
-                          NominationAnnouncement, VoteNomination
+                          NominationAnnouncement, VoteNomination,\
+                          UnelectedWinner
 
 def make_rejected(ModelAdmin, request, queryset):
     queryset.update(is_rejected=True)
@@ -41,7 +42,9 @@ class PositionAdmin(admin.ModelAdmin):
 class VoteNominationAdmin(admin.ModelAdmin):
     list_filter = ['nomination_announcement__position',
                    'nomination_announcement__position__entity']
-    list_display = ['get_student_id']
+    list_display = ['get_student_id', 'is_counted']
+
+    actions = [make_uncounted]
 
     def get_student_id(self, obj):
         try:
@@ -53,4 +56,5 @@ admin.site.register(Nomination, NominationAdmin)
 admin.site.register(NominationAnnouncement)
 admin.site.register(Position, PositionAdmin)
 admin.site.register(VoteNomination, VoteNominationAdmin)
+admin.site.register(UnelectedWinner)
 admin.site.register(SACYear)

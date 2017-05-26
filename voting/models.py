@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.db.models import Max
+from django.db.models import Count, Max
 from django.utils import timezone
 from accounts.models import Profile, College
 from .managers import YearQuerySet
@@ -116,15 +116,21 @@ class Position(models.Model):
 
     def get_winner(self):
         if self.nominationannouncement_set:
-            return self.nominationannouncement_set.aggregate(Max('votenomination'))
-        elif self.unelectedwinner_set:
-            return self.unelectedwinner_set
+            return self.nominationannouncement_set.filter(votenomination__is_counted=True)\
+                                                  .annotate(vote_count=Count('votenomination'))\
+                                                  .order_by('-vote_count')\
+                                                  .first()
         else:
-            return None
+            if self.unelectedwinner_set:
+                return self.unelectedwinner_set
+            else:
+                return None
 
     def is_elected(self):
         if self.nominationannouncement_set:
             return True
+        else:
+            return False
 
     def __unicode__(self):
         return self.title
@@ -207,6 +213,10 @@ class VoteNomination(models.Model):
 class UnelectedWinner(models.Model):
     user = models.ForeignKey(User, verbose_name="")
     position = models.ForeignKey(Position, verbose_name="المنصب")
+
+    class Meta:
+        verbose_name = 'فائز/ة تلقائيًا'
+        verbose_name_plural = 'الفائزون/الفائزات تلقائيًا'
 
 class Referendum(models.Model):
     year = models.CharField("السنة", max_length=4)
