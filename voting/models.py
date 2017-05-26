@@ -101,18 +101,10 @@ class Position(models.Model):
         verbose_name_plural = 'المناصب'
 
     def get_total_votes(self):
-        return self.votenomination_set.count()
+        return self.votenomination_set.filter(is_counted=True).count()
 
     def get_uncounted_vote_count(self):
         return self.votenomination_set.filter(is_counted=False).count()
-
-    def get_uncounted_vote_percentage(self):
-        total_count = self.get_total_votes()
-        if not total_count:
-            return 0
-        uncounted_count = self.get_uncounted_vote_count()
-        percentage = float(uncounted_count) / float(total_count) * 100
-        return "{:.2f}".format(percentage)
 
     def get_blank_vote_count(self):
         return self.votenomination_set.filter(nomination_announcement__isnull=True).count()
