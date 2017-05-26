@@ -19,6 +19,7 @@
       <th>الكلية</th>
       <th>المُرشّحـ/ـة</th>
       <th>تاريخ التصويت</th>
+      <th>محتسب؟</th>
     </tr>
   </thead>
   <tbody>
@@ -30,6 +31,7 @@
        <td>{{ vote.user.profile.college }}</td>
        <td>{% if not vote.nomination_announcement %}امتناع عن التصويت{% else %}{{ vote.nomination_announcement.user.profile.get_ar_full_name }}{% endif %}</td>
        <td data-order="{{ vote.submission_date|date:"U" }}">{{ vote.submission_date }}</td>
+       <td>{% if vote.is_counted %}نعم{% else %}لا{% endif %}</td>
     </tr>
     {% endfor %}
   </tbody>

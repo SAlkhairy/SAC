@@ -103,6 +103,17 @@ class Position(models.Model):
     def get_total_votes(self):
         return self.votenomination_set.count()
 
+    def get_uncounted_vote_count(self):
+        return self.votenomination_set.filter(is_counted=False).count()
+
+    def get_uncounted_vote_percentage(self):
+        total_count = self.get_total_votes()
+        if not total_count:
+            return 0
+        uncounted_count = self.get_uncounted_vote_count()
+        percentage = float(uncounted_count) / float(total_count) * 100
+        return "{:.2f}".format(percentage)
+
     def get_blank_vote_count(self):
         return self.votenomination_set.filter(nomination_announcement__isnull=True).count()
 
@@ -110,7 +121,7 @@ class Position(models.Model):
         total_count = self.get_total_votes()
         if not total_count:
             return 0
-        blank_count = self.votenomination_set.filter(nomination_announcement__isnull=True).count()
+        blank_count = self.get_blank_vote_count()
         percentage = float(blank_count) / float(total_count) * 100
         return "{:.2f}".format(percentage)
 
@@ -167,11 +178,14 @@ class NominationAnnouncement(models.Model):
         verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
         verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
 
+    def get_counted_count(self):
+        return self.votenomination_set.filter(is_counted=True).count()
+
     def get_percentage(self):
         total_count = self.position.get_total_votes()
         if not total_count:
             return 0
-        nomination_count = self.votenomination_set.count()
+        nomination_count = self.get_counted_count()
         percentage = float(nomination_count) / float(total_count) * 100
         return "{:.2f}".format(percentage)
 
