@@ -218,6 +218,14 @@ class UnelectedWinner(models.Model):
         verbose_name = 'فائز/ة تلقائيًا'
         verbose_name_plural = 'الفائزون/الفائزات تلقائيًا'
 
+    def __unicode__(self):
+        try:
+            name = self.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.user.username
+        return "فوز %s ك%s" % (name, self.position.title)
+
 class Referendum(models.Model):
     year = models.CharField("السنة", max_length=4)
     title = models.CharField("الموضوع", max_length=100)
