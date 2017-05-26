@@ -15,11 +15,10 @@ urlpatterns = [
     url(r'^voting/stats/$', voting_views.indicators, name='indicators'),    
     url(r'^voting/stats/(?P<position_id>\d+)/$', voting_views.list_votes_per_position, name='list_votes_per_position'),
 
-    url(r'^announce_(?P<entity>(club|council))_nominees/$', voting_views.announce_nominees, name='announce_nominees'),
-    url(r'^announce_(?P<entity>(club|council))_winners/$', voting_views.announce_winners, name='announce_winners'),
-
-
+    url(r'^nominees/(?P<entity>(?:club|council))/$', voting_views.announce_nominees, name='announce_nominees'),
+    url(r'^winners/(?P<entity>(?:club|council))/$', voting_views.announce_winners, name='announce_winners'),
+    url(r'^user-autocomplete/$', voting_views.UserAutocomplete.as_view(), name='user-autocomplete'),
     # Obsolete
     url(r'^voting_closed/$', RedirectView.as_view(pattern_name="show_voting_index"), name='voting_closed'),
-
+    url(r'^announce_(?P<entity>(club|council))_nominees/$', RedirectView.as_view(pattern_name="announce_nominees")),
 ]

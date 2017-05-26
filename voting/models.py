@@ -115,19 +115,18 @@ class Position(models.Model):
         return "{:.2f}".format(percentage)
 
     def get_winner(self):
-        if self.nominationannouncement_set:
+        if self.nominationannouncement_set.exists():
             return self.nominationannouncement_set.filter(votenomination__is_counted=True)\
                                                   .annotate(vote_count=Count('votenomination'))\
                                                   .order_by('-vote_count')\
                                                   .first()
+        elif self.unelected_winner:
+            return self.unelected_winner
         else:
-            if self.unelectedwinner_set:
-                return self.unelectedwinner_set
-            else:
-                return None
+            return None
 
     def is_elected(self):
-        if self.nominationannouncement_set:
+        if self.nominationannouncement_set.exists():
             return True
         else:
             return False
@@ -211,8 +210,9 @@ class VoteNomination(models.Model):
         return "صوت لِ%s" % (name)
 
 class UnelectedWinner(models.Model):
-    user = models.ForeignKey(User, verbose_name="")
-    position = models.ForeignKey(Position, verbose_name="المنصب")
+    user = models.ForeignKey(User, verbose_name="المستخدمـ/ـة")
+    position = models.OneToOneField(Position, related_name="unelected_winner",
+                                    verbose_name="المنصب")
 
     class Meta:
         verbose_name = 'فائز/ة تلقائيًا'
