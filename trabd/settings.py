@@ -117,6 +117,8 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+
+# Email settings
 EMAIL_BACKEND = getattr(secrets, 'EMAIL_BACKEND', 'django.core.mail.backends.dummy.EmailBackend')
 DEFAULT_FROM_EMAIL = 'noreply@trabdportal.com'
 EMAIL_USE_TLS = getattr(secrets, 'EMAIL_USE_TLS', True)
@@ -124,12 +126,13 @@ EMAIL_HOST = getattr(secrets, 'EMAIL_HOST', '')
 EMAIL_PORT = getattr(secrets, 'EMAIL_PORT', 0)
 EMAIL_HOST_USER = getattr(secrets, 'EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = getattr(secrets, 'EMAIL_HOST_PASSWORD', '')
+SERVER_EMAIL = 'errors@trabdportal.com'
+ADMINS = [('Errors', 'errors@trabdportal.com')]
 
+# Userena settings
+SITE_ID = 1
 ANONYMOUS_USER_ID = -1
-
 AUTH_PROFILE_MODULE = 'accounts.Profile'
-
-
 USERENA_SIGNIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/signin/'
 LOGOUT_URL = '/accounts/signout/'
@@ -150,16 +153,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+STATIC_URL = getattr(secrets, 'STATIC_URL', '/static/')
+DEFAULT_STATIC_ROOT = os.path.join(BASE_DIR, 'static_files/')
+STATIC_ROOT = getattr(secrets, 'STATIC_ROOT', DEFAULT_STATIC_ROOT)
+MEDIA_URL = getattr(secrets, 'MEDIA_URL', '/media/')
+DEFAULT_MEDIA_ROOT = os.path.join(BASE_DIR, 'media_files/')
+MEDIA_ROOT = getattr(secrets, 'MEDIA_ROOT', DEFAULT_MEDIA_ROOT)
 
-SITE_ID = 1
-STATIC_URL = '/static/'
-STATIC_ROOT = getattr(secrets, 'STATIC_ROOT', None)
-MEDIA_URL = '/media/'
-
-DEFAULT_MEDIA = BASE_DIR + '/media/'
-MEDIA_ROOT = getattr(secrets, 'MEDIA_ROOT', DEFAULT_MEDIA)
-SERVER_EMAIL = 'errors@trabdportal.com'
-ADMINS = [('Errors', 'errors@trabdportal.com')]
+# Security settings
 SECURE_HSTS_SECONDS = getattr(secrets, 'SECURE_HSTS_SECONDS', 0)
 SESSION_COOKIE_DOMAIN = getattr(secrets, 'SESSION_COOKIE_DOMAIN', None)
 CSRF_COOKIE_DOMAIN = getattr(secrets, 'CSRF_COOKIE_DOMAIN', None)
