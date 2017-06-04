@@ -26,7 +26,7 @@
 {% for nominaton in position.nominationannouncement_set.all %}
     <tr>
        <td>{{ nominaton.user.profile.get_ar_full_name }}</td>
-       <td>{{ nominaton.votenomination_set.count }}</td>
+       <td>{{ nominaton.get_counted_count }}</td>
        <td>{{ nominaton.get_percentage }}%</td>
     <tr>
 {% endfor %}
@@ -34,6 +34,11 @@
        <td>امتناع عن التصويت</td>
        <td>{{ position.get_blank_vote_count }}</td>
        <td>{{ position.get_blank_vote_percentage }}%</td>
+    <tr>
+    <tr class="blank">
+       <td>أصوات مُبطلة</td>
+       <td>{{ position.get_uncounted_vote_count }}</td>
+       <td> - </td>
     <tr>
   </tbody>
 </table>

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from django.db.models import Count, Max
 from django.utils import timezone
 from accounts.models import Profile, College
 from .managers import YearQuerySet
@@ -100,7 +101,10 @@ class Position(models.Model):
         verbose_name_plural = 'المناصب'
 
     def get_total_votes(self):
-        return self.votenomination_set.count()
+        return self.votenomination_set.filter(is_counted=True).count()
+
+    def get_uncounted_vote_count(self):
+        return self.votenomination_set.filter(is_counted=False).count()
 
     def get_blank_vote_count(self):
         return self.votenomination_set.filter(nomination_announcement__isnull=True).count()
@@ -109,9 +113,26 @@ class Position(models.Model):
         total_count = self.get_total_votes()
         if not total_count:
             return 0
-        blank_count = self.votenomination_set.filter(nomination_announcement__isnull=True).count()
+        blank_count = self.get_blank_vote_count()
         percentage = float(blank_count) / float(total_count) * 100
         return "{:.2f}".format(percentage)
+
+    def get_winner(self):
+        if self.nominationannouncement_set.exists():
+            return self.nominationannouncement_set.filter(votenomination__is_counted=True)\
+                                                  .annotate(vote_count=Count('votenomination'))\
+                                                  .order_by('-vote_count')\
+                                                  .first()
+        elif self.unelected_winner:
+            return self.unelected_winner
+        else:
+            return None
+
+    def is_elected(self):
+        if self.nominationannouncement_set.exists():
+            return True
+        else:
+            return False
 
     def __unicode__(self):
         return self.title
@@ -149,11 +170,14 @@ class NominationAnnouncement(models.Model):
         verbose_name = 'المرشحـ/ـة المؤهلـ/ـة'
         verbose_name_plural = 'المرشحون/المرشّحات المؤهلون/المؤهلات'
 
+    def get_counted_count(self):
+        return self.votenomination_set.filter(is_counted=True).count()
+
     def get_percentage(self):
         total_count = self.position.get_total_votes()
         if not total_count:
             return 0
-        nomination_count = self.votenomination_set.count()
+        nomination_count = self.get_counted_count()
         percentage = float(nomination_count) / float(total_count) * 100
         return "{:.2f}".format(percentage)
 
@@ -169,6 +193,7 @@ class VoteNomination(models.Model):
     user = models.ForeignKey(User, verbose_name="المصوِّت")
     position = models.ForeignKey(Position, verbose_name="المنصب", null=True)
     nomination_announcement = models.ForeignKey(NominationAnnouncement, verbose_name="المرشَّح", null=True, blank=True)
+    is_counted = models.BooleanField(default=True)
     submission_date = models.DateTimeField("تاريخ التقديم", auto_now_add=True)
     modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
 
@@ -189,6 +214,23 @@ class VoteNomination(models.Model):
         else:
             name = ""
         return "صوت لِ%s" % (name)
+
+class UnelectedWinner(models.Model):
+    user = models.ForeignKey(User, verbose_name="المستخدمـ/ـة")
+    position = models.OneToOneField(Position, related_name="unelected_winner",
+                                    verbose_name="المنصب")
+
+    class Meta:
+        verbose_name = 'فائز/ة تلقائيًا'
+        verbose_name_plural = 'الفائزون/الفائزات تلقائيًا'
+
+    def __unicode__(self):
+        try:
+            name = self.user.profile.get_ar_full_name()
+        except ObjectDoesNotExist:
+            # If no profile
+            name = self.user.username
+        return "فوز %s ك%s" % (name, self.position.title)
 
 class Referendum(models.Model):
     year = models.CharField("السنة", max_length=4)
