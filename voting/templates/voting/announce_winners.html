@@ -19,9 +19,8 @@
         <h2>مناصب {{ position_city }}</h2>
         {% for position in positions %}
             <div class="row">
-                    {% if position.is_elected %}
                         <p style="font-size: 20px;">المنصب: {{position.title}}</p>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                             <div class="panel panel-bd">
                                 <div class="panel-body">
                                     <div class="statistic-box">
@@ -31,26 +30,43 @@
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-                        <p style="font-size: 20px;">المنصب: {{position.title}}</p>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
-                            <div class="panel panel-bd">
-                                <div class="panel-body">
-                                    <div class="statistic-box">
-                                        <h2>{{ position.get_winner.user.profile.get_ar_full_name }}</h2>
-                                        <br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
             </div>
+                    {% if position.is_elected %}
+            <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <table class="datatable table table-bordered table-striped table-hover">
+                                <thead>
+                                  <tr>
+                                  <th>المُرشّحـ/ـة</th>
+                                  <th>عدد الأصوات</th>
+                                  <th>النسبة</th>
+                                </tr>
+                              <tbody>
+                            {% for nominaton in position.nominationannouncement_set.all %}
+                                <tr>
+                                   <td>{{ nominaton.user.profile.get_ar_full_name }}</td>
+                                   <td>{{ nominaton.get_counted_count }}</td>
+                                   <td>{{ nominaton.get_percentage }}%</td>
+                                <tr>
+                            {% endfor %}
+                                <tr class="blank">
+                                   <td>امتناع عن التصويت</td>
+                                   <td>{{ position.get_blank_vote_count }}</td>
+                                   <td>{{ position.get_blank_vote_percentage }}%</td>
+                                <tr>
+                                <tr class="blank">
+                                   <td>أصوات مُبطلة</td>
+                                   <td>{{ position.get_uncounted_vote_count }}</td>
+                                   <td> - </td>
+                                <tr>
+                              </tbody>
+                            </table>
+                        </div>
+            </div>
+                    {% endif %}
+
         {% endfor %}
     {% endfor %}
 
-
-
 {% endif %}
-
-
 {% endblock %}
