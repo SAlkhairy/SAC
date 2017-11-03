@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}لائحة المجلس{% endblock %}
+
+{% block header %}
+                        <h1>لائحة المجلس</h1>
+{% endblock %}
+
+{% block content %}
+    <ul>
+        <li><a href="{% url 'show_page' 'rules' %}">أحكام عامة</a></li>
+        <li>اللجان</li>
+        <ul>
+            <li><a href="{% url 'show_page' 'stu_care' %}"> لجنة الرعاية الطلابية</a></li>
+            <li><a href="{% url 'show_page' 'stu_elect' %}">لجنة الانتخابات الطلابية</a></li>
+            <li><a href="{% url 'show_page' 'media' %}">اللجنة اﻹعلامية</a></li>
+        </ul>
+    </ul>
+
+{% endblock %}

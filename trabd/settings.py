@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'voting',
     'accounts',
     'userena',
+    'general',
     'guardian',
     'easy_thumbnails',
 ]

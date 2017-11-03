@@ -61,7 +61,7 @@
     src: url("{% static 'fonts/ge-dinar-one-med.woff' %}");
 }
 
-body, h1, h2, .info, .main-sidebar{
+body, h1, h2, h3, .info, .main-sidebar{
     font-family: 'GE Dinar One';
 }
 
@@ -72,6 +72,7 @@ body, h1, h2, .info, .main-sidebar{
 footer a{
  color: inherit;
 }
+
 </style>
 
 {% if request.get_host == 'trabdportal.com' or request.get_host == 'www.trabdportal.com' %}
@@ -156,6 +157,114 @@ footer a{
                             <a href="{% url 'home' %}"><i class="ti-home"></i> <span>الرئيسية</span>
                             </a>
                         </li>
+
+
+                        <li class="treeview">
+                            <a href="{% url 'show_page' 'about' %}"><i class="ti-info"></i> <span>عن المجلس</span></a>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="{% url 'show_page' 'structure' %}"><i class="ti-view-grid"></i> <span></span>الهيكلة</a>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="{% url 'show_page' 'list' %}"><i class="ti-list"></i> <span>اللائحة</span></a>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="{% url 'show_news' %}"><i class="ti-announcement"></i> <span>الأخبار</span></a>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="">
+                                <i class="ti-star"></i> <span>الانتخابات الطلابية</span>
+                                <ul class="treeview-menu">
+                                    {% if not sac_year.is_nomination_open %}
+                                    <a>
+                                        <i class="ti-receipt"></i> <span>تقديم ترشّح</span>
+                                        <span class="pull-right-container">
+                                            <small class="label pull-right bg-red">انتهى الترشح</small>
+                                        </span>
+                                    </a>
+                                    {% else %}
+                                    <li class="treeview-menu">
+                                        <a href="#">
+                                            <i class="ti-receipt"></i> <span>تقديم ترشّح</span>
+                                            <span class="pull-right-container">
+                                                <i style="transform: none;" class="fa fa-angle-left pull-right"></i>
+                                            </span>
+
+                                        </a>
+                                        <li class="treeview-menu">
+                                                <li>
+                                                   <a href="{% url 'voting:list_positions' 'club' %}">ترشيحات نادي الطلاب</a>
+                                                </li>
+                                                <li>
+                                                  <a href="{% url 'voting:list_positions' 'council' %}">ترشيحات المجلس الاستشاري</a>
+                                                </li>
+                                            </li>
+                                    </li>
+                                    {% endif %}
+
+
+                                    {% if sac_year.has_voting_closed %}
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="ti-medall"></i> <span>ترشيّحات انتخابات {{ sac_year }}</span>
+                                            <span class="pull-right-container">
+                                                <i style="transform: none;" class="fa fa-angle-left pull-right"></i>
+                                            </span>
+
+                                        </a>
+                                        <ul class="treeview-menu">
+                                            <li>
+                                               <a href="{% url 'voting:announce_nominees' 'club' %}">ترشيحات نادي الطلاب</a>
+                                            </li>
+                                            <li>
+                                              <a href="{% url 'voting:announce_nominees' 'council' %}">ترشيحات المجلس الاستشاري</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% endif %}
+                                    <li class="treeview">
+                                        <a {% if sac_year.is_voting_open %}href="{% url 'voting:show_voting_index' %}"{% else %}{% endif %}>
+                                            <i class="ti-pencil-alt"></i> <span>التصويت!</span>
+
+                                                    <span class="pull-right-container">
+                                                       {% if sac_year.is_voting_open %}
+                                                        <small class="label pull-right bg-green">بدأ التصويت!</small>
+                                                       {% elif sac_year.has_voting_closed %}
+                                                        <small class="label pull-right bg-red">انتهى التصويت!</small>
+                                                       {% elif not sac_year.has_voting_started %}
+                                                        <small class="label pull-right bg-red">لم يبدأ بعد!</small>
+                                                       {% endif %}
+                                                    </span>
+                                        </a>
+                                    </li>
+                                    {% if request.user.is_superuser %}
+                                    <li class="treeview">
+                                        <a href="{% url 'voting:indicators' %}">
+                                            <i class="ti-stats-up"></i> <span>مؤشرات التصويت</span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </a>
+                        </li>
+
+                        <li class="treeview">
+                            <a href="{% url 'add_feedback' %}"><i class="ti-thought"></i> <span>المقترحات والملاحظات</span></a>
+                        </li>
+
+                    </ul>
+
+
+
+
+
+                            <!-------- OLD ORGANIZATIONAL CODE
+
+
                                 {% if not sac_year.is_nomination_open %}
                         <li class="treeview">
                             <a>
@@ -224,7 +333,7 @@ footer a{
                             </a>
                         </li>
                         {% endif %}
-                    </ul>
+                    </ul> ------------------------------ END OF OLD CODE -->
                 </div> <!-- /.sidebar -->
             </aside>
             <!-- =============================================== -->

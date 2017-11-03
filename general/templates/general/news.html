@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}الأخبار{% endblock %}
+
+{% block header %}
+                        <h1>الأخبار</h1>
+{% endblock %}
+
+{% block content %}
+    {% for i in news_items %}
+    <div class="panel panel-default">
+        <div class="panel-heading">{{ i.title }}</div>
+        <div class="panel-body">{{ i.body|truncatewords:20 }}</div>
+        <div class="panel-footer">{{ i.submission_date }}</div>
+    </div>
+    {% endfor %}
+{% endblock %}

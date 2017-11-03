@@ -1,0 +1,54 @@
+{% extends 'base.html' %}{% load bootstrap3 %}
+
+{% block title %}إضافة مقترح/ ملاحظة{% endblock %}
+
+{% block header %}
+                        <h1>إضافة مقترح أو ملاحظة</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+    <div class="col-sm-8">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group">
+                المدينة: {{form.city }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                الكلية: {{form.college }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                البريد الإلكتروني (اختياري): {{ form.email }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                العنوان: {{ form.title }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                وصف المقترح أو الملاحظة:
+                <br>{{ form.description }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                إرفاق صورة (اختياري): {{ form.picture }}
+            </div>
+        </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+        <input id="submit" class="btn btn-btn-success" type="submit" value="أرسل">
+        </div>
+    </div>
+
+    </div>
+    </form>
+
+{% endblock %}

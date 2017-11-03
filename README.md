@@ -32,7 +32,7 @@ That's it!
 
 # Licensing
 
-* Copyright (C) 2017 Salha Alkhairy
+* Copyright (C) 2017 Saleha Alkhairy
 * Copyright (C) 2017 [Osama Khalid](https://osamakhalid.com)
 
 ```
