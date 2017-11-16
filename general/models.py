@@ -24,6 +24,7 @@ class Feedback(models.Model):
 class NewsItem(models.Model):
     title = models.CharField("العنوان", max_length=100, blank=False)
     body = models.TextField("العرض", blank=False)
+    picture = models.FileField("صورة", blank=True, null=True)
     submission_date = models.DateTimeField("تاريخ النشر", auto_now_add=True)
     modification_date = models.DateTimeField("تاريخ التعديل", auto_now=True, null=True)
     year = models.ForeignKey(SACYear, verbose_name="السنة")
