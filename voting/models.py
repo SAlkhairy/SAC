@@ -33,6 +33,11 @@ class SACYear(models.Model):
     def get_next_year_name(self):
         return "%s-%s" % (self.start_date.year + 1, self.end_date.year + 1)
 
+    def is_nomination_near(self):
+        delta_time = self.election_nomination_start_datetime - timezone.now()
+        delta_days = delta_time.days
+        return delta_days <= 10
+
     def is_nomination_open(self):
         # If no election nomination start was specified, let's
         # consider the elections closed.  Otherwise, respect the
@@ -54,7 +59,7 @@ class SACYear(models.Model):
         if not self.election_vote_start_datetime:
             return
         else:
-            return self.election_vote_start_datetime > timezone.now()
+            return self.election_vote_start_datetime < timezone.now()
 
     def has_voting_closed(self):
         if not self.election_vote_end_datetime:
