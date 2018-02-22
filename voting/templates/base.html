@@ -183,7 +183,11 @@ footer a{
                                     <a>
                                         <i class="ti-receipt"></i> <span>تقديم ترشّح</span>
                                         <span class="pull-right-container">
+                                            {% if sac_year.is_nomination_near %}
+                                            <small class="label pull-right bg-red">سيفتح باب الترشح قريبًا</small>
+                                            {% else %}
                                             <small class="label pull-right bg-red">انتهى الترشح</small>
+                                            {% endif %}
                                         </span>
                                     </a>
                                     {% else %}
