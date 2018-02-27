@@ -22,18 +22,25 @@ make_uncounted.short_description = "استبعاد الأصوات المختار
 
 
 class NominationAdmin(admin.ModelAdmin):
-    list_filter = ['position__city', 'position__entity', 'is_rejected']
+    list_filter = ['position__city', 'position__entity',
+                   'is_rejected', 'position__year']
     list_display = ['__unicode__', 'cv', 'plan', 'certificates', 'gpa','is_rejected']
     search_fields = ['position__title'] + BASIC_SEARCH_FIELDS
 
     actions = [make_rejected, create_nomination_announcement]
+
+class NominationAnnouncementAdmin(admin.ModelAdmin):
+    list_filter = ['position__city', 'position__entity', 'position__year']
+    list_display = ['__unicode__',]
+    search_fields = ['position__title'] + BASIC_SEARCH_FIELDS
 
 class PositionAdmin(admin.ModelAdmin):
     list_filter = ['entity', 'year']
 
 class VoteNominationAdmin(admin.ModelAdmin):
     list_filter = ['nomination_announcement__position',
-                   'nomination_announcement__position__entity']
+                   'nomination_announcement__position__entity',
+                   'nomination_announcement__position__year']
     list_display = ['get_student_id', 'is_counted']
     search_fields = ['position__title'] + BASIC_SEARCH_FIELDS
 
@@ -48,10 +55,10 @@ class VoteNominationAdmin(admin.ModelAdmin):
 class UnelectedWinnerAdmin(admin.ModelAdmin):
     form = forms.UnelectedWinnerForm
     search_fields = ['position__title'] + BASIC_SEARCH_FIELDS
-    list_filter = ['position__city', 'position__entity']
+    list_filter = ['position__city', 'position__entity', 'position__year']
 
 admin.site.register(models.Nomination, NominationAdmin)
-admin.site.register(models.NominationAnnouncement)
+admin.site.register(models.NominationAnnouncement, NominationAnnouncementAdmin)
 admin.site.register(models.Position, PositionAdmin)
 admin.site.register(models.VoteNomination, VoteNominationAdmin)
 admin.site.register(models.UnelectedWinner, UnelectedWinnerAdmin)
