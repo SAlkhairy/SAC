@@ -29,8 +29,9 @@ def list_positions(request, entity):
         return render(request, "voting/closed.html")
 
     user_nominations = Nomination.objects.filter(position__entity=entity,
+                                                 position__year=current_year,
                                                  user=request.user)
-    positions = Position.objects.filter(entity=entity)
+    positions = Position.objects.filter(entity=entity, year=current_year)
     if not request.user.is_superuser:
         positions = positions.filter(colleges_allowed_to_nominate=request.user.profile.college)
 
@@ -48,14 +49,16 @@ def add_nominee(request, position_id):
     context = {'position': position}
 
     user_nominations = Nomination.objects.filter(position__entity=position.entity,
+                                                 position__year=current_year,
                                                  user=request.user)
     if user_nominations.exists():
         context['already_on'] = True
     else:
         if request.user.is_superuser:
-            positions = Position.objects.all()
+            positions = Position.objects.filter(year=current_year)
         else:
-            positions = Position.objects.filter(colleges_allowed_to_nominate=request.user.profile.college)
+            positions = Position.objects.filter(colleges_allowed_to_nominate=request.user.profile.college,
+                                                year=current_year)
             if position not in positions:
                 raise PermissionDenied
         if request.method == 'POST':
@@ -73,7 +76,7 @@ def add_nominee(request, position_id):
 @login_required
 def show_nomination(request, position_id, nomination_id):
     nomination = get_object_or_404(Nomination, position__pk=position_id,
-                                 pk=nomination_id)
+                                   pk=nomination_id)
     if not request.user.is_superuser and \
        not nomination.user == request.user:
         raise PermissionDenied
