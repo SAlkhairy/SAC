@@ -59,7 +59,7 @@ def add_nominee(request, position_id):
         else:
             positions = Position.objects.filter(colleges_allowed_to_nominate=request.user.profile.college,
                                                 year=current_year)
-            if position not in positions:
+            if position not in positions or position.year is not current_year:
                 raise PermissionDenied
         if request.method == 'POST':
             instance = Nomination(user=request.user, position=position)
