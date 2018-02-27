@@ -172,12 +172,12 @@ footer a{
                         </li>
 
                         <li class="treeview">
-                            <a href="{% url 'show_news' %}"><i class="ti-announcement"></i> <span>الأخبار</span></a>
+                            <a href="{% url 'list_news' %}"><i class="ti-announcement"></i> <span>الأخبار</span></a>
                         </li>
 
                         <li class="treeview">
                             <a href="">
-                                <i class="ti-star"></i> <span>الانتخابات الطلابية</span>
+                                <i class="ti-star"></i> <span>الترشيحات الطلابية</span>
                                 <ul class="treeview-menu">
                                     {% if not sac_year.is_nomination_open %}
                                     <a>

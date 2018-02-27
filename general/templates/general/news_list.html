@@ -8,10 +8,14 @@
 
 {% block content %}
     {% for i in news_items %}
+    <div onclick="location.href='{% url 'show_news' news_id=i.pk %}'">
     <div class="panel panel-default">
         <div class="panel-heading">{{ i.title }}</div>
-        <div class="panel-body">{{ i.body|truncatewords:20 }}</div>
+        <div class="panel-body">{{ i.body|truncatewords:20 }}
+            <img height="100px" align="left" src="{{i.picture.url}}" alt="here">
+        </div>
         <div class="panel-footer">{{ i.submission_date }}</div>
+    </div>
     </div>
     {% endfor %}
 {% endblock %}
