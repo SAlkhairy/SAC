@@ -179,6 +179,15 @@ footer a{
                             <a href="">
                                 <i class="ti-star"></i> <span>الترشيحات الطلابية</span>
                                 <ul class="treeview-menu">
+
+                                    <li class="treeview">
+                                    <a href="{% url 'show_page' 'nom_about' %}"><i class=""></i> <span>عن الترشيحات الطلابية</span></a>
+                                    </li>
+
+                                    <li class="treeview">
+                                    <a href="{% url 'show_page' 'nom_conditions' %}"><i class=""></i> <span>شروط الترشّح</span></a>
+                                    </li>
+
                                     {% if not sac_year.is_nomination_open %}
                                     <a>
                                         <i class="ti-receipt"></i> <span>تقديم ترشّح</span>
@@ -206,7 +215,7 @@ footer a{
                                                 <li>
                                                   <a href="{% url 'voting:list_positions' 'council' %}">ترشيحات المجلس الاستشاري</a>
                                                 </li>
-                                            </li>
+                                        </li>
                                     </li>
                                     {% endif %}
 

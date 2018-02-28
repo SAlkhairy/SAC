@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}شروط الترشّح{% endblock %}
+
+{% block header %}
+                        <h1>شروط الترشّح</h1>
+<style>
+    h4{
+        font-family: "GE Dinar One"
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<ul>
+<li><a href="{% url 'show_page' 'club_conditions'%}">
+    <h4>شروط الترشح لمناصب نادي الطلاب</h4>
+</a></li>
+
+<li><a href="{% url 'show_page' 'council_conditions'%}">
+    <h4>شروط الترشح لمناصب المجلس الاستشاري الطلابي</h4>
+</a></li>
+</ul>
+
+{% endblock %}
+
