@@ -90,7 +90,7 @@ def announce_nominees(request, entity):
         per_city = []
         for city_code, city_name in city_choices:
             positions = Position.objects\
-                               .filter(entity=entity, city=city_code)\
+                               .filter(entity=entity, city=city_code, year=current_year)\
                                .annotate(nomination_count=Count('nominationannouncement'))\
                                .filter(nomination_count__gt=1)
             if positions.exists():
