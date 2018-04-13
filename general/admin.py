@@ -23,6 +23,16 @@ class NewsAdmin(admin.ModelAdmin):
     list_filter = ['year']
     list_display = ['title', 'submission_date']
 
+class DebateQAdmin(admin.ModelAdmin):
+    list_filter = ['year', 'is_read']
+    list_display = ['question', 'year','is_read']
+    search_fields = ['question']
+
+    actions = [make_read, make_unread]
+
+
 admin.site.register(models.Feedback, FeedbackAdmin)
 admin.site.register(models.NewsItem, NewsAdmin)
+admin.site.register(models.DebateQ, DebateQAdmin)
+
 

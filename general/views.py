@@ -5,9 +5,9 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
-from .models import Feedback, NewsItem
+from .models import Feedback, NewsItem, DebateQ
 from voting.models import SACYear
-from .forms import FeedbackForm
+from .forms import FeedbackForm, DebateQForm
 
 
 def show_page(request, page_id):
@@ -41,3 +41,20 @@ def list_news(request):
 def show_newsitem(request, news_id):
     news_item = get_object_or_404(NewsItem, pk=news_id)
     return render(request, 'general/news_item.html', {'news_item': news_item})
+
+def add_debate_question(request):
+    current_year = SACYear.objects.get_current()
+
+    if request.method == 'GET':
+        form = DebateQForm()
+
+    elif request.method == 'POST':
+        instance = DebateQ(year=current_year)
+        form = DebateQForm(request.POST, instance=instance)
+        if form.is_valid():
+            form = form.save()
+            form.email_SAC()
+
+    context = {'form': form}
+    return render(request, 'general/add_debate_q.html', context)
+
