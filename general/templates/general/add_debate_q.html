@@ -1,0 +1,30 @@
+{% extends 'base.html' %}{% load bootstrap3 %}
+
+{% block title %}إضافة سؤال{% endblock %}
+
+{% block header %}
+                        <h1>إالمناظرة الرئاسية</h1>
+{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+    <div class="col-sm-8">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group">
+                ماذا تود/ين أن تسألـ/ي فريق معاذ الدعفس وفريق فيصل الحبردي؟
+                <br>{{ form.question }}
+            </div>
+        </div>
+
+
+    <div class="row">
+        <div class="col-sm-12">
+        <input id="submit" class="btn btn-btn-success" type="submit" value="أرسل">
+        </div>
+    </div>
+
+    </div>
+    </form>
+
+{% endblock %}

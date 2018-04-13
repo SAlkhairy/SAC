@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
 
+from django.core.mail import EmailMessage
+
 from accounts.models import Profile, College, college_choices, city_choices
 from voting.models import SACYear
 
@@ -32,3 +34,23 @@ class NewsItem(models.Model):
     class Meta:
         verbose_name = 'الخبر'
         verbose_name_plural = 'الأخبار'
+
+class DebateQ(models.Model):
+    question = models.TextField("السؤال", blank=False)
+    submission_date = models.DateTimeField("تاريخ الرفع", auto_now_add=True)
+    year = models.ForeignKey(SACYear, verbose_name="السنة")
+    is_read = models.BooleanField("مقروءة؟", default=False)
+
+    class Meta:
+        verbose_name = 'سؤال المناظرة'
+        verbose_name_plural = 'أسئلة المناظرة'
+
+    def email_SAC(self):
+        msg = EmailMessage(
+                               'سؤال للمناظرة | بوابة ترابط',
+                               '' + self.question + '',
+                               'noreply@trabdportal.com',
+                               ['sac@ksau-hs.edu.sa', ]
+                          )
+        msg.content_subtype = "html"
+        msg.send()
