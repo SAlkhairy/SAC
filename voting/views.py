@@ -105,7 +105,8 @@ def show_voting_index(request):
     if not request.user.is_superuser and not current_year.is_voting_open():
         return render(request, "voting/voting_closed.html")
     else:
-        position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+        position_pool = Position.objects.filter(year=current_year)\
+                                        .annotate(announced_count=Count('nominationannouncement'))\
                                         .filter(announced_count__gte=2)\
                                         .exclude(votenomination__user=request.user)\
                                         .order_by('entity')
@@ -157,7 +158,8 @@ def handle_vote(request):
                                           position=position,
                                           user=request.user)
 
-    position_pool = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+    position_pool = Position.objects.filter(year=current_year)\
+                                    .annotate(announced_count=Count('nominationannouncement'))\
                                     .filter(announced_count__gte=2)\
                                     .exclude(votenomination__user=request.user)
     if request.user.is_superuser:
@@ -185,8 +187,9 @@ def handle_vote(request):
 def indicators(request):
     if not request.user.is_superuser:
         raise PermissionDenied
-
-    election_positions = Position.objects.annotate(announced_count=Count('nominationannouncement'))\
+    current_year = SACYear.objects.get_current()
+    election_positions = Position.objects.filter(year=current_year)\
+                                         .annotate(announced_count=Count('nominationannouncement'))\
                                          .filter(announced_count__gte=2).order_by('entity', 'city')
     context = {'election_positions': election_positions}
 
