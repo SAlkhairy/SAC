@@ -9,6 +9,7 @@ from voting import views as voting_views
 
 
 urlpatterns = [
+    url(r'^admin/', include('loginas.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', voting_views.show_index, name='home'),
     url(r'^accounts/', include(accounts_urls)),

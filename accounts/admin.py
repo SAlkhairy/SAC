@@ -11,6 +11,7 @@ class ProfileInline(admin.StackedInline):
     extra = 0
 
 class ModifiedUserAdmin(UserenaAdmin):
+    change_form_template = 'loginas/change_form.html'
     list_display = ('username', 'get_full_ar_name',
                     'get_full_en_name', 'get_college',
                     'get_student_id', 'email', 'get_mobile_number',
