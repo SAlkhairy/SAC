@@ -24,6 +24,9 @@ class SACYear(models.Model):
     election_nomination_announcement_datetime = models.DateTimeField("تاريخ إعلان الترشيحات", null=True)
     election_vote_start_datetime = models.DateTimeField("تاريخ بداية التصويت", null=True, blank=True)
     election_vote_end_datetime = models.DateTimeField("تاريخ نهاية التصويت", null=True, blank=True)
+    riyadh_results_datetime = models.DateTimeField("تاريخ إعلان النتائج في الرياض", null=True, blank=True)
+    jeddah_results_datetime = models.DateTimeField("تاريخ إعلان النتائج في جدة", null=True, blank=True)
+    alahsa_results_datetime = models.DateTimeField("تاريخ إعلان النتائج في الأحساء", null=True, blank=True)
     objects = YearQuerySet.as_manager()
 
     class Meta:
@@ -72,6 +75,17 @@ class SACYear(models.Model):
         # always closed.
         return self.has_voting_started() and \
                not self.has_voting_closed()
+
+    def is_city_results_due(self, city_code):
+        if city_code == 'R':
+            return self.riyadh_results_datetime and \
+            self.riyadh_results_datetime < timezone.now()
+        elif city_code == 'J':
+            return self.jeddah_results_datetime and \
+            self.jeddah_results_datetime < timezone.now()
+        elif city_code == 'A':
+            return self.alahsa_results_datetime and \
+            self.alahsa_results_datetime < timezone.now()
 
     def __unicode__(self):
         return "%s-%s" % (self.start_date.year, self.end_date.year)
