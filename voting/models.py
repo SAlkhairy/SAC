@@ -77,7 +77,7 @@ class SACYear(models.Model):
                not self.has_voting_closed()
 
     def is_city_results_due(self, city_code):
-        if city_code == 'R':
+        if city_code == 'R' or city_code == '':
             return self.riyadh_results_datetime and \
             self.riyadh_results_datetime < timezone.now()
         elif city_code == 'J':
