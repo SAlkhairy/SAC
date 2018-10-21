@@ -8,7 +8,19 @@ from django.core.mail import EmailMessage
 from accounts.models import Profile, College, college_choices, city_choices
 from voting.models import SACYear
 
+feedback_types = (
+    ('','--'),
+    ('AC','أكاديمية'),
+    ('SC','نادي الطلاب'),
+    ('SA','شؤون الطلاب'),
+    ('RR','الأنظمة والقوانين'),
+)
+
 class Feedback(models.Model):
+    student_name = models.CharField("الاسم", max_length=100, blank=True)
+    student_id = models.CharField("الرقم الجامعي", max_length=9, blank=True)
+    type = models.CharField("تصنيف الملاحظة", max_length=2,
+                            choices=feedback_types, default='')
     city = models.CharField("المدينة", max_length=1, choices=city_choices)
     college = models.ForeignKey(College, verbose_name="الكلية", null=True)
     email = models.EmailField(max_length=70, blank=True)
@@ -16,7 +28,8 @@ class Feedback(models.Model):
     description = models.TextField("الوصف", blank=False)
     picture = models.FileField("صورة", blank=True, null=True)
     submission_date = models.DateTimeField("تاريخ الرفع", auto_now_add=True)
-    year = models.ForeignKey(SACYear, verbose_name="السنة")
+    year = models.ForeignKey(SACYear, verbose_name="السنة",
+                             blank=True, null=True)
     is_read = models.BooleanField("مقروءة؟", default=False)
 
     class Meta:
