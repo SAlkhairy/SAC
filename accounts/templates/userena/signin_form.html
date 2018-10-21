@@ -23,7 +23,9 @@
                             </div>
                             <div class="form-group">
                                 {% bootstrap_field form.password %}
-                                <span class="help-block small">كلمة سرّك القويّة</span>
+                                <span class="help-block small">كلمة سرّك القويّة.
+                                <a href="{% url 'userena_password_reset' %}">هل نسيت كلمة السر؟</a>
+                                </span>
                             </div>
                             <div>
                                 <button class="btn btn-primary">أدخلني</button>

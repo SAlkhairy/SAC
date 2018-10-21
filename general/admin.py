@@ -13,8 +13,8 @@ def make_unread(ModelAdmin, request, queryset):
 make_unread.short_description = "تغيير حالة الرسائل المختارة إلى 'غير مقروءة'"
 
 class FeedbackAdmin(admin.ModelAdmin):
-    list_filter = ['city', 'college', 'year', 'is_read']
-    list_display = ['title', 'city', 'college', 'year','is_read']
+    list_filter = ['city', 'college', 'year', 'type', 'is_read']
+    list_display = ['title', 'city', 'college', 'submission_date', 'is_read']
     search_fields = ['title']
 
     actions = [make_read, make_unread]
