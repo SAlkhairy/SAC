@@ -11,7 +11,7 @@ git clone https://github.com/SAlkhairy/trabd.git
 cd trabd
 ```
 
-Then copy `fudul/secrets.template.py` to `fudul/secrets.py` and set
+Then copy `trabd/secrets.template.py` to `trabdF/secrets.py` and set
 the `SECRET_KEY` variable using [this tool](http://www.miniwebtool.com/django-secret-key-generator/).
 
 Then install the requirements, set up the database by running the
@@ -32,7 +32,7 @@ That's it!
 
 # Licensing
 
-* Copyright (C) 2017 Saleha Alkhairy
+* Copyright (C) 2017-2019 Saleha Alkhairy
 * Copyright (C) 2017 [Osama Khalid](https://osamakhalid.com)
 
 ```

@@ -12,6 +12,8 @@
     <link href="{% static 'bdtask/assets/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css" />
     <!-- Bootstrap rtl -->
     <link href="{% static 'bdtask/assets/bootstrap-rtl/bootstrap-rtl.min.css' %}" rel="stylesheet" type="text/css" />
+    <!-- Themify icons -->
+    <link href="{% static 'bdtask/assets/themify-icons/themify-icons.css' %}" rel="stylesheet" type="text/css"/>
     <style>
         @font-face {
             font-family: 'GE Dinar One';
@@ -59,6 +61,10 @@
 
         h1 {
             font-size: 75px;
+            color: #1c743a;
+        }
+
+        h2,h3,h4,h5 {
             color: #1c743a;
         }
 
@@ -133,6 +139,69 @@
 
                     <a href="{% url 'userena_signin' %}" class="btn btn-xl">أدخلني</a>
                 </header>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-sm-8 col-sm-offset-2">
+                <header>
+                    <h3>_______________________________________________________________________</h3>
+                    <br>
+                    <h3>صفحاتنا</h3>
+                    <br>
+                    <div class="col-lg-3">
+                    <a href="{% url 'show_page' 'about' %}"><i class="ti-info" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span>عن المجلس</span></div></a>
+                    </div>
+
+                    <div class="col-lg-3">
+                    <a href="{% url 'show_page' 'structure' %}"><i class="ti-view-grid" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span></span>الهيكلة</div></a>
+                    </div>
+
+                    <div class="col-lg-3">
+                    <a href="{% url 'show_page' 'list' %}"><i class="ti-list" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span></span>اللائحة</div></a>
+                    </div>
+
+                    <div class="col-lg-3">
+                    <a href="{% url 'show_page' 'list_news' %}"><i class="ti-announcement" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span></span>الأخبار</div></a>
+                    </div>
+
+                    <h3>_______________________________________________________________________</h3>
+                </header>
+            </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-sm-8 col-sm-offset-2">
+                <header>
+                    <h3>تواصلوا معنا</h3>
+                    <br>
+
+                    <div class="col-lg-3">
+                    <a href="{% url 'add_feedback' %}"><i class="ti-comment-alt" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span>صفحة المقترحات</span></div></a>
+                    </div>
+
+                    <div class="col-lg-3">
+                    <a href="mailto:sac@ksau-hs.edu.sa"><i class="ti-email" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span>بريد المجلس</span></div></a>
+                    </div>
+
+                    <div class="col-lg-3">
+                    <a href="mailto:support@trabdportal.com"><i class="ti-hummer" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span></span>الدعم التقني</div></a>
+                    </div>
+
+                    <div class="col-lg-3">
+                    <a target="_blank" href="https://twitter.com/KSAU_SAC"><i class="ti-twitter" style="color: white; font-size: 32px"></i>
+                    <div class="row"><span></span>تويتر</div></a>
+                    </div>
+
+                    <h3>_______________________________________________________________________</h3>
+                </header>
+            </div>
             </div>
         </div>
 </body>

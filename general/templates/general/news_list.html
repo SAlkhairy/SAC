@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+    <div class="row text-center">
     {% for i in news_items %}
     <div onclick="location.href='{% url 'show_news' news_id=i.pk %}'">
     <div class="panel panel-default">
@@ -18,4 +19,10 @@
     </div>
     </div>
     {% endfor %}
+    </div>
+    <div class="row text-center">
+        <div class="col-lg-6">
+        <a class="twitter-timeline" href="https://twitter.com/KSAU_SAC">تغريدات المجلس</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        </div>
+    </div>
 {% endblock %}

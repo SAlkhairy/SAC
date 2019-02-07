@@ -36,6 +36,17 @@ class Feedback(models.Model):
         verbose_name = 'المقترَح/الملاحظة'
         verbose_name_plural = 'المقترحات/الملاحظات'
 
+    def reply_thanks(self):
+        if self.email:
+            msg = EmailMessage(
+                                   'استلمنا ملاحظتك | بوابة ترابط',
+                                   'استلمنا اقتراحك، وجاري العمل عليه في أقرب وقت بإذن الله. شكرًا لك!',
+                                   'noreply@trabdportal.com',
+                                   [self.email]
+                              )
+            msg.content_subtype = "html"
+            msg.send()
+
 class NewsItem(models.Model):
     title = models.CharField("العنوان", max_length=100, blank=False)
     body = models.TextField("العرض", blank=False)
