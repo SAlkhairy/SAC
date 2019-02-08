@@ -30,6 +30,7 @@ def add_feedback(request):
         form = FeedbackForm(request.POST, request.FILES, instance=instance)
         if form.is_valid():
             form = form.save()
+            form.reply_thanks()
 
     context = {'form': form}
     return render(request, 'general/add_feedback.html', context)
