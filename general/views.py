@@ -37,7 +37,7 @@ def add_feedback(request):
 
 def list_news(request):
     news_items = NewsItem.objects.all().order_by('-submission_date')
-    return render(request, 'general/news_list.html', {'news_items': news_items})
+    return render(request, 'general/list_news.html', {'news_items': news_items})
 
 def show_newsitem(request, news_id):
     news_item = get_object_or_404(NewsItem, pk=news_id)
