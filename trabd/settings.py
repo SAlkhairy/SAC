@@ -138,11 +138,11 @@ ADMINS = [('Errors', 'errors@trabdportal.com')]
 SITE_ID = 1
 ANONYMOUS_USER_ID = -1
 AUTH_PROFILE_MODULE = 'accounts.Profile'
-USERENA_SIGNIN_REDIRECT_URL = '/'
+USERENA_SIGNIN_REDIRECT_URL = '/accounts/%(username)s/'
 LOGIN_URL = reverse_lazy('userena_signin')
 LOGOUT_URL = reverse_lazy('loginas-logout')
 LOGINAS_LOGOUT_REDIRECT_URL = reverse_lazy('home')
-LOGIN_REDIRECT_URL = USERENA_SIGNIN_REDIRECT_URL = reverse_lazy('home')
+LOGIN_REDIRECT_URL = USERENA_SIGNIN_REDIRECT_URL = '/accounts/%(username)s/'
 LOGOUT_REDIRECT_URL = USERENA_REDIRECT_ON_SIGNOUT = reverse_lazy('home')
 
 # Internationalization

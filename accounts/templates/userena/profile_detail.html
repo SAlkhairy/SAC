@@ -1,0 +1,78 @@
+{% extends 'base.html' %}{% load bootstrap3 %}
+{% load i18n %}
+
+{% block title %}
+    {% blocktrans with profile.user.username as username %}حساب {{ username }}{% endblocktrans %}
+{% endblock %}
+
+{% block header %}
+    <h1>{% if profile.gender == 'M' %}ألق {% elif profile.gender == 'F' %}ألقي {% endif %} نظرة على حسابك، {{ profile.ar_first_name }}</h1>
+    {% if sac_year.is_nomination_near %}<p><strong style="color: red">{% if profile.gender == 'M' %}تأكد {% elif profile.gender == 'F' %}تأكدي {% endif %}من صحة بياناتك</strong></p>{% endif %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'home' %}"><i class="pe-7s-home"></i> الرئيسية</a></li>
+    </ol>
+{% endblock %}
+{% block content_title %}<h2>{{ profile.user.username }} {% if profile.user.get_full_name %}({{ profile.user.get_full_name }}){% endif %}</h2>{% endblock %}
+
+{% block content %}
+  <div class="white-box">
+    {% block profile_navigation %}
+      {# Dirty hack. Will use django-guardian in the future. #}
+      {% if user.username == profile.user.username %}
+        <ul id="box-nav">
+          {% block profile_navigation_items %}
+            <li><a href="{% url 'userena_profile_edit' user.username %}">{% trans "عدّل البيانات" %}</a></li>
+            <li><a href="{% url 'userena_password_change' user.username %}">{% trans "Change password" %}</a></li>
+            <li><a href="{% url 'userena_email_change' user.username %}">{% trans "عدّل البريد الإلكتروني" %}</a></li>
+          {% endblock %}
+        </ul>
+      {% endif %}
+    {% endblock %}
+
+    <div id="details">
+      {% block profile_details %}
+        <dl>
+          {% block profile_definition_list %}
+            {% if profile.get_ar_full_name %}
+              <dt>{% trans "الاسم الثلاثي:" %}</dt>
+              <dd>{{ profile.get_ar_full_name }}</dd>
+            {%  endif %}
+            {% if profile.get_en_full_name %}
+              <dd>{{ profile.get_en_full_name }}</dd>
+            {% endif %}
+            {% if profile.user.email %}
+              <dt>{% trans "البريد الإلكتروني:" %}</dt>
+              <dd>{{ profile.user.email }}</dd>
+            {% endif %}
+            {% if profile.college %}
+              <dt>{% trans "الكلية:" %}</dt>
+              <dd>{{ profile.college }}</dd>
+            {% endif %}
+            {% if profile.city %}
+              <dt>{% trans "المدينة:" %}</dt>
+              <dd>{% if profile.city == 'R' %}الرياض
+                  {% elif profile.city == 'J' %}جدة
+                  {% elif profile.city == 'A' %}الأحساء
+                  {% endif %}
+                  </dd>
+            {% endif %}
+            {% if profile.gender %}
+              <dt>{% trans "الجنس:" %}</dt>
+              <dd>{% if profile.gender == 'F' %}طالبة
+                  {% elif profile.gender == 'M' %}طالب
+                  {% endif %}</dd>
+            {% endif %}
+            {% if profile.mobile_number %}
+              <dt>{% trans "رقم الجوال:" %}</dt>
+              <dd>{{ profile.mobile_number }}</dd>
+            {% endif %}
+            {% if profile.student_id %}
+              <dt>{% trans "الرقم الجامعي:" %}</dt>
+              <dd>{{ profile.student_id  }}</dd>
+            {% endif %}
+          {% endblock %}
+        </dl>
+      {% endblock %}
+    </div>
+  </div>
+{% endblock %}
