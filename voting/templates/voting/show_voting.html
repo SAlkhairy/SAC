@@ -122,8 +122,8 @@ function constructChoices(data){
                 var nomination = data.nominations[i];
                 var radio_id = 'nominee-' + nomination.pk;
                 var label = $('<label for="' + radio_id + '">' + nomination.nominee_name
-                                                               + ' (<a href="' +  nomination.cv + '">السيرة الذاتية</a>، ' 
-                                                               + ' <a href="' + nomination.plan + '">الخطّة</a>)</label>');
+                                                               + ' (<a target="_blank" href="' +  nomination.cv + '">السيرة الذاتية</a>، '
+                                                               + ' <a target="_blank" href="' + nomination.plan + '">الخطّة</a>)</label>');
                 var radioBtn = $('<input type="radio" name="rbtnCount" id="' + radio_id +  '"/>');
                 radioBtn.data('pk', nomination.pk);
                 radioBtn.data('position_pk', data.position_pk);
@@ -179,7 +179,7 @@ function votingDone(data){
                 if (data.done == 1){
                     votingDone(data);
                 }else if (data.success == 0){
-                    toastr.danger(data.message);
+                    toastr.warning(data.message);
                 } else {
                     constructChoices(data);
                 }

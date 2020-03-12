@@ -29,6 +29,17 @@ city_choices = (
     ('A', 'الأحساء'),
 )
 
+year_choices = (
+    ('', "--"),
+    ('1', 'السنة الأولى'),
+    ('2', "السنة الثانية"),
+    ('3', "السنة الثالثة"),
+    ('4', "السنة الرابعة"),
+    ('5', "السنة الخامسة"),
+    ('6', "السنة السادسة"),
+    ('7', "سنة الامتياز"),
+)
+
 class College(models.Model):
     name = models.CharField("الاسم", max_length=1,
                             choices=college_choices)
@@ -56,6 +67,7 @@ class Profile(UserenaBaseProfile):
     en_middle_name = models.CharField('الاسم الأوسط', max_length=30)
     en_last_name = models.CharField(u'الاسم الأخير', max_length=30)
     college = models.ForeignKey(College, verbose_name="الكلية", null=True)
+    college_year = models.CharField("سنة الدراسة", max_length=1, choices=year_choices, default='')
     city = models.CharField("المدينة", max_length=1, choices=city_choices)
     gender = models.CharField("الجنس", max_length=1, choices=gender_choices)
     mobile_number = models.CharField("رقم الجوال", max_length=14)
