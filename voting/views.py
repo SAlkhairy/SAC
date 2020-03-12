@@ -151,7 +151,7 @@ def handle_vote(request):
 
         if not request.user.is_superuser and \
            not request.user.profile.college in\
-               nomination_announcement.position.colleges_allowed_to_vote.all():
+               position.colleges_allowed_to_vote.all():
             raise PermissionDenied
         else:
             VoteNomination.objects.create(nomination_announcement=nomination_announcement,
