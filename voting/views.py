@@ -118,7 +118,7 @@ def show_voting_index(request):
             votes = VoteNomination.objects.none()
         else:
             completed_voting = True
-            votes = VoteNomination.objects.filter(user=request.user)
+            votes = VoteNomination.objects.filter(user=request.user,position__year=current_year)
         qrcode_value = utils.get_ticket(request.user)
         context = {'qrcode_value': qrcode_value,
                    'completed_voting': completed_voting,
